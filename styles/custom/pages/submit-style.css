@@ -1,0 +1,178 @@
+/* ============================================================
+   SALIKSIK — Submit page (modern refresh)
+   ============================================================ */
+
+/*-------------Masthead-------------*/
+
+.submit-masthead {
+  padding: 2.8rem 0 2.4rem;
+  background: linear-gradient(135deg, var(--navy-900) 0%, #0e408e 60%, var(--navy-500) 100%);
+  color: #ffffff;
+}
+
+.submit-masthead h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.submit-masthead .masthead-subtitle {
+  font-size: .88rem;
+  font-weight: 500;
+  opacity: .8;
+  margin-top: .35rem;
+}
+
+/*-------------Side Menu-------------*/
+
+.submit-sidebar {
+  position: sticky;
+  top: 80px;
+}
+
+.submit-sidebar-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: .65rem;
+}
+
+.submit-nav-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .7rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: .88rem;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .18s var(--ease), color .18s var(--ease);
+  border-left: 3px solid transparent;
+}
+
+.submit-nav-item:hover {
+  background: var(--navy-tint);
+  color: var(--navy-900);
+}
+
+.submit-nav-item.active {
+  background: var(--navy-tint);
+  color: var(--navy-900);
+  border-left-color: var(--navy-900);
+  font-weight: 700;
+}
+
+.submit-nav-item i {
+  color: var(--navy-500);
+  font-size: .85rem;
+  width: 1.2em;
+  text-align: center;
+}
+
+.submit-nav-item.active i {
+  color: var(--navy-900);
+}
+
+/*-------------Content Panels-------------*/
+
+.submit-panel {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.submit-panel h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  margin-bottom: .75rem;
+}
+
+.submit-panel p {
+  color: #4a5568;
+  line-height: 1.75;
+}
+
+.submit-panel ol {
+  padding-left: 1.2rem;
+}
+
+.submit-panel ol li {
+  padding: .55rem 0;
+  color: #4a5568;
+  line-height: 1.65;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.submit-panel ol li:last-child { border-bottom: none; }
+
+.submit-panel .filename-example {
+  background: var(--navy-tint);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: .85rem 1.1rem;
+  font-style: italic;
+  font-size: .88rem;
+  color: var(--navy-700);
+  margin: .75rem 0;
+}
+
+.submit-panel .contact-note {
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.submit-panel .contact-note a {
+  color: var(--navy-700);
+  font-weight: 600;
+}
+
+.submit-panel .contact-note a:hover {
+  color: var(--navy-500);
+}
+
+/*-------------CTA Button-------------*/
+
+.submit-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  background: var(--navy-900);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: .75rem 1.8rem;
+  font-weight: 700;
+  font-size: .92rem;
+  transition: background .2s var(--ease), transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+
+.submit-cta:hover {
+  background: var(--navy-500);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(1, 34, 101, .3);
+}
+
+/*-------------Section divider-------------*/
+
+.submit-divider {
+  border: none;
+  border-top: 2px solid #edf2f7;
+  margin: 1.5rem 0;
+}
+
+/*-------------Responsive-------------*/
+
+@media only screen and (max-width: 991.98px) {
+  .submit-sidebar { display: none; }
+  .submit-panel { padding: 1.5rem 1.2rem; }
+}

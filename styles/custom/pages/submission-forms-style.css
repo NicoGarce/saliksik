@@ -1,0 +1,150 @@
+/* ============================================================
+   SALIKSIK — Submission forms page (modern refresh)
+   ============================================================ */
+
+/*-------------Masthead-------------*/
+
+.subform-masthead {
+  padding: 2.4rem 0 2rem;
+  background: linear-gradient(135deg, var(--navy-900) 0%, #0e408e 60%, var(--navy-500) 100%);
+  color: #ffffff;
+}
+
+.subform-masthead h1 {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.subform-masthead .masthead-subtitle {
+  font-size: .85rem;
+  font-weight: 500;
+  opacity: .8;
+  margin-top: .25rem;
+}
+
+/*-------------Tabs-------------*/
+
+.subform-tabs-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.subform-tabs {
+  display: inline-flex;
+  list-style: none;
+  margin: 0;
+  padding: .35rem;
+  background: var(--navy-tint);
+  border-radius: 50px;
+  gap: .25rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.subform-tabs::-webkit-scrollbar { height: 0; }
+
+.subform-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .65rem 1.2rem;
+  border-radius: 50px;
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--navy-700);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s var(--ease);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.subform-tab:hover {
+  background: rgba(1, 34, 101, .08);
+  color: var(--navy-900);
+}
+
+.subform-tab.active {
+  background: var(--navy-900);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(1, 34, 101, .25);
+}
+
+.subform-tab i {
+  font-size: .82rem;
+}
+
+/*-------------Make inner panels full width-------------*/
+
+[id$="-wrap"] .main-column {
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+[id$="-wrap"] .main-column.col-lg-10,
+[id$="-wrap"] .main-column.col-md-12,
+[id$="-wrap"] .main-column.col-xs-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+/*-------------Buttons-------------*/
+
+.button-submit-research {
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-500) 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 50px !important;
+  padding: .6rem 1.5rem !important;
+  font-weight: 600 !important;
+  transition: transform .16s var(--ease), box-shadow .2s var(--ease) !important;
+}
+
+.button-submit-research:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(14, 64, 142, .3);
+  color: #ffffff;
+}
+
+.button-submit-research:disabled {
+  background: #9aa5b8 !important;
+  border-color: #9aa5b8 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  cursor: not-allowed;
+}
+
+/*-------------Attachments & misc-------------*/
+
+.remove-attachment {
+  color: #dc2626;
+  font-weight: 600;
+}
+.remove-attachment:hover { cursor: pointer; text-decoration: underline; }
+
+.delete-article { text-decoration: none; }
+
+/*-------------Responsive-------------*/
+
+@media only screen and (max-width: 767.98px) {
+  .subform-tabs-wrap {
+    margin: 0 -1rem 1.25rem;
+  }
+  .subform-tabs {
+    margin: 0 .5rem;
+    border-radius: var(--radius-md);
+    padding: .3rem;
+    gap: .15rem;
+  }
+  .subform-tab {
+    padding: .5rem .85rem;
+    font-size: .8rem;
+  }
+}

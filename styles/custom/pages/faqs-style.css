@@ -1,0 +1,208 @@
+/* ============================================================
+   SALIKSIK — FAQs page (modern refresh)
+   ============================================================ */
+
+/*-------------Masthead-------------*/
+
+.faqs-masthead {
+  padding: 2.8rem 0 2.4rem;
+  background: linear-gradient(135deg, var(--navy-900) 0%, #0e408e 60%, var(--navy-500) 100%);
+  color: #ffffff;
+}
+
+.faqs-masthead h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.faqs-masthead .masthead-subtitle {
+  font-size: .88rem;
+  font-weight: 500;
+  opacity: .8;
+  margin-top: .35rem;
+}
+
+/*-------------Topic quick nav-------------*/
+
+.faqs-topic-nav {
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+}
+
+.faqs-topic-nav-title {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-bottom: .8rem;
+  padding-left: .85rem;
+}
+
+.faqs-topic-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .85rem;
+  border-radius: var(--radius-md);
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--navy-700);
+  cursor: pointer;
+  transition: all .18s var(--ease);
+  border: 1.5px solid transparent;
+  margin-bottom: .2rem;
+  text-decoration: none;
+}
+
+.faqs-topic-item:hover {
+  background: var(--navy-tint);
+  color: var(--navy-900);
+}
+
+.faqs-topic-item.active {
+  background: var(--navy-900);
+  color: #ffffff;
+  border-color: var(--navy-900);
+}
+
+.faqs-topic-item i {
+  font-size: .82rem;
+  width: 1.2rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/*-------------Topic sections-------------*/
+
+.faqs-topic-section {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.faqs-topic-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  margin-bottom: 1.2rem;
+  padding-bottom: .65rem;
+  border-bottom: 2px solid var(--navy-tint);
+}
+
+/*-------------Accordion-------------*/
+
+.faqs-accordion-item {
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md) !important;
+  margin-bottom: .6rem;
+  overflow: hidden;
+  transition: box-shadow .2s var(--ease);
+}
+
+.faqs-accordion-item:hover {
+  box-shadow: 0 2px 8px rgba(1, 34, 101, .06);
+}
+
+.faqs-accordion-button {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  padding: .85rem 1rem;
+  background: #ffffff;
+  border: none;
+  box-shadow: none !important;
+}
+
+.faqs-accordion-button:not(.collapsed) {
+  color: var(--navy-500);
+  background: #f8faff;
+}
+
+.faqs-accordion-button::after {
+  width: 1.1rem;
+  height: 1.1rem;
+  background-size: 1.1rem;
+}
+
+.faqs-accordion-button:focus {
+  box-shadow: none !important;
+}
+
+.faqs-accordion-body {
+  font-size: .88rem;
+  line-height: 1.72;
+  color: var(--ink);
+  padding: .5rem 1rem 1rem;
+}
+
+.faqs-accordion-body ul {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.faqs-accordion-body li {
+  margin-bottom: .35rem;
+}
+
+.faqs-accordion-body a {
+  color: var(--navy-700);
+  text-decoration: underline;
+  text-decoration-color: rgba(14, 64, 142, .25);
+  font-weight: 600;
+  transition: color .16s var(--ease), text-decoration-color .16s var(--ease);
+}
+
+.faqs-accordion-body a:hover {
+  color: var(--navy-500);
+  text-decoration-color: var(--navy-500);
+}
+
+/*-------------Intro-------------*/
+
+.faqs-intro {
+  background: linear-gradient(135deg, rgba(1, 34, 101, .04) 0%, rgba(14, 64, 142, .06) 100%);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.faqs-intro p {
+  font-size: .9rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+/*-------------Mobile select-------------*/
+
+.faqs-mobile-select {
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--radius-md);
+  padding: .55rem .85rem;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  background: #ffffff;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+.faqs-mobile-select:focus {
+  border-color: var(--navy-500);
+  box-shadow: 0 0 0 .2rem rgba(14, 64, 142, .12);
+  outline: none;
+}
+
+/*-------------Responsive-------------*/
+
+@media only screen and (max-width: 991.98px) {
+  .faqs-topic-nav { position: static; margin-bottom: 1rem; }
+  .faqs-topic-section { padding: 1.5rem 1.2rem; }
+}

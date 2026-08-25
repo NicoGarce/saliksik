@@ -1,0 +1,207 @@
+/* ============================================================
+   SALIKSIK — Contact page (modern refresh)
+   ============================================================ */
+
+/*-------------Masthead-------------*/
+
+.contact-masthead {
+  padding: 2.8rem 0 2.4rem;
+  background: linear-gradient(135deg, var(--navy-900) 0%, #0e408e 60%, var(--navy-500) 100%);
+  color: #ffffff;
+}
+
+.contact-masthead h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.contact-masthead .masthead-subtitle {
+  font-size: .88rem;
+  font-weight: 500;
+  opacity: .8;
+  margin-top: .2rem;
+}
+
+.contact-masthead-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.contact-masthead-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(255, 255, 255, .25);
+  padding: .35rem;
+  background: rgba(255, 255, 255, .08);
+  flex-shrink: 0;
+}
+
+@media only screen and (max-width: 575.98px) {
+  .contact-masthead-inner { flex-direction: column; text-align: center; }
+  .contact-masthead-logo { width: 64px; height: 64px; }
+}
+
+/*-------------Contact card-------------*/
+
+.contact-card {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 2.2rem 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/*-------------Section title-------------*/
+
+.contact-section-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  margin-bottom: 1.2rem;
+  padding-bottom: .65rem;
+  border-bottom: 2px solid var(--navy-tint);
+}
+
+/*-------------Contact form-------------*/
+
+.contact-label {
+  display: block;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--navy-800);
+  margin-bottom: .35rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.contact-input {
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--radius-md);
+  padding: .65rem .85rem;
+  font-size: .9rem;
+  background: #ffffff;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+.contact-input:focus {
+  border-color: var(--navy-500);
+  box-shadow: 0 0 0 .2rem rgba(14, 64, 142, .12);
+  outline: none;
+}
+
+.contact-input::placeholder {
+  color: #aab5c5;
+  font-weight: 400;
+}
+
+textarea.contact-input { resize: vertical; }
+
+.contact-submit-btn {
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-500) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: .65rem 1.6rem;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .16s var(--ease), box-shadow .2s var(--ease);
+}
+
+.contact-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(14, 64, 142, .3);
+}
+
+.contact-submit-btn:disabled {
+  opacity: .7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/*-------------Alerts-------------*/
+
+.contact-alert {
+  border-radius: var(--radius-md);
+  padding: .7rem 1rem;
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+.contact-alert-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1.5px solid #a5d6a7;
+}
+
+.contact-alert-error {
+  background: #fce4ec;
+  color: #c62828;
+  border: 1.5px solid #ef9a9a;
+}
+
+/*-------------Responsive-------------*/
+
+@media only screen and (max-width: 991.98px) {
+  .contact-card { padding: 1.5rem 1.2rem; }
+}
+
+.contact-detail {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  padding: .7rem 0;
+}
+
+.contact-detail-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--navy-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s var(--ease);
+}
+
+.contact-detail:hover .contact-detail-icon {
+  background: #dce5f7;
+}
+
+.contact-detail-icon i {
+  font-size: .9rem;
+  color: var(--navy-700);
+}
+
+.contact-detail-text {
+  font-size: .92rem;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.contact-detail-text a {
+  color: var(--navy-700);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color .16s var(--ease);
+}
+
+.contact-detail-text a:hover {
+  color: var(--navy-500);
+  text-decoration: underline;
+}
+
+/*-------------Responsive-------------*/
+
+@media only screen and (max-width: 991.98px) {
+  .contact-card-header { flex-direction: column; text-align: center; }
+  .contact-card { padding: 1.5rem 1.2rem; }
+}

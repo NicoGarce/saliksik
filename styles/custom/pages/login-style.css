@@ -1,0 +1,73 @@
+/* ------------------------------ Login Page ------------------------------ */
+
+body {
+  background:
+    radial-gradient(1000px 500px at 85% -10%, rgba(14, 64, 142, .55), transparent 60%),
+    radial-gradient(800px 400px at -10% 110%, rgba(39, 73, 141, .45), transparent 55%),
+    linear-gradient(135deg, var(--navy-900) 0%, #052c78 100%);
+  background-attachment: fixed;
+}
+
+/* Floating sign-in card */
+.main .bg-light {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, .5);
+}
+
+#saliksik-logo { filter: drop-shadow(0 10px 24px rgba(0, 0, 0, .35)); }
+
+#saliksik-logo + p { color: #ffffff; }
+
+.forgot-password,
+.sign-up,
+.resend-verification-code {
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--navy-700);
+}
+.forgot-password:hover,
+.sign-up:hover,
+.resend-verification-code:hover {
+  color: var(--navy-900);
+  text-decoration: underline;
+  cursor: pointer;
+}
+/* Floating labels (Bootstrap form-floating) */
+.form-floating > .form-control {
+  min-height: 3.4rem;
+  padding-top: 1.35rem !important;
+  padding-bottom: .45rem !important;
+}
+
+.form-floating > label { color: var(--muted); }
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  color: var(--navy-700);
+  font-weight: 600;
+}
+
+/* Eye toggle sits inside the unified password box */
+.toggle-password,
+.email-help-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  z-index: 5;
+  cursor: pointer;
+  user-select: none;
+  color: var(--muted);
+}
+
+.toggle-password:hover,
+.email-help-icon:hover { color: var(--navy-500); }
+
+#textFieldPassword { padding-right: 3rem !important; }
+#textFieldEmail { padding-right: 3rem !important; }
+
+/* ------------------------------ Registration Page ------------------------------ */
+
+.to-login { text-decoration: none; font-weight: 700; color: var(--navy-700); }
+.to-login:hover { text-decoration: underline; color: var(--navy-900); }

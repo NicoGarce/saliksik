@@ -1,0 +1,311 @@
+/* ============================================================
+   SALIKSIK — Researchers page (modern refresh)
+   ============================================================ */
+
+/*-------------Masthead-------------*/
+
+.researchers-masthead {
+  padding: 2.8rem 0 2.4rem;
+  background: linear-gradient(135deg, var(--navy-900) 0%, #0e408e 60%, var(--navy-500) 100%);
+  color: #ffffff;
+}
+
+.researchers-masthead h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin: 0;
+  color: #ffffff;
+}
+
+.researchers-masthead .masthead-subtitle {
+  font-size: .88rem;
+  font-weight: 500;
+  opacity: .8;
+  margin-top: .35rem;
+}
+
+/*-------------Side Menu-------------*/
+
+.researchers-sidebar {
+  position: sticky;
+  top: 80px;
+}
+
+.researchers-sidebar-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: .65rem;
+}
+
+.researcher-nav-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .7rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: .88rem;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .18s var(--ease), color .18s var(--ease);
+  border-left: 3px solid transparent;
+}
+
+.researcher-nav-item:hover {
+  background: var(--navy-tint);
+  color: var(--navy-900);
+}
+
+.researcher-nav-item.active {
+  background: var(--navy-tint);
+  color: var(--navy-900);
+  border-left-color: var(--navy-900);
+  font-weight: 700;
+}
+
+.researcher-nav-item i {
+  color: var(--navy-500);
+  font-size: .85rem;
+  width: 1.2em;
+  text-align: center;
+}
+
+.researcher-nav-item.active i {
+  color: var(--navy-900);
+}
+
+.researchers-add-btn {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .7rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: .88rem;
+  color: var(--navy-900);
+  background: var(--navy-tint);
+  border: 1.5px dashed var(--navy-500);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .18s var(--ease), border-color .18s var(--ease);
+  width: 100%;
+}
+
+.researchers-add-btn:hover {
+  background: #dce5f7;
+  border-color: var(--navy-900);
+}
+
+.researchers-add-btn i {
+  color: var(--navy-500);
+  font-size: .85rem;
+}
+
+/*-------------Content Panels-------------*/
+
+.researchers-panel {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.researchers-panel h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  margin-bottom: 1rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--navy-tint);
+}
+
+.researchers-panel .empty-state {
+  color: var(--muted);
+  font-style: italic;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+/*-------------Researcher cards-------------*/
+
+.researcher-card {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.2rem;
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+  text-decoration: none;
+  color: inherit;
+}
+
+.researcher-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--navy-500);
+  color: inherit;
+  text-decoration: none;
+}
+
+.researcher-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+  flex-shrink: 0;
+  transition: border-color .2s var(--ease);
+}
+
+.researcher-card:hover .researcher-avatar {
+  border-color: var(--navy-500);
+}
+
+.researcher-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.researcher-name {
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.researcher-type-badge {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--navy-700);
+  background: var(--navy-tint);
+  border-radius: 999px;
+  padding: .15rem .6rem;
+  margin-top: .2rem;
+}
+
+.researcher-arrow {
+  color: var(--muted);
+  font-size: .8rem;
+  flex-shrink: 0;
+  transition: color .16s var(--ease), transform .16s var(--ease);
+}
+
+.researcher-card:hover .researcher-arrow {
+  color: var(--navy-500);
+  transform: translateX(3px);
+}
+
+/*-------------Archived cards-------------*/
+
+.researcher-card.archived {
+  border-style: dashed;
+  opacity: .8;
+}
+
+.researcher-card.archived:hover {
+  opacity: 1;
+}
+
+.researcher-card .restore-btn {
+  background: var(--navy-tint);
+  border: 1.5px solid var(--card-border);
+  color: var(--navy-900);
+  border-radius: var(--radius-sm);
+  padding: .35rem .8rem;
+  font-weight: 600;
+  font-size: .78rem;
+  transition: all .16s var(--ease);
+}
+
+.researcher-card .restore-btn:hover {
+  background: var(--navy-900);
+  color: #fff;
+  border-color: var(--navy-900);
+}
+
+/*-------------Mobile select-------------*/
+
+.researchers-mobile-select {
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: .6rem .85rem;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  background: #ffffff;
+  transition: border-color .2s var(--ease);
+}
+
+.researchers-mobile-select:focus {
+  border-color: var(--navy-500);
+  box-shadow: 0 0 0 .2rem rgba(14, 64, 142, .15);
+  outline: 0;
+}
+
+/*-------------Add form-------------*/
+
+.researchers-panel label.fw-bold {
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--ink);
+}
+
+.researchers-panel .form-control,
+.researchers-panel .form-select {
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: .55rem .85rem;
+  font-size: .88rem;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+.researchers-panel .form-control:focus,
+.researchers-panel .form-select:focus {
+  border-color: var(--navy-500);
+  box-shadow: 0 0 0 .2rem rgba(14, 64, 142, .15);
+  outline: 0;
+}
+
+.button-save {
+  background: var(--navy-900);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: .6rem 1.4rem;
+  font-weight: 700;
+  transition: background .2s var(--ease), transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+
+.button-save:hover {
+  background: var(--navy-500);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(1, 34, 101, .3);
+}
+
+.publishedWork {
+  border-radius: var(--radius-md);
+  margin-bottom: .75rem;
+}
+
+/*-------------Responsive-------------*/
+
+@media only screen and (max-width: 991.98px) {
+  .researchers-sidebar { display: none; }
+  .researchers-panel { padding: 1.5rem 1.2rem; }
+}
