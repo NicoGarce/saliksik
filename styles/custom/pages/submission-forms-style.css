@@ -271,6 +271,38 @@
 
 .view-panel hr { border-color: var(--card-border); opacity: 1; }
 
+/*-------------View panel buttons-------------*/
+
+.view-panel .btn {
+  border-radius: 50px;
+  font-weight: 600;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  padding: .55rem 1.4rem;
+  transition: transform .16s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+
+.view-panel .button-cancel,
+.view-panel .btn-secondary {
+  background: #ffffff;
+  border: 1.5px solid var(--input-border);
+  color: var(--navy-700);
+}
+
+.view-panel .button-cancel:hover,
+.view-panel .btn-secondary:hover {
+  background: var(--navy-tint);
+  border-color: var(--navy-500);
+  color: var(--navy-900);
+}
+
+.view-panel .form-check-label {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: .86rem;
+  font-weight: 500 !important;
+  color: var(--ink);
+}
+
 /* Side "Submission Details" column becomes a summary card */
 .view-side-details {
   background: var(--navy-tint);
