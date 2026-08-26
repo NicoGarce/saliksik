@@ -6,7 +6,7 @@ import {
   publishedInfographicTemplate,
   publishedJournalTemplate,
   publishedReportTemplate,
-} from "./templates.js?v=3";
+} from "./templates.js?v=4";
 $(document).ready(function () {
   submitData();
 });
@@ -63,34 +63,46 @@ function loadData(data) {
     return;
   }
 
-  var html = '<div class="row g-3">';
+  var rows = "";
   data.forEach((result) => {
     if (result["status"] == "pending") {
       if (result["file_type"] == "thesis") {
-        html += pendingThesisTemplate(result);
+        rows += pendingThesisTemplate(result);
       }
     } else if (result["status"] == "for revision") {
       if (result["file_type"] == "thesis") {
-        html += revisionThesisTemplate(result);
+        rows += revisionThesisTemplate(result);
       }
     } else if (result["status"] == "revised") {
       if (result["file_type"] == "thesis") {
-        html += revisedThesisTemplate(result);
+        rows += revisedThesisTemplate(result);
       }
     } else if (result["status"] == "published") {
       if (result["file_type"] == "thesis") {
-        html += publishedThesisTemplate(result);
+        rows += publishedThesisTemplate(result);
       } else if (result["file_type"] == "journal") {
-        html += publishedJournalTemplate(result);
+        rows += publishedJournalTemplate(result);
       } else if (result["file_type"] == "infographic") {
-        html += publishedInfographicTemplate(result);
+        rows += publishedInfographicTemplate(result);
       } else if (result["file_type"] == "report") {
-        html += publishedReportTemplate(result);
+        rows += publishedReportTemplate(result);
       }
     }
   });
-  html += "</div>";
-  $container.html(html);
+
+  $container.html(
+    '<div class="table-responsive">' +
+      '<table class="admin-table results-table">' +
+        "<thead><tr>" +
+          "<th>Title</th><th>Type</th><th>Category</th><th>Unit</th><th>Status</th><th>Submitted</th>" +
+          '<th class="text-end">Action</th>' +
+        "</tr></thead>" +
+        "<tbody>" + rows + "</tbody>" +
+      "</table>" +
+    "</div>"
+  );
+
+  $("#results-count").text(data.length + (data.length === 1 ? " item" : " items"));
 }
 function updateCounters(data) {
   var total_submissions = 0;

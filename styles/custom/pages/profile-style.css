@@ -594,3 +594,21 @@
   gap: .5rem;
   flex-wrap: wrap;
 }
+
+/* Compact results table (admin submissions) */
+
+.results-table td { vertical-align: top; }
+
+.results-table .card-title-link { font-size: .9rem; }
+
+.results-table .row-note {
+  display: block;
+  font-size: .76rem;
+  color: var(--muted);
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.results-table .row-note-label { font-weight: 700; color: #9a3412; }

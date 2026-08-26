@@ -93,18 +93,25 @@ if (isset($_GET['id'])) {
 }
 
 $typeLabels = array(
-    'thesis' => 'Thesis / Dissertation',
-    'journal' => 'Research Journal',
+    'thesis' => 'Thesis',
+    'journal' => 'Journal',
     'infographic' => 'Infographic',
-    'report' => 'Research Report'
-);
-$typeIcons = array(
-    'thesis' => 'fa-graduation-cap',
-    'journal' => 'fa-book',
-    'infographic' => 'fa-image',
-    'report' => 'fa-file-alt'
+    'report' => 'Report'
 );
 $fileType = $fileInfo['file_type'];
+
+/* Resolve the submission title per type */
+if ($fileType === 'thesis') {
+    $viewTitle = $fileInfo['research_title'];
+} elseif ($fileType === 'journal') {
+    $viewTitle = $fileInfo['journal_title'];
+} elseif ($fileType === 'infographic') {
+    $viewTitle = $fileInfo['infographic_title'];
+} else {
+    $viewTitle = $fileInfo['report_title'];
+}
+$viewTitle = $viewTitle ?: ('Untitled ' . $typeLabels[$fileType]);
+
 $statusLabel = ucfirst($fileInfo['status']);
 $statusClass = 'status-' . str_replace(' ', '-', strtolower($fileInfo['status']));
 $submittedDate = date('M j, Y', strtotime($fileInfo['submitted_on']));
@@ -126,7 +133,7 @@ $coauthorsDropdown = filemtime('../../scripts/custom/coauthors-dropdown.js');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($typeLabels[$fileType] ?? ucfirst($fileType)); ?> — Review</title>
+    <title><?php echo htmlspecialchars($viewTitle); ?></title>
     <script src="../../scripts/jquery/jquery-3.6.0.min.js"></script>
     <script src="<?php echo '../../scripts/custom/coauthors-dropdown.js?id=' . $coauthorsDropdown ?>"></script>
     <?php include_once '../../assets/fonts/google-fonts.php' ?>
@@ -157,7 +164,7 @@ $coauthorsDropdown = filemtime('../../scripts/custom/coauthors-dropdown.js');
         <div class="container">
             <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
                 <div>
-                    <h1><i class="fas <?php echo $typeIcons[$fileType] ?? 'fa-file'; ?> me-2" style="color: var(--navy-500); font-size: 1.15rem;"></i><?php echo htmlspecialchars($typeLabels[$fileType] ?? ucfirst($fileType)); ?></h1>
+                    <h1><?php echo htmlspecialchars($viewTitle); ?></h1>
                     <div class="view-meta">
                         <span><i class="fas fa-user me-1"></i><?php echo htmlspecialchars($fileInfo['file_uploader']); ?></span>
                         <span><i class="far fa-calendar me-1"></i>Submitted <?php echo $submittedDate; ?></span>

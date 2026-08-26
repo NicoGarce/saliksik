@@ -1,5 +1,5 @@
 /* ============================================================
-   SALIKSIK — Admin submissions result card templates
+   SALIKSIK — Admin submissions result row templates (compact)
    ============================================================ */
 
 var entityMap = {
@@ -27,6 +27,18 @@ var STATUS_META = {
   "published":    { label: "Published",    cls: "status-published" }
 };
 
+function statusBadge(status) {
+  var meta = STATUS_META[status] || { label: escapeHtml(status), cls: "status-pending" };
+  return '<span class="status-badge ' + meta.cls + '">' + meta.label + "</span>";
+}
+
+var TYPE_LABELS = {
+  thesis: "Thesis",
+  journal: "Journal",
+  infographic: "Infographic",
+  report: "Report"
+};
+
 function fmtDate(value, withTime) {
   if (!value) return "";
   var d = new Date(String(value).replace(" ", "T"));
@@ -37,11 +49,6 @@ function fmtDate(value, withTime) {
   return d.toLocaleString("en-US", opts);
 }
 
-function statusBadge(status) {
-  var meta = STATUS_META[status] || { label: escapeHtml(status), cls: "status-pending" };
-  return '<span class="status-badge ' + meta.cls + '">' + meta.label + "</span>";
-}
-
 function truncate(str, len) {
   str = String(str || "");
   if (!str) return "";
@@ -49,128 +56,127 @@ function truncate(str, len) {
 }
 
 /**
- * Unified result card. `o` fields:
- *   fileId, fileType, title, subtitle, kicker[], badgeText (date line),
- *   abstract, feedback, dateLabel+dateValue OR customMeta html
+ * Compact table row. `o` fields:
+ *   fileId, typeLabel, category, unit, title, subtitle, note,
+ *   status, dateLabel, dateValue
  */
-function resultCard(o) {
-  var kicker = o.kicker.filter(Boolean).map(escapeHtml).join(" &middot; ");
-  var feedback = "";
-  if (o.feedback !== undefined) {
-    feedback =
-      '<div class="feedback-box"><p class="feedback-label mb-1">Feedback Returned</p>' +
-      '<p class="mb-0">' + (escapeHtml(o.feedback) || "<em>No feedback text provided.</em>") + "</p></div>";
-  }
+function resultRow(o) {
+  var subtitle = o.subtitle
+    ? '<br><span class="row-note" style="color:var(--navy-700);font-weight:600;">' + escapeHtml(o.subtitle) + "</span>"
+    : "";
+  var note = o.note
+    ? '<br><span class="row-note">' +
+      '<span class="row-note-label">' + o.noteLabel + "</span>" + truncate(o.note, 90) +
+      "</span>"
+    : "";
 
-  return '' +
-    '<div class="col-xl-6">' +
-      '<div class="submission-card">' +
-        '<div class="results-meta-row mb-1">' +
-          '<span class="card-kicker mb-0">' + kicker + "</span>" +
-          statusBadge(o.status)
-        + "</div>" +
-        (o.subtitle
-          ? '<a href="submissions/view.php?id=' + o.fileId + '" class="card-title-link d-block">' + escapeHtml(o.title) + "</a>" +
-            '<p class="mb-1" style="font-size:.84rem;color:var(--muted);font-weight:600;">' + escapeHtml(o.subtitle) + "</p>"
-          : '<a href="submissions/view.php?id=' + o.fileId + '" class="card-title-link d-block mb-1">' + escapeHtml(o.title) + "</a>") +
-        (o.abstract ? '<p class="card-body-text mb-2">' + truncate(o.abstract, 160) + "</p>" : "") +
-        feedback +
-        '<div class="card-actions d-flex align-items-center justify-content-between gap-2 flex-wrap">' +
-          '<span class="card-date">' + o.dateLabel + " " + o.dateValue + "</span>" +
-          '<a href="submissions/view.php?id=' + o.fileId + '" class="admin-btn" style="padding:.4rem 1.1rem;font-size:.8rem;">Review</a>'
-        + "</div>" +
-      "</div>" +
-    "</div>";
+  return "" +
+    "<tr>" +
+      '<td><a href="submissions/view.php?id=' + o.fileId + '" class="card-title-link">' + escapeHtml(o.title) + "</a>" + subtitle + note + "</td>" +
+      "<td>" + escapeHtml(o.typeLabel || "") + "</td>" +
+      "<td>" + escapeHtml(o.category || "") + "</td>" +
+      "<td>" + escapeHtml(o.unit || "") + "</td>" +
+      "<td>" + statusBadge(o.status) + "</td>" +
+      '<td class="text-muted" style="white-space:nowrap;">' + o.dateValue + "</td>" +
+      '<td class="text-end"><a href="submissions/view.php?id=' + o.fileId + '" class="admin-btn" style="padding:.32rem 1rem;font-size:.76rem;">Review</a></td>' +
+    "</tr>";
 }
 
 export function pendingThesisTemplate(result) {
-  return resultCard({
+  return resultRow({
     fileId: result.file_id,
-    fileType: "thesis",
-    status: "pending",
-    kicker: [result.research_type, result.researchers_category, result.research_unit],
+    typeLabel: result.research_type,
+    category: result.researchers_category,
+    unit: result.research_unit,
     title: result.research_title,
-    abstract: result.research_abstract,
-    dateLabel: "Submitted",
-    dateValue: fmtDate(result.submitted_on, true)
+    status: "pending",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
   });
 }
 
 export function revisionThesisTemplate(result) {
-  return resultCard({
+  return resultRow({
     fileId: result.file_id,
-    fileType: "thesis",
-    status: "for revision",
-    kicker: [result.research_type, result.researchers_category, result.research_unit],
+    typeLabel: result.research_type,
+    category: result.researchers_category,
+    unit: result.research_unit,
     title: result.research_title,
-    feedback: result.feedback,
-    dateLabel: "Returned",
-    dateValue: fmtDate(result.returned_on, true)
+    note: result.feedback,
+    noteLabel: "Feedback: ",
+    status: "for revision",
+    dateLabel: "",
+    dateValue: fmtDate(result.returned_on, false)
   });
 }
 
 export function revisedThesisTemplate(result) {
-  return resultCard({
+  return resultRow({
     fileId: result.file_id,
-    fileType: "thesis",
-    status: "revised",
-    kicker: [result.research_type, result.researchers_category, result.research_unit],
+    typeLabel: result.research_type,
+    category: result.researchers_category,
+    unit: result.research_unit,
     title: result.research_title,
-    feedback: result.feedback,
-    dateLabel: "Resubmitted",
-    dateValue: fmtDate(result.submitted_on, true)
+    note: result.feedback,
+    noteLabel: "Last feedback: ",
+    status: "revised",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
   });
 }
 
 export function publishedThesisTemplate(result) {
-  return resultCard({
+  return resultRow({
     fileId: result.file_id,
-    fileType: "thesis",
-    status: "published",
-    kicker: [result.research_type, result.researchers_category, result.research_unit],
+    typeLabel: result.research_type,
+    category: result.researchers_category,
+    unit: result.research_unit,
     title: result.research_title,
-    abstract: result.research_abstract,
-    dateLabel: "Submitted",
-    dateValue: fmtDate(result.submitted_on, false),
-    feedback: undefined
+    status: "published",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
   });
 }
 
 export function publishedInfographicTemplate(result) {
-  return resultCard({
+  var year = result.infographic_publication_date
+    ? new Date(String(result.infographic_publication_date).replace(" ", "T")).getFullYear()
+    : "";
+  return resultRow({
     fileId: result.file_id,
-    fileType: "infographic",
-    status: "published",
-    kicker: ["Infographic", result.infographic_publication_date ? new Date(String(result.infographic_publication_date).replace(" ", "T")).getFullYear() : ""],
+    typeLabel: "Infographic",
+    category: year ? String(year) : "",
+    unit: "",
     title: result.infographic_title,
-    abstract: result.infographic_description,
-    dateLabel: "Submitted",
+    status: "published",
+    dateLabel: "",
     dateValue: fmtDate(result.submitted_on, false)
   });
 }
 
 export function publishedJournalTemplate(result) {
-  return resultCard({
+  return resultRow({
     fileId: result.file_id,
-    fileType: "journal",
-    status: "published",
-    kicker: ["Journal", result.department],
+    typeLabel: "Journal",
+    category: result.department,
+    unit: "",
     title: result.journal_title,
     subtitle: result.journal_subtitle || "",
-    abstract: result.journal_description,
-    dateLabel: "Submitted",
+    status: "published",
+    dateLabel: "",
     dateValue: fmtDate(result.submitted_on, false)
   });
 }
 
 export function publishedReportTemplate(result) {
-  return resultCard({
+  return resultRow({
     fileId: result.file_id,
-    fileType: "report",
-    status: "published",
-    kicker: ["Report", result.report_type, result.report_year],
+    typeLabel: "Report",
+    category: result.report_type,
+    unit: result.report_year,
     title: result.report_title,
-    dateLabel: "Submitted",
+    status: "published",
+    dateLabel: "",
     dateValue: fmtDate(result.submitted_on, false)
   });
 }

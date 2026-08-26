@@ -129,7 +129,9 @@ $profileadminjs = filemtime('../scripts/custom/profile-admin.js');
                             </div>
                         </div>
 
-                        <div class="admin-panel-title mt-3">Results</div>
+                        <div class="d-flex align-items-center justify-content-between mt-3">
+                            <div class="admin-panel-title mb-0">Results <span class="admin-badge" id="results-count"></span></div>
+                        </div>
                         <div id="results-container">
                             <p class="empty-note mb-1"><i class="fas fa-inbox me-2"></i>Loading submissions...</p>
                         </div>
