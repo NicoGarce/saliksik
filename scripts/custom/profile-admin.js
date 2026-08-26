@@ -6,7 +6,7 @@ import {
   publishedInfographicTemplate,
   publishedJournalTemplate,
   publishedReportTemplate,
-} from "./templates.js?v=2";
+} from "./templates.js?v=3";
 $(document).ready(function () {
   submitData();
 });

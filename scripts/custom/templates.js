@@ -21,17 +21,10 @@ function escapeHtml(string) {
 }
 
 var STATUS_META = {
-  "pending":      { label: "For Approval", cls: "status-pending",      icon: "fa-hourglass-half" },
-  "for revision": { label: "For Revision", cls: "status-for-revision", icon: "fa-rotate-left" },
-  "revised":      { label: "Revised",      cls: "status-revised",      icon: "fa-file-circle-check" },
-  "published":    { label: "Published",    cls: "status-published",    icon: "fa-book-open" }
-};
-
-var TYPE_ICONS = {
-  "thesis": "fa-graduation-cap",
-  "journal": "fa-newspaper",
-  "infographic": "fa-image",
-  "report": "fa-clipboard-list"
+  "pending":      { label: "For Approval", cls: "status-pending" },
+  "for revision": { label: "For Revision", cls: "status-for-revision" },
+  "revised":      { label: "Revised",      cls: "status-revised" },
+  "published":    { label: "Published",    cls: "status-published" }
 };
 
 function fmtDate(value, withTime) {
@@ -45,8 +38,8 @@ function fmtDate(value, withTime) {
 }
 
 function statusBadge(status) {
-  var meta = STATUS_META[status] || { label: escapeHtml(status), cls: "status-pending", icon: "fa-circle" };
-  return '<span class="status-badge ' + meta.cls + '"><i class="fas ' + meta.icon + '" style="font-size:.6rem;"></i>' + meta.label + "</span>";
+  var meta = STATUS_META[status] || { label: escapeHtml(status), cls: "status-pending" };
+  return '<span class="status-badge ' + meta.cls + '">' + meta.label + "</span>";
 }
 
 function truncate(str, len) {
@@ -62,11 +55,10 @@ function truncate(str, len) {
  */
 function resultCard(o) {
   var kicker = o.kicker.filter(Boolean).map(escapeHtml).join(" &middot; ");
-  var icon = TYPE_ICONS[o.fileType] || "fa-file";
   var feedback = "";
   if (o.feedback !== undefined) {
     feedback =
-      '<div class="feedback-box"><p class="feedback-label mb-1"><i class="fas fa-comment-dots me-1"></i>Feedback Returned</p>' +
+      '<div class="feedback-box"><p class="feedback-label mb-1">Feedback Returned</p>' +
       '<p class="mb-0">' + (escapeHtml(o.feedback) || "<em>No feedback text provided.</em>") + "</p></div>";
   }
 
@@ -74,7 +66,7 @@ function resultCard(o) {
     '<div class="col-xl-6">' +
       '<div class="submission-card">' +
         '<div class="results-meta-row mb-1">' +
-          '<span class="card-kicker mb-0"><i class="fas ' + icon + ' me-1"></i>' + kicker + "</span>" +
+          '<span class="card-kicker mb-0">' + kicker + "</span>" +
           statusBadge(o.status)
         + "</div>" +
         (o.subtitle
@@ -84,8 +76,8 @@ function resultCard(o) {
         (o.abstract ? '<p class="card-body-text mb-2">' + truncate(o.abstract, 160) + "</p>" : "") +
         feedback +
         '<div class="card-actions d-flex align-items-center justify-content-between gap-2 flex-wrap">' +
-          '<span class="card-date"><i class="far fa-clock me-1"></i>' + o.dateLabel + " " + o.dateValue + "</span>" +
-          '<a href="submissions/view.php?id=' + o.fileId + '" class="admin-btn" style="padding:.4rem 1.1rem;font-size:.8rem;"><i class="fas fa-folder-open me-1"></i>Review</a>'
+          '<span class="card-date">' + o.dateLabel + " " + o.dateValue + "</span>" +
+          '<a href="submissions/view.php?id=' + o.fileId + '" class="admin-btn" style="padding:.4rem 1.1rem;font-size:.8rem;">Review</a>'
         + "</div>" +
       "</div>" +
     "</div>";
