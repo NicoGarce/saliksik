@@ -96,20 +96,28 @@
             setProgress(0, '0%');
         }
 
+        function setFieldsDisabled(disabled) {
+            /* Lock every field except the managed submit button */
+            $form.find(':input').not($btn).prop('disabled', disabled);
+        }
+
         function finish(kind, html, afterSuccess) {
             resetProgress();
             setUploadingState(false);
+            setFieldsDisabled(false);
             salikAlert(o.alertContainer, kind, html);
             if (kind === 'success' && typeof afterSuccess === 'function') afterSuccess();
         }
 
         $form.on('submit', function (event) {
             event.preventDefault();
-            if ($btn.prop('disabled') && $btn.data('uploading') === true) return;
+            if ($btn.data('uploading') === true) return;
 
+            /* Capture values BEFORE locking the fields */
             var formData = new FormData(this);
             $btn.data('uploading', true);
             setUploadingState(true);
+            setFieldsDisabled(true);
             $(o.alertContainer).empty();
             if ($wrap.length) $wrap.prop('hidden', false);
             if ($label.length) {
@@ -117,6 +125,18 @@
                 $label.prop('hidden', false);
             }
             setProgress(0, '0%');
+
+            /* Bring the upload progress into view */
+            var scrollTarget = $wrap.length ? $wrap[0] : ($bar[0] || null);
+            if (scrollTarget && typeof scrollTarget.scrollIntoView === 'function') {
+                try {
+                    scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } catch (e) {
+                    scrollTarget.scrollIntoView(true);
+                }
+            } else {
+                window.scrollTo(0, 0);
+            }
 
             $.ajax({
                 xhr: function () {

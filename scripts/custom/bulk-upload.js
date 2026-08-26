@@ -381,6 +381,15 @@ $(function () {
         $('#process-progress-bar').css('width', '0%');
         $('#process-progress-text').text('Preparing upload...');
 
+        /* Bring the progress bar into view */
+        var bar = document.getElementById('process-progress-bar');
+        if (bar && typeof bar.scrollIntoView === 'function') {
+            try { bar.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { bar.scrollIntoView(true); }
+        }
+
+        /* Lock navigation while processing */
+        $('#btn-step4-back, #btn-step4-next, .bulk-type-card').prop('disabled', true).addClass('pe-none');
+
         var rows = state.csvData.rows;
         var totalRows = rows.length;
         var processed = 0;
@@ -501,6 +510,7 @@ $(function () {
 
     function finishProcessing(success, errors, skipped) {
         state.processing = false;
+        $('#btn-step4-back, #btn-step4-next').prop('disabled', false).removeClass('pe-none');
         $('#processing-active').hide();
         $('#processing-done').show();
         var total = state.csvData.rows.length;
