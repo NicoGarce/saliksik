@@ -1,0 +1,32 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.0.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ./
+          exclude: |
+            .git/**
+            .github/**
+            node_modules/**
+            CONTEXT.md
+            ACCOUNTS.md
+            SYSTEM-MANUAL.md
+            saliksik_schema.sql
+            *.log
+            Thumbs.db
+            desktop.ini
