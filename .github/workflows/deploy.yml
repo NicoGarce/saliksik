@@ -18,26 +18,25 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          sudo apt-get update && sudo apt-get install -y lftp
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
-          lftp -c "
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" -e "
             set ftp:ssl-allow no;
             set ftp:passive-mode yes;
             set net:timeout 30;
             set net:reconnect-interval-base 5;
             set net:max-retries 3;
-            mirror --reverse --verbose \
-              --exclude .git/ \
-              --exclude .github/ \
-              --exclude node_modules/ \
-              --exclude CONTEXT.md \
-              --exclude ACCOUNTS.md \
-              --exclude SYSTEM-MANUAL.md \
-              --exclude saliksik_schema.sql \
-              --exclude '*.log' \
-              --exclude 'Thumbs.db' \
-              --exclude 'desktop.ini' \
-              --delete \
+            mirror --reverse --verbose --delete \
+              --exclude \.git \
+              --exclude \.github \
+              --exclude node_modules \
+              --exclude /CONTEXT\.md$ \
+              --exclude /ACCOUNTS\.md$ \
+              --exclude /SYSTEM-MANUAL\.md$ \
+              --exclude /saliksik_schema\.sql$ \
+              --exclude \.log$ \
+              --exclude /Thumbs\.db$ \
+              --exclude /desktop\.ini$ \
               . / ;
             quit
-          " -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER"
+          "
