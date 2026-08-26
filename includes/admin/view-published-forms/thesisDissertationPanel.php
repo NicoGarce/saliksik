@@ -511,14 +511,14 @@ $publication_date = $fileInfo['publication_date'];
             <div class="row my-4">
                 <label class="fw-bold mb-3">Attached Files</label>
                 <div class="col">
-                    <label class="my-2"><a href="../../src/<?php echo htmlspecialchars($fileInfo['file_dir']) ?>" target="_blank"><?php echo htmlspecialchars($fileInfo['file_name']) ?></a></label>
+                    <?php if (!empty($fileInfo['file_dir']) && !@file_exists(rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . base_url() . '/src/' . $fileInfo['file_dir'])): ?><span class="text-danger fw-semibold my-2 d-inline-block"><i class="fas fa-triangle-exclamation me-1"></i><?php echo htmlspecialchars($fileInfo['file_name']) ?> — file missing on server</span><?php else: ?><label class="my-2"><a href="../../src/<?php echo htmlspecialchars($fileInfo['file_dir']) ?>" target="_blank"><?php echo htmlspecialchars($fileInfo['file_name']) ?></a></label><?php endif; ?>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name='file1Shown' <?php if ($fileInfo['file1_shown']) {
                                                                                                                             echo 'checked';
                                                                                                                         } ?>>
                         <label class="form-check-label" for="flexSwitchCheckDefault">Show in Repository</label>
                     </div>
-                    <label class="my-2"><a href="../../src/<?php echo htmlspecialchars($fileInfo['file_dir2']) ?>" target="_blank"><?php echo htmlspecialchars($fileInfo['file_name2']) ?></a></label>
+                    <?php if (!empty($fileInfo['file_dir2']) && !@file_exists(rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . base_url() . '/src/' . $fileInfo['file_dir2'])): ?><span class="text-danger fw-semibold my-2 d-inline-block"><i class="fas fa-triangle-exclamation me-1"></i><?php echo htmlspecialchars($fileInfo['file_name2']) ?> — file missing on server</span><?php else: ?><label class="my-2"><a href="../../src/<?php echo htmlspecialchars($fileInfo['file_dir2']) ?>" target="_blank"><?php echo htmlspecialchars($fileInfo['file_name2']) ?></a></label><?php endif; ?>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefaultTwo" name='file2Shown' <?php if ($fileInfo['file2_shown']) {
                                                                                                                                 echo 'checked';

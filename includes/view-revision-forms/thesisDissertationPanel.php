@@ -483,9 +483,9 @@ $publication_date = $fileInfo['publication_date'];
             <div class="row my-3">
             <label class="fw-bold mb-1">Attached Files</label>
             <div class="col">
-            <p class="my-3"><a href="../../src/<?php echo htmlspecialchars($fileInfo['file_dir']); ?>" target="_blank"><?php echo htmlspecialchars($fileInfo['file_name']); ?></a></p>
+            <?php if (!empty($fileInfo['file_dir']) && !@file_exists(rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . base_url() . '/src/' . $fileInfo['file_dir'])): ?><span class="text-danger fw-semibold my-2 d-inline-block"><i class="fas fa-triangle-exclamation me-1"></i><?php echo htmlspecialchars($fileInfo['file_name']) ?> — file missing on server</span><?php else: ?><p class="my-3"><a href="../../src/<?php echo htmlspecialchars($fileInfo['file_dir']); ?>" target="_blank"><?php echo htmlspecialchars($fileInfo['file_name']); ?></a></p><?php endif; ?>
                 <input class="form-control my-2" type="file" name="fileSubmit" accept=".pdf, .docx">
-                <p class="my-3"><a href="../../src/<?php echo htmlspecialchars($fileInfo['file_dir2']); ?>" target="_blank"><?php echo htmlspecialchars($fileInfo['file_name2']); ?></a></p>
+                <?php if (!empty($fileInfo['file_dir2']) && !@file_exists(rtrim($_SERVER['DOCUMENT_ROOT'], '/\\') . base_url() . '/src/' . $fileInfo['file_dir2'])): ?><span class="text-danger fw-semibold my-2 d-inline-block"><i class="fas fa-triangle-exclamation me-1"></i><?php echo htmlspecialchars($fileInfo['file_name2']) ?> — file missing on server</span><?php else: ?><p class="my-3"><a href="../../src/<?php echo htmlspecialchars($fileInfo['file_dir2']); ?>" target="_blank"><?php echo htmlspecialchars($fileInfo['file_name2']); ?></a></p><?php endif; ?>
                 <input class="form-control my-2" type="file" name="fileQuestionnaire" accept=".pdf, .docx">
             </div>
         </div>
