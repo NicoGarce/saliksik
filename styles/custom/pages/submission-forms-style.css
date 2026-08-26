@@ -331,6 +331,22 @@
   border-bottom-color: var(--navy-500);
 }
 
+.attachment-label {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--navy-900);
+  margin-right: .4rem;
+  padding: .14rem .55rem;
+  background: var(--navy-tint);
+  border-radius: 50px;
+  vertical-align: middle;
+}
+
+/* Filenames render uppercase on both user and admin sides */
+.view-panel p.my-3 > a { text-transform: uppercase; font-size: .84rem; }
+
 /*-------------Neutralize browser autofill tint-------------*/
 
 .view-panel input:-webkit-autofill,
