@@ -28,16 +28,16 @@ jobs:
           set net:reconnect-interval-base 5
           set net:max-retries 3
           mirror --reverse --verbose --delete \
-            --exclude ^\.git/ \
-            --exclude ^\.github/ \
-            --exclude ^node_modules/ \
-            --exclude (^|/)CONTEXT\.md$ \
-            --exclude (^|/)ACCOUNTS\.md$ \
-            --exclude (^|/)SYSTEM-MANUAL\.md$ \
-            --exclude (^|/)saliksik_schema\.sql$ \
-            --exclude \.log$ \
-            --exclude (^|/)Thumbs\.db$ \
-            --exclude (^|/)desktop\.ini$ \
+            --exclude '^\.git/' \
+            --exclude '^\.github/' \
+            --exclude '^node_modules/' \
+            --exclude '(^|/)CONTEXT\.md$' \
+            --exclude '(^|/)ACCOUNTS\.md$' \
+            --exclude '(^|/)SYSTEM-MANUAL\.md$' \
+            --exclude '(^|/)saliksik_schema\.sql$' \
+            --exclude '\.log$' \
+            --exclude '(^|/)Thumbs\.db$' \
+            --exclude '(^|/)desktop\.ini$' \
             . /
           bye
           EOF
