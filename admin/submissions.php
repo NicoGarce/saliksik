@@ -131,7 +131,7 @@ $profileadminjs = filemtime('../scripts/custom/profile-admin.js');
 
                         <div class="admin-panel-title mt-3">Results</div>
                         <div id="results-container">
-                            <p class="text-center text-muted py-4"><i class="fas fa-inbox fa-2x mb-2 d-block opacity-50"></i>No results found.</p>
+                            <p class="empty-note mb-1"><i class="fas fa-inbox me-2"></i>Loading submissions...</p>
                         </div>
                     </div>
                 </div>

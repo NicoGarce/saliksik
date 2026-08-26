@@ -6,7 +6,7 @@ import {
   publishedInfographicTemplate,
   publishedJournalTemplate,
   publishedReportTemplate,
-} from "./templates.js";
+} from "./templates.js?v=2";
 $(document).ready(function () {
   submitData();
 });
@@ -55,38 +55,42 @@ function submitData() {
 }
 
 function loadData(data) {
-  $("#results-container").html("");
+  var $container = $("#results-container");
   if (data.length == 0) {
-    $("#results-container").html(
-      "<h5 style='color: grey; text-align:center;'><br>No results found.</h5>"
+    $container.html(
+      '<p class="empty-note mb-1"><i class="fas fa-inbox me-2"></i>No submissions match your search or filter.</p>'
     );
+    return;
   }
 
+  var html = '<div class="row g-3">';
   data.forEach((result) => {
     if (result["status"] == "pending") {
       if (result["file_type"] == "thesis") {
-        $("#results-container").append(pendingThesisTemplate(result));
+        html += pendingThesisTemplate(result);
       }
     } else if (result["status"] == "for revision") {
       if (result["file_type"] == "thesis") {
-        $("#results-container").append(revisionThesisTemplate(result));
+        html += revisionThesisTemplate(result);
       }
     } else if (result["status"] == "revised") {
       if (result["file_type"] == "thesis") {
-        $("#results-container").append(revisedThesisTemplate(result));
+        html += revisedThesisTemplate(result);
       }
     } else if (result["status"] == "published") {
       if (result["file_type"] == "thesis") {
-        $("#results-container").append(publishedThesisTemplate(result));
+        html += publishedThesisTemplate(result);
       } else if (result["file_type"] == "journal") {
-        $("#results-container").append(publishedJournalTemplate(result));
+        html += publishedJournalTemplate(result);
       } else if (result["file_type"] == "infographic") {
-        $("#results-container").append(publishedInfographicTemplate(result));
+        html += publishedInfographicTemplate(result);
       } else if (result["file_type"] == "report") {
-        $("#results-container").append(publishedReportTemplate(result));
+        html += publishedReportTemplate(result);
       }
     }
   });
+  html += "</div>";
+  $container.html(html);
 }
 function updateCounters(data) {
   var total_submissions = 0;

@@ -471,3 +471,126 @@
 @media only screen and (max-width: 991.98px) {
   .admin-panel { padding: 1.5rem 1.2rem; }
 }
+
+/* ============================================================
+   Submission cards & status badges (shared: user + admin pages)
+   ============================================================ */
+
+.submission-card {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 1.15rem 1.3rem;
+  margin: .75rem 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: transform .18s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+}
+
+.submission-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(39, 73, 141, .45);
+  box-shadow: var(--shadow-md);
+}
+
+.submission-card .card-kicker {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--navy-700);
+  margin-bottom: .3rem;
+}
+
+.submission-card .card-title-link {
+  text-decoration: none;
+  color: var(--navy-900);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.submission-card .card-title-link:hover { text-decoration: underline; color: var(--navy-500); }
+
+.submission-card .card-date {
+  font-size: .78rem;
+  color: var(--muted);
+}
+
+.submission-card .card-body-text {
+  font-size: .84rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.submission-card .card-actions { margin-top: auto; padding-top: .75rem; }
+
+.submission-card .feedback-box {
+  background: #fff7ed;
+  border-left: 3px solid #f97316;
+  border-radius: 8px;
+  padding: .65rem .85rem;
+  font-size: .83rem;
+  margin-top: .6rem;
+}
+
+.submission-card .feedback-box .feedback-label {
+  font-weight: 700;
+  color: #9a3412;
+  margin-bottom: .15rem;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .8rem;
+  border-radius: 50px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-pending      { background: #fef9c3; color: #854d0e; }
+.status-for-revision { background: #ffedd5; color: #9a3412; }
+.status-revised      { background: #dbeafe; color: #1e40af; }
+.status-published    { background: #dcfce7; color: #166534; }
+
+.submissions-section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--navy-tint);
+  margin-bottom: .35rem;
+}
+
+.submissions-section-title i { color: var(--navy-500); font-size: .95rem; }
+
+.empty-note {
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 1.5rem 0;
+}
+
+/* Results grid on admin submissions */
+#results-container .row > [class*="col-"] { display: flex; }
+
+.results-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
