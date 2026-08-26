@@ -2,7 +2,7 @@ name: Deploy to cPanel
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
 
 jobs:
@@ -12,21 +12,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.0.0
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ./
-          exclude: |
-            .git/**
-            .github/**
-            node_modules/**
-            CONTEXT.md
-            ACCOUNTS.md
-            SYSTEM-MANUAL.md
-            saliksik_schema.sql
-            *.log
-            Thumbs.db
-            desktop.ini
+      - name: Deploy via lftp
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          sudo apt-get update && sudo apt-get install -y lftp
+
+          lftp -c "
+            set ftp:ssl-allow no;
+            set ftp:passive-mode yes;
+            set net:timeout 30;
+            set net:reconnect-interval-base 5;
+            set net:max-retries 3;
+            mirror --reverse --verbose \
+              --exclude .git/ \
+              --exclude .github/ \
+              --exclude node_modules/ \
+              --exclude CONTEXT.md \
+              --exclude ACCOUNTS.md \
+              --exclude SYSTEM-MANUAL.md \
+              --exclude saliksik_schema.sql \
+              --exclude '*.log' \
+              --exclude 'Thumbs.db' \
+              --exclude 'desktop.ini' \
+              --delete \
+              . / ;
+            quit
+          " -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER"
