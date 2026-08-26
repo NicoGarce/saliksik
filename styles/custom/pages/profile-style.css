@@ -398,6 +398,74 @@
   font-weight: 700;
 }
 
+/*-------------User profile-------------*/
+
+.profile-summary {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-summary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--navy-500), var(--accent-yellow));
+}
+
+.profile-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-500) 100%);
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: .9rem;
+  box-shadow: 0 6px 18px rgba(14, 64, 142, .25);
+}
+
+.profile-name {
+  font-weight: 800;
+  color: var(--navy-900);
+  margin-bottom: .15rem;
+}
+
+.profile-email {
+  color: var(--muted);
+  font-size: .85rem;
+  word-break: break-all;
+}
+
+.profile-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .65rem 0;
+  border-bottom: 1.5px solid var(--card-border);
+  font-size: .85rem;
+}
+
+.profile-meta:last-child { border-bottom: none; }
+
+.profile-meta span:first-child {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.profile-meta span:last-child {
+  font-weight: 700;
+  color: var(--navy-900);
+  text-align: right;
+}
+
 /*-------------Responsive-------------*/
 
 @media only screen and (max-width: 991.98px) {
