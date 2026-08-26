@@ -56,43 +56,54 @@ $userSubmissionsJSVersion = filemtime('../scripts/custom/user-submissions.js');
 
     <?php include_once '../includes/header.php' ?>
 
-    <section class="submit-research profile">
-        <div class="container p-5">
-            <div class="row">
+    <section class="admin-masthead">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div>
+                    <h1>My Submissions</h1>
+                    <p class="masthead-subtitle">Track the status of your research submissions</p>
+                </div>
+                <a href="../submission-forms.php" class="admin-btn"><i class="fas fa-plus me-1"></i> New Submission</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-4">
+        <div class="container px-3">
+
             <?php if(isset($_SESSION['success'])): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>File Submission Success.</strong> Wait for your submission to be approved by the administration.
+                <strong>File submission successful!</strong> Wait for your submission to be approved by the administration.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        <?php unset($_SESSION['success']); endif;?>
+            <?php unset($_SESSION['success']); endif;?>
 
-                <div class="col-lg-12 px-5 col-md-12 col-xs-12 main-column" id="myProfilePanel">
-
-                    <h1 class="my-2">Submissions</h1>
-                    <hr class="my-4">
-                    <div class="submissions">
-                        <div class="pendingApproval my-4" id="pending-container">
-                            <h4 class="fw-bold" style="color: #012265;">Pending approval</h4>
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="submissions admin-panel" style="padding: 1.5rem 1.75rem;">
+                        <div class="pendingApproval mb-3" id="pending-container-wrap">
+                            <h4 class="submissions-section-title"><i class="fas fa-hourglass-half"></i> Pending Approval</h4>
+                            <div id="pending-container"></div>
                         </div>
-                        <div class="forRevision my-3"  id="revision-container">
-                            <h4 class="fw-bold" style="color: #012265;">For revision</h4>
+                        <div class="forRevision mb-3" id="revision-container-wrap">
+                            <h4 class="submissions-section-title"><i class="fas fa-rotate-left"></i> For Revision</h4>
+                            <div id="revision-container"></div>
                         </div>
-                        <div class="revised my-3"  id="revised-container">
-                            <h4 class="fw-bold" style="color: #012265;">Revised</h4>
+                        <div class="revised" id="revised-container-wrap">
+                            <h4 class="submissions-section-title"><i class="fas fa-file-circle-check"></i> Revised</h4>
+                            <div id="revised-container"></div>
                         </div>
                     </div>
-                    <div class="row">
-                        <h1 class="my-1">Published Works</h1>
-                        <div class="published">
-                            <div class="publishedWorks"  id="published-container">
-                                <hr class="mt-3 mb-4">
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
+                <div class="col-12">
+                    <div class="published admin-panel" style="padding: 1.5rem 1.75rem;">
+                        <h4 class="submissions-section-title"><i class="fas fa-book-open"></i> Published Works</h4>
+                        <div class="publishedWorks" id="published-container"></div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </section>
 

@@ -17,6 +17,7 @@ $(document).ready(function () {
     loadData(data);
   });
 });
+
 function loadData(data) {
   data.forEach((result) => {
     if (result["status"] == "pending") {
@@ -41,33 +42,29 @@ function loadData(data) {
       }
     }
   });
-  // code to show message if no results are found
-  // if ($(".submissions > div > div").length == 0) {
-  //   $(".submissions").html(
-  //     "<h5 style='color: grey; text-align:center;' class='my-5'>No results found.</h5>"
-  //   );
-  // }
-  if ($(".pendingApproval  > div").length == 0) {
-    $(".pendingApproval").hide();
-  }
-  if ($(".forRevision  > div").length == 0) {
-    $(".forRevision").hide();
-  }
-  if ($(".revised  > div").length == 0) {
-    $(".revised").hide();
-  }
+
+  var pendingCount = $("#pending-container .submission-card").length;
+  var revisionCount = $("#revision-container .submission-card").length;
+  var revisedCount = $("#revised-container .submission-card").length;
+  var publishedCount = $("#published-container .submission-card").length;
+
+  if (pendingCount === 0) $("#pending-container-wrap").hide();
+  if (revisionCount === 0) $("#revision-container-wrap").hide();
+  if (revisedCount === 0) $("#revised-container-wrap").hide();
+
   if (
-    $(".revised  > div").length == 0 &&
-    $(".forRevision  > div").length == 0 &&
-    $(".pendingApproval  > div").length == 0
+    pendingCount === 0 &&
+    revisionCount === 0 &&
+    revisedCount === 0
   ) {
-    $(".submissions").html(
-      "<h5 style='color: grey; text-align:center;' class='my-5'>No results found.</h5>"
+    $(".submissions").append(
+      '<p class="empty-note mb-1"><i class="far fa-folder-open me-2"></i>No active submissions. Start a new one from the button above.</p>'
     );
   }
-  if ($(".published > div > div").length == 0) {
-    $(".published").html(
-      "<h5 style='color: grey; text-align:center;' class='my-5'>No results found.</h5>"
+
+  if (publishedCount === 0) {
+    $("#published-container").html(
+      '<p class="empty-note mb-1"><i class="far fa-bookmark me-2"></i>Nothing published yet.</p>'
     );
   }
 }

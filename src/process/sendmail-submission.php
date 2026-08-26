@@ -254,7 +254,7 @@ function sendMailSubmit()
             $mail->send();
         }
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        error_log("Mail error: " . $mail->ErrorInfo);
     }
 }
 
@@ -386,7 +386,7 @@ function sendMailPublished() {
             $mail->send();
         }
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        error_log("Mail error: " . $mail->ErrorInfo);
     }
 }
 
@@ -523,6 +523,6 @@ function sendMailReturned() {
             $mail->send();
         }
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        error_log("Mail error: " . $mail->ErrorInfo);
     }
 }

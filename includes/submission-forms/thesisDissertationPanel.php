@@ -26,8 +26,10 @@ if (!isset($_SESSION['isLoggedIn'])) {
     </div>
     <!-- container for alert messages -->
 
-    <h1 class="my-2">Thesis and Dissertation Submission Form</h1>
-    <hr>
+        <?php if (in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))): ?>
+        <h1 class="my-2">Thesis and Dissertation Submission Form</h1>
+        <hr>
+        <?php endif; ?>
     <form name="thesis-form">
         <div class="row mt-4">
             <div class="col-lg-4 col-sm-12">

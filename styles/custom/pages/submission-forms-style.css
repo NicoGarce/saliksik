@@ -6,8 +6,11 @@
 
 .subform-masthead {
   padding: 2.4rem 0 2rem;
-  background: linear-gradient(135deg, var(--navy-900) 0%, #0e408e 60%, var(--navy-500) 100%);
-  color: #ffffff;
+  background:
+    radial-gradient(1000px 340px at 85% -60%, rgba(39, 73, 141, .10), transparent 60%),
+    radial-gradient(800px 300px at 0% 130%, rgba(255, 222, 0, .16), transparent 55%),
+    #ffffff;
+  border-bottom: 1px solid var(--card-border);
 }
 
 .subform-masthead h1 {
@@ -15,13 +18,13 @@
   font-weight: 800;
   letter-spacing: -.02em;
   margin: 0;
-  color: #ffffff;
+  color: var(--navy-900);
 }
 
 .subform-masthead .masthead-subtitle {
   font-size: .85rem;
   font-weight: 500;
-  opacity: .8;
+  color: var(--muted);
   margin-top: .25rem;
 }
 
@@ -148,3 +151,234 @@
     font-size: .8rem;
   }
 }
+
+/* ============================================================
+   View submission pages (users + admin) & My Submissions
+   ============================================================ */
+
+/*-------------View page shell-------------*/
+
+.view-masthead {
+  padding: 2.4rem 0 2rem;
+  background:
+    radial-gradient(1000px 340px at 85% -60%, rgba(39, 73, 141, .10), transparent 60%),
+    radial-gradient(800px 300px at 0% 130%, rgba(255, 222, 0, .16), transparent 55%),
+    #ffffff;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.view-masthead h1 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--navy-900);
+  margin: 0;
+}
+
+.view-masthead .view-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem 1.25rem;
+  margin-top: .5rem;
+  font-size: .84rem;
+  color: var(--muted);
+}
+
+.view-masthead .view-meta i { width: 1.1rem; text-align: center; }
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .38rem 1rem;
+  border-radius: 50px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-pending      { background: #fef9c3; color: #854d0e; }
+.status-for-revision { background: #ffedd5; color: #9a3412; }
+.status-revised      { background: #dbeafe; color: #1e40af; }
+.status-published    { background: #dcfce7; color: #166534; }
+
+/*-------------Panel wrapping legacy form content-------------*/
+
+.view-panel {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+/* Legacy panel content upgrades (scoped) */
+
+.view-panel h1 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  letter-spacing: -.01em;
+  margin-bottom: 1rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--navy-tint);
+}
+
+.view-panel h1 + hr { display: none; }
+
+.view-panel label {
+  font-size: .8rem;
+  font-weight: 700 !important;
+  color: var(--navy-800, #012265);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  padding-top: .35rem !important;
+}
+
+.view-panel label.text-secondary,
+.view-panel label .text-secondary {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500 !important;
+  color: var(--muted) !important;
+  font-size: .82rem;
+}
+
+.view-panel .form-control,
+.view-panel .form-select {
+  border: 1.5px solid var(--input-border);
+  border-radius: 10px;
+  font-size: .88rem;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+.view-panel .form-control:focus,
+.view-panel .form-select:focus {
+  border-color: var(--navy-500);
+  box-shadow: 0 0 0 .2rem rgba(14, 64, 142, .12);
+}
+
+.view-panel .form-control[disabled],
+.view-panel .form-control[readonly],
+.view-panel .form-select[disabled] {
+  background: #f6f8fc;
+  cursor: not-allowed;
+}
+
+.view-panel hr { border-color: var(--card-border); opacity: 1; }
+
+/* Side "Submission Details" column becomes a summary card */
+.view-side-details {
+  background: var(--navy-tint);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.15rem;
+}
+
+.view-side-details h5 {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--navy-900);
+}
+
+.view-side-details hr {
+  margin: .65rem 0;
+  border-top: 1px solid rgba(14, 64, 142, .18);
+}
+
+.view-side-details p { margin-bottom: .15rem; }
+
+.view-side-details .side-menu-text:first-of-type { font-size: .72rem; }
+.view-side-details .side-menu-text {
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--navy-900);
+}
+.view-side-details .side-menu-text[name="author-submitted"],
+.view-side-details .side-menu-text[name="date-submitted"] { margin-bottom: .35rem; }
+
+/*-------------My Submissions cards-------------*/
+
+.submission-card {
+  background: #ffffff;
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 1.15rem 1.3rem;
+  margin: .75rem 0;
+  box-shadow: var(--shadow-sm);
+  transition: transform .18s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+}
+
+.submission-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(39, 73, 141, .45);
+  box-shadow: var(--shadow-md);
+}
+
+.submission-card .card-kicker {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--navy-700);
+  margin-bottom: .3rem;
+}
+
+.submission-card .card-title-link {
+  text-decoration: none;
+  color: var(--navy-900);
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.submission-card .card-title-link:hover { text-decoration: underline; color: var(--navy-500); }
+
+.submission-card .card-date {
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+.submission-card .feedback-box {
+  background: #fff7ed;
+  border-left: 3px solid #f97316;
+  border-radius: 8px;
+  padding: .7rem .9rem;
+  font-size: .85rem;
+  margin-top: .75rem;
+}
+
+.submission-card .feedback-box .feedback-label {
+  font-weight: 700;
+  color: #9a3412;
+  margin-bottom: .15rem;
+  font-size: .74rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.submissions-section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--navy-tint);
+  margin-bottom: .35rem;
+}
+
+.submissions-section-title i { color: var(--navy-500); font-size: .95rem; }
+
+.empty-note {
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 1.5rem 0;
+}
+

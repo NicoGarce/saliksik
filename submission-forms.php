@@ -81,12 +81,21 @@ $pagecssVersion = filemtime('styles/custom/pages/submission-forms-style.css');
 
     <?php include_once 'includes/header.php' ?>
 
+    <?php if (in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))): ?>
     <section class="subform-masthead">
         <div class="container">
             <h1>Submission Forms</h1>
-            <p class="masthead-subtitle">Submit your research work to the UPHSL repository</p>
+            <p class="masthead-subtitle">Submit research work directly to the UPHSL repository</p>
         </div>
     </section>
+    <?php else: ?>
+    <section class="subform-masthead">
+        <div class="container">
+            <h1>Thesis &amp; Dissertation Submission</h1>
+            <p class="masthead-subtitle">Submit your capstone, thesis, or dissertation for review</p>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <!-- Unsaved changes warning modal -->
     <div class="modal fade" id="unsavedModal" tabindex="-1" aria-hidden="true">
