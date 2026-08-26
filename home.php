@@ -86,7 +86,7 @@ $statement->close();
         <div class="container">
             <div class="row justify-content-center mb-4">
                 <div class="col-lg-8">
-                    <form class="search-bar-group" method="GET" action="/repository.php">
+                    <form class="search-bar-group" method="GET" action="./repository.php">
                         <div class="search-bar-icon"><i class="fas fa-search"></i></div>
                         <input type="search" class="search-bar-input" id="home-search-bar" placeholder="Search researches, theses, journals..." aria-label="Search the repository" name="title_query">
                         <button class="search-bar-button" id="button-search">Search</button>
@@ -110,7 +110,7 @@ $statement->close();
                             <h5 class="modal-title"><i class="fas fa-sliders-h me-2"></i>Advanced Search</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form class="modal-body p-0" id="advanced-search" name="advanced-filter" method="GET" action="/repository.php">
+                        <form class="modal-body p-0" id="advanced-search" name="advanced-filter" method="GET" action="./repository.php">
                             <div class="p-3 pb-2">
                                 <div class="row g-3">
                                     <div class="col-sm-6">
@@ -292,7 +292,7 @@ $statement->close();
                                 <span>Track citations and downloads</span>
                             </div>
                         </div>
-                        <a href="./about.php" class="btn promotion-cta mt-3"><i class="fas fa-arrow-right me-2"></i>Learn More</a>
+                        <a href="./about.php" class="btn promotion-cta mt-3">Learn More</a>
                     </div>
                     <div class="col-lg-7">
                         <img src="assets/images/promotion/promotion.jpg" class="promotion-image img-fluid" alt="Promotion">

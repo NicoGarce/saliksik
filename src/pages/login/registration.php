@@ -66,51 +66,70 @@ $pagecssVersion = filemtime('../../../styles/custom/pages/login-style.css');
 
     <!--Main Section-->
     <main class=" main">
-        <div class="container mx-auto my-5 d-flex justify-content-center align-items-center h-auto">
-            <div class="col-lg-6 p-5 bg-light">
-                <div class="row py-2" id="alert-container-register">
-                    <!--  -->
+        <div class="container mx-auto my-5">
+            <div class="row mx-auto">
+                <div class="col-lg-5 mx-auto d-flex justify-content-center align-items-center">
+                    <div class="text-center text-white">
+                        <img src="../../../assets/images/core/saliksik-logo.png" id="saliksik-logo" alt="SALIKSIK: UPHSL Research Repository" class="img-fluid">
+                        <p class="h4 d-none d-lg-block">The Official Institutional Repository of University of Perpetual Help System Laguna</p>
+                    </div>
                 </div>
-                <div class="row py-2">
-                    <h3>Create your account</h3>
-                </div>
-                <div class="row">
-                    <form onsubmit="submitRegister(event)" name="register-form">
+                <div class="col-lg-5 mx-auto p-5 bg-light my-3">
+                    <div class="row py-2" id="alert-container-register">
+                        <!--  -->
+                    </div>
+                    <div class="row py-2">
+                        <h5>Create your account</h5>
+                    </div>
+                    <div class="row">
+                        <form onsubmit="submitRegister(event)" name="register-form">
 
-                        <label>First Name</label>
-                        <input class="form-control" type="text" name="textFieldFirstName" id="textFieldFirstName" autofocus>
-                        <label class="mt-2">Last Name</label>
-                        <input class="form-control" type="text" name="textFieldLastName" id="textFieldLastName">
-                        <label class="py-2">College/Department</label>
-                        <select class="form-select my-1" aria-label="Default select example" name="dropdownDeparment">
-                            <option value="Basic Education" selected>Basic Education</option>
-                            <option value="Senior High School">Senior High School</option>
-                            <option value="Arts and Sciences">Arts and Sciences</option>
-                            <option value="Business and Accountancy">Business and Accountancy</option>
-                            <option value="Computer Studies">Computer Studies</option>
-                            <option value="Criminology">Criminology</option>
-                            <option value="Education">Education</option>
-                            <option value="Engineering, Architecture and Aviation">Engineering, Architecture and Aviation</option>
-                            <option value="Law">Law</option>
-                            <option value="Maritime Education">Maritime Education</option>
-                            <option value="International Hospitality Management">International Hospitality Management</option>
-                            <option value="Graduate School">Graduate School</option>
-                            <option value="Support Services">Support Services</option>
-                        </select>
-                        <label class="py-2">School Email</label>
-                        <input class="form-control" type="text" name="textFieldEmail" id="textFieldEmail">
-                        <label class="mt-2">Password</label>
-                        <input class="form-control" type="password" name="textFieldPassword" id="textFieldPassword">
-                        <label class="my-2">Confirm Password</label>
-                        <input class="form-control" type="password" name="textFieldConfirmPassword" id="textFieldConfirmPassword">
-                        <div class="form-check py-2">
-                            <input class="form-check-input" type="checkbox" id="checkboxShowHidePassword">
-                            <label class="form-check-label" for="checkboxShowHidePassword">Show Password</label>
+                            <div class="form-floating my-2">
+                                <input class="form-control" type="text" name="textFieldFirstName" id="textFieldFirstName" placeholder=" " autofocus>
+                                <label for="textFieldFirstName">First Name</label>
+                            </div>
+                            <div class="form-floating my-2">
+                                <input class="form-control" type="text" name="textFieldLastName" id="textFieldLastName" placeholder=" ">
+                                <label for="textFieldLastName">Last Name</label>
+                            </div>
+                            <div class="form-floating my-2">
+                                <select class="form-select" aria-label="College/Department" name="dropdownDeparment" id="dropdownDeparment">
+                                    <option value="" disabled>Choose department</option>
+                                    <option value="Basic Education" selected>Basic Education</option>
+                                    <option value="Senior High School">Senior High School</option>
+                                    <option value="Arts and Sciences">Arts and Sciences</option>
+                                    <option value="Business and Accountancy">Business and Accountancy</option>
+                                    <option value="Computer Studies">Computer Studies</option>
+                                    <option value="Criminology">Criminology</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Engineering, Architecture and Aviation">Engineering, Architecture and Aviation</option>
+                                    <option value="Law">Law</option>
+                                    <option value="Maritime Education">Maritime Education</option>
+                                    <option value="International Hospitality Management">International Hospitality Management</option>
+                                    <option value="Graduate School">Graduate School</option>
+                                    <option value="Support Services">Support Services</option>
+                                </select>
+                                <label for="dropdownDeparment">College/Department</label>
+                            </div>
+                            <div class="form-floating my-2">
+                                <input class="form-control" type="text" name="textFieldEmail" id="textFieldEmail" placeholder=" ">
+                                <label for="textFieldEmail">School Email</label>
+                            </div>
+                            <div class="form-floating my-2 position-relative">
+                                <input class="form-control" type="password" name="textFieldPassword" id="textFieldPassword" placeholder=" ">
+                                <label for="textFieldPassword">Password</label>
+                                <span class="toggle-password fas fa-eye" data-target="textFieldPassword"></span>
+                            </div>
+                            <div class="form-floating my-2 position-relative">
+                                <input class="form-control" type="password" name="textFieldConfirmPassword" id="textFieldConfirmPassword" placeholder=" ">
+                                <label for="textFieldConfirmPassword">Confirm Password</label>
+                                <span class="toggle-password fas fa-eye" data-target="textFieldConfirmPassword"></span>
+                            </div>
+                            <button class="btn text-white w-100 mt-2 mb-1" type="submit" name="buttonCreateAccount" id="buttonCreateAccount">Create account</button>
+                        </form>
+                        <div class="text-center pt-2">
+                            <p>Have an account? <a href="../../../index.php" class="to-login">Click here to login</a></p>
                         </div>
-                        <button class="btn text-white w-100 mt-4 mb-2" type="submit" name="buttonCreateAccount" id="buttonCreateAccount">Create account</button>
-                    </form>
-                    <div class="text-center pt-4">
-                        <p>Have an account?<br><a href="../../../index.php" class="to-login">Click here to login</a></p>
                     </div>
                 </div>
             </div>
@@ -176,16 +195,10 @@ $pagecssVersion = filemtime('../../../styles/custom/pages/login-style.css');
         }
     </script>
     <script>
-        $(document).ready(function() {
-            $("#checkboxShowHidePassword").change(function() {
-                if ($(this).is(':checked')) {
-                    $("#textFieldPassword").attr("type", "text");
-                    $("#textFieldConfirmPassword").attr("type", "text");
-                } else {
-                    $("#textFieldPassword").attr("type", "password");
-                    $("#textFieldConfirmPassword").attr("type", "password");
-                }
-            });
+        $(document).on('click', '.toggle-password', function() {
+            $(this).toggleClass("fas fa-eye fas fa-eye-slash");
+            var target = $("#" + $(this).data("target"));
+            target.attr('type', target.attr('type') === 'password' ? 'text' : 'password');
         });
     </script>
     <script src="../../../scripts/bootstrap/bootstrap.js"></script>

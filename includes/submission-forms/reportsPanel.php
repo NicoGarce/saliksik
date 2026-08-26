@@ -46,7 +46,12 @@ if (!isset($_SESSION['isLoggedIn'])) {
         </div>
         <div class="row">
             <div class="col-lg-4 col-sm-12 py-2">
-                <input type="text" class="form-control" name="textFieldPublicationYear" required>
+                <select class="form-select" name="textFieldPublicationYear" required>
+                    <option value="" selected disabled>Year of Effectivity</option>
+                    <?php for ($y = (int)date('Y'); $y >= 2000; $y--): ?>
+                        <option value="<?= $y ?>"><?= $y ?></option>
+                    <?php endfor; ?>
+                </select>
             </div>
         </div>
         <div class="row my-2">

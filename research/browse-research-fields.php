@@ -39,9 +39,9 @@ $pagecssVersion = filemtime('../styles/custom/pages/home-style.css');
 
     <?php include_once '../includes/header.php' ?>
 
-    <section class=" masthead p-5 bg-light">
+    <section class="masthead p-5">
         <div class="container">
-            <h1 id="masthead-title-text"> Research Fields</h1>
+            <h1 id="masthead-title-text">Research Fields</h1>
         </div>
     </section>
 

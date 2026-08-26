@@ -4,10 +4,7 @@ if (!isset($_SESSION['isLoggedIn'])) {
     header("location: ../../../error.php");
     die();
 }
-$date_time = date_create($fileInfo['infographic_publication_date']);
-$day = date_format($date_time, "d");
-$month = date_format($date_time, "m");
-$year = date_format($date_time, "Y");
+$publication_date = $fileInfo['infographic_publication_date'];
 ?>
 <div class="row my-3 d-lg-none">
     <h5>Submission Details</h5>
@@ -126,38 +123,8 @@ $year = date_format($date_time, "Y");
                 <div class="col-lg-3 d-sm-block d-lg-none">
                     <label class="py-2 fw-bold">Publication Date<span class="text-danger"> *</span></label>
                 </div>
-                <div class="col-lg-2 col-sm-12 py-2">
-                    <select class="form-select" aria-label="Default select example" name="dropdownPublicationMonth" id="info-month-picker" onchange="changeInputInfo()">
-                        <!-- <option value="" selected>Month</option> -->
-                        <?php
-                        $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-                        foreach ($months as $key => $row) : ?>
-                            <option value="<?= $key + 1 ?>" <?= $month == $key + 1 ? 'selected' : '' ?>><?= $row ?></option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-                <div class="col-lg-2 col-sm-12 py-2">
-                    <select class="form-select" aria-label="Default select example" name="dropdownPublicationDay" id="info-day-picker">
-                        <!-- <option value="" selected>Day</option> -->
-                        <?php for ($i = 1; $i != 32; $i++) {
-                            if ($day == $i) {
-                                echo "<option value ='$i' selected>$i</option>";
-                            } else {
-                                echo "<option value ='$i'>$i</option>";
-                            }
-                        } ?>
-                    </select>
-                </div>
-                <div class="col-lg-2 col-sm-12 py-2">
-                    <select class="form-select" aria-label="Default select example" name="dropdownPublicationYear" id="info-year-picker" onchange="changeInputInfo()" required>
-                        <!-- <option value="" selected>Year</option> -->
-                        <?php for ($i = 2022; $i != 2000; $i--) {
-                            if ($year == $i) {
-                                echo "<option value ='$i' selected>$i</option>";
-                            }
-                            echo "<option value='$i'>$i</option>";
-                        } ?>
-                    </select>
+                <div class="col-lg-4 col-sm-12 py-2">
+                    <input type="date" class="form-control" name="publication_date" value="<?= $publication_date ?>" required>
                 </div>
             </div>
 

@@ -49,6 +49,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
                             <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/profile.php"><i class="far fa-user me-2"></i>Account</a></li>
                             <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/submissions.php"><i class="far fa-file-pdf me-2"></i>Submissions</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/bulk-upload.php"><i class="fas fa-cloud-upload-alt me-2"></i>Bulk Upload</a></li>
                             <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/library.php"><i class="far fa-file-alt me-2"></i>Library</a></li>
                             <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/backup.php"><i class="far fa-file-alt me-2"></i>Backup & Restore</a></li>
                             <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/system-logs.php"><i class="far fa-clipboard me-2"></i>System Logs</a></li>
@@ -146,6 +147,9 @@ document.addEventListener('DOMContentLoaded', function() {
             </li>
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center offcanvas-link-color" href="<?= $base_url ?>/admin/submissions.php"><i class="far fa-file-pdf me-2"></i>Submissions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="<?= $base_url ?>/admin/bulk-upload.php"><i class="fas fa-cloud-upload-alt me-2"></i>Bulk Upload</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center offcanvas-link-color" href="<?= $base_url ?>/users/library.php"><i class="far fa-file-alt me-2"></i>Library</a>

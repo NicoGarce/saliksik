@@ -44,7 +44,7 @@ $pagecssVersion = filemtime('styles/custom/pages/about-style.css');
 <body class="d-flex flex-column min-vh-100">
 
 
-    <section class="masthead p-5 bg-light">
+    <section class="masthead p-5">
         <div class="container">
             <h1 id="masthead-title-text">ISO 25010 Software Evaluation Survey</h1>
         </div>

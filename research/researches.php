@@ -47,7 +47,7 @@ $pagecssVersion = filemtime('../../../styles/custom/pages/home-style.css');
 
     <?php include_once '../../layouts/general/header.php' ?>
 
-    <section class=" masthead p-5 bg-light">
+    <section class="masthead p-5">
         <div class="container">
             <h1 id="masthead-title-text">College/Department Name</h1>
         </div>

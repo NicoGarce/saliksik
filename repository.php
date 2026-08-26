@@ -162,7 +162,7 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
             <div class="row justify-content-center mb-3">
                 <div class="col-lg-8">
                     <h2 id="masthead-title-text" class="text-center mb-3">Search the Repository</h2>
-                    <form class="search-bar-group" method="GET" action="/repository.php">
+                    <form class="search-bar-group" method="GET" action="./repository.php">
                         <div class="search-bar-icon"><i class="fas fa-search"></i></div>
                         <input type="search" class="search-bar-input" id="repository-search-bar" placeholder="Search researches, theses, journals..." aria-label="Search the repository" name="title_query" <?php echo (isset($_GET['title_query'])) ? "value='{$_GET['title_query']}'" : "" ?>>
                         <button type="button" class="search-bar-button" id="repository-search-button">Search</button>
@@ -186,7 +186,7 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
                             <h5 class="modal-title"><i class="fas fa-sliders-h me-2"></i>Advanced Search</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form class="modal-body p-0" id="advanced-search" name="advanced-filter" method="GET" action="/repository.php">
+                        <form class="modal-body p-0" id="advanced-search" name="advanced-filter" method="GET" action="./repository.php">
                             <div class="p-3 pb-2">
                                 <div class="row g-3">
                                     <div class="col-sm-6">
@@ -256,26 +256,12 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
                     <p class="fw-bold"><i class="fas fa-filter"></i> SEARCH FILTERS</p>
                     <hr>
                     <p class="side-menu-text fw-bold">Publication Year</p>
+                    <?php for ($y = (int)date('Y'); $y >= (int)date('Y') - 4; $y--): ?>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="2022" id="checkBox2022" name="publication_year[]">
-                        <label class="form-check-label" for="checkBox2022">2022</label>
+                        <input class="form-check-input" type="checkbox" value="<?= $y ?>" id="checkBox<?= $y ?>" name="publication_year[]">
+                        <label class="form-check-label" for="checkBox<?= $y ?>"><?= $y ?></label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="2021" id="checkBox2021" name="publication_year[]">
-                        <label class="form-check-label" for="checkBox2021">2021</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="2020" id="checkBox2020" name="publication_year[]">
-                        <label class="form-check-label" for="checkBox2020">2020</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="2019" id="checkBox2019" name="publication_year[]">
-                        <label class="form-check-label" for="checkBox2019">2019</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="2018" id="checkBox2018" name="publication_year[]">
-                        <label class="form-check-label" for="checkBox2018">2018</label>
-                    </div>
+                    <?php endfor; ?>
                     <a class="my-3 text-dark" data-bs-toggle="collapse" href="#customRangeCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">Custom Range</a>
                     <div class="collapse" id="customRangeCollapse">
                         <div class="input-group my-3">
@@ -459,26 +445,12 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
                         </div>
                         <form class="offcanvas-body" id="modal-search-filters" name="modal-filters">
                             <p class="side-menu-text fw-bold">Publication Year</p>
+                            <?php for ($y = (int)date('Y'); $y >= (int)date('Y') - 4; $y--): ?>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="2022" id="checkBox2022offcanvas" name="publication_year[]">
-                                <label class="form-check-label" for="checkBox2022offcanvas">2022</label>
+                                <input class="form-check-input" type="checkbox" value="<?= $y ?>" id="checkBox<?= $y ?>offcanvas" name="publication_year[]">
+                                <label class="form-check-label" for="checkBox<?= $y ?>offcanvas"><?= $y ?></label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="2021" id="checkBox2021offcanvas" name="publication_year[]">
-                                <label class="form-check-label" for="checkBox2021offcanvas">2021</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="2020" id="checkBox2020offcanvas" name="publication_year[]">
-                                <label class="form-check-label" for="checkBox2020offcanvas">2020</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="2019" id="checkBox2019offcanvas" name="publication_year[]">
-                                <label class="form-check-label" for="checkBox2019offcanvas">2019</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="2018" id="checkBox2018offcanvas" name="publication_year[]">
-                                <label class="form-check-label" for="checkBox2018offcanvas">2018</label>
-                            </div>
+                            <?php endfor; ?>
                             <a class="my-3 text-dark" data-bs-toggle="collapse" href="#customRangeCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">Custom Range</a>
                             <div class="collapse" id="customRangeCollapse">
                                 <div class="input-group my-3">
@@ -650,8 +622,10 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
                 </div>
 
                 <div class="col-lg-9 mx-auto col-md-12 col-xs-12 main-column">
-                    <h1>Recently Added</h1>
-                    <hr class="my-4">
+                    <div id="recently-added-header">
+                        <h1>Recently Added</h1>
+                        <hr class="my-4">
+                    </div>
                     <div id="repository-results-container">
                     </div>
                 </div>

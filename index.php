@@ -113,7 +113,7 @@ $pagecssVersion = filemtime('styles/custom/pages/login-style.css');
                         ?>
                     </div>
                     <div class="row py-2">
-                        <h3>Sign in to your account</h3>
+                        <h5>Sign in to your account</h5>
                     </div>
                     <div class="row">
 
@@ -135,7 +135,7 @@ $pagecssVersion = filemtime('styles/custom/pages/login-style.css');
                                 <input class="form-check-input" type="checkbox" id="checkboxShowHidePassword">
                                 <label class="form-check-label" for="checkboxShowHidePassword">Show/Hide Password</label>
                             </div> -->
-                            <button class="btn text-white w-100 mt-4 mb-2" type="submit" name="buttonLogin" id="buttonLogin"><i class="fas fa-sign-in-alt me-2"></i>Login</button>
+                            <button class="btn text-white w-100 mt-4 mb-2" type="submit" name="buttonLogin" id="buttonLogin">Login</button>
                         </form>
                         <div class="text-center py-2">
                             <a href="./forgot-password.php" class="forgot-password">Forgot password?</a>

@@ -209,6 +209,18 @@ function getResults() {
     formData.append(pair[0], pair[1]);
   }
 
+  var hasActiveSearch = false;
+  for (var pair of formData.entries()) {
+    if (pair[0] === "title_query" && pair[1] !== "") { hasActiveSearch = true; break; }
+    if (pair[1] === "on" || (pair[0] !== "title_query" && pair[1] !== "")) { hasActiveSearch = true; break; }
+  }
+
+  if (hasActiveSearch) {
+    $("#recently-added-header").hide();
+  } else {
+    $("#recently-added-header").show();
+  }
+
   $.ajax({
     method: "POST",
     data: formData,

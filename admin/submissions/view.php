@@ -134,12 +134,7 @@ $coauthorsDropdown = filemtime('../../scripts/custom/coauthors-dropdown.js');
 </head>
 <!-- onload function for date picker thesis and infographic -->
 
-<body onload="<?php
-                if ($fileInfo['file_type'] == 'thesis') {
-                    echo 'changeInput()';
-                } else if ($fileInfo['file_type'] == 'infographic') {
-                    echo 'changeInputInfo()';
-                } ?>">
+<body>
     <!--Header and Navigation section-->
 
     <?php include_once '../../includes/header.php' ?>
@@ -180,13 +175,6 @@ $coauthorsDropdown = filemtime('../../scripts/custom/coauthors-dropdown.js');
     <?php include_once '../../includes/footer.php' ?>
     <script src="../../scripts/bootstrap/bootstrap.js"></script>
     <script src="<?php echo '../../scripts/custom/feedback-control.js?id=' . $feedbackControlJS ?>"></script>
-    <?php
-    if ($fileInfo['file_type'] == 'thesis') {
-        echo "<script src='../../scripts/custom/thesis-calendar-date-picker.js'></script>";
-    } else if ($fileInfo['file_type'] == 'infographic') {
-        echo "<script src='../../scripts/custom/info-calendar-date-picker.js'></script>";
-    }
-    ?>
 </body>
 
 </html>

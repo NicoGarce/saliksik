@@ -6,8 +6,12 @@
 
 .researchers-masthead {
   padding: 2.8rem 0 2.4rem;
-  background: linear-gradient(135deg, var(--navy-900) 0%, #0e408e 60%, var(--navy-500) 100%);
-  color: #ffffff;
+  background:
+    radial-gradient(1000px 340px at 85% -60%, rgba(39, 73, 141, .10), transparent 60%),
+    radial-gradient(800px 300px at 0% 130%, rgba(255, 222, 0, .16), transparent 55%),
+    #ffffff;
+  border-bottom: 1px solid var(--card-border);
+  color: var(--ink);
 }
 
 .researchers-masthead h1 {
@@ -15,13 +19,13 @@
   font-weight: 800;
   letter-spacing: -.02em;
   margin: 0;
-  color: #ffffff;
+  color: var(--navy-900);
 }
 
 .researchers-masthead .masthead-subtitle {
   font-size: .88rem;
   font-weight: 500;
-  opacity: .8;
+  color: var(--muted);
   margin-top: .35rem;
 }
 

@@ -21,29 +21,17 @@ if (empty($_POST['textFieldInfographicsTitle'] && $_POST['textFieldGraphicsEdito
     exit();
 }
 
-if(isset($_POST['dropdownPublicationMonth'], $_POST['dropdownPublicationDay'], $_POST['dropdownPublicationYear'])){
-    if(!is_numeric($_POST['dropdownPublicationMonth'])){
+if(isset($_POST['publication_date']) && $_POST['publication_date'] !== ''){
+    if(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['publication_date'])){
         $arr = array('response' => "input_error");
         header('Content-Type: application/json');
         echo json_encode($arr);
         exit();
     }
-    if(!is_numeric($_POST['dropdownPublicationDay'])){
-        $arr = array('response' => "input_error");
-        header('Content-Type: application/json');
-        echo json_encode($arr);
-        exit();
-    }
-    if(!is_numeric($_POST['dropdownPublicationYear'])){
-        $arr = array('response' => "input_error");
-        header('Content-Type: application/json');
-        echo json_encode($arr);
-        exit();
-    }
-    $publication_date = date("Y-m-d", mktime(0,0,0,$_POST['dropdownPublicationMonth'], $_POST['dropdownPublicationDay'], $_POST['dropdownPublicationYear']));
+    $publication_date = $_POST['publication_date'];
 }
 
-if (isset($_POST['dropdownPublicationMonth'], $_POST['dropdownPublicationDay'], $_POST['dropdownPublicationYear'], $_POST['textFieldInfographicsTitle'], $_POST['textFieldAuthorFirstName'], $_POST['textFieldAuthorMiddleInitial'], $_POST['textFieldAuthorLastName'], $_POST['textFieldAuthorNameExtension'], $_POST['textFieldEmail'], $_POST['textFieldGraphicsEditorFirstName'], $_POST['textFieldGraphicsEditorMiddleInitial'], $_POST['textFieldGraphicsEditorLastName'], $_POST['textFieldGraphicsEditorNameExtension'], $_POST['textFieldGraphicsEditorEmail'], $_POST['dropdownCoAuthors'], $_POST['textareaDescription'], $_FILES['fileSubmit'])) {
+if (isset($_POST['publication_date'], $_POST['textFieldInfographicsTitle'], $_POST['textFieldAuthorFirstName'], $_POST['textFieldAuthorMiddleInitial'], $_POST['textFieldAuthorLastName'], $_POST['textFieldAuthorNameExtension'], $_POST['textFieldEmail'], $_POST['textFieldGraphicsEditorFirstName'], $_POST['textFieldGraphicsEditorMiddleInitial'], $_POST['textFieldGraphicsEditorLastName'], $_POST['textFieldGraphicsEditorNameExtension'], $_POST['textFieldGraphicsEditorEmail'], $_POST['dropdownCoAuthors'], $_POST['textareaDescription'], $_FILES['fileSubmit'])) {
     $userId = $_SESSION['userid'];
     $userName = $_SESSION['fullName'];
 

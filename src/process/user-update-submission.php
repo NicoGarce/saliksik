@@ -89,23 +89,13 @@ if(isset($_POST['dropdownResearchUnit'])){
         exit();
     }
 }
-if(isset($_POST['dropdownPublicationMonth'], $_POST['dropdownPublicationDay'], $_POST['dropdownPublicationYear'])){
-    if(!is_numeric($_POST['dropdownPublicationMonth'])){
+if(isset($_POST['publication_date']) && $_POST['publication_date'] !== ''){
+    if(!preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST['publication_date'])){
         $_SESSION['input_error'] = true;
         header('location: ../../users/submissions/view.php?id='.$_GET['id']);
         exit();
     }
-    if(!is_numeric($_POST['dropdownPublicationDay'])){
-        $_SESSION['input_error'] = true;
-        header('location: ../../users/submissions/view.php?id='.$_GET['id']);
-        exit();
-    }
-    if(!is_numeric($_POST['dropdownPublicationYear'])){
-        $_SESSION['input_error'] = true;
-        header('location: ../../users/submissions/view.php?id='.$_GET['id']);
-        exit();
-    }
-    $publication_date = date("Y-m-d", mktime(0,0,0,$_POST['dropdownPublicationMonth'], $_POST['dropdownPublicationDay'], $_POST['dropdownPublicationYear']));
+    $publication_date = $_POST['publication_date'];
 }
 
 if(isset($_POST['dropdownCoAuthors'])){

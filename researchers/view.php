@@ -85,7 +85,7 @@ $imageVersion = filemtime("../src/" . $researcher['researcher_image']);
 
     <!--Masthead-->
 
-    <section class=" masthead p-5 bg-light">
+    <section class="masthead p-5">
         <div class="container">
             <h1 id="masthead-title-text">Researcher's Profile</h1>
         </div>

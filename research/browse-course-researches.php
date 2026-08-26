@@ -77,7 +77,7 @@ array_walk_recursive($published, "filter");
 
     <?php include_once '../includes/header.php' ?>
 
-    <section class=" masthead p-5 bg-light">
+    <section class="masthead p-5">
         <div class="container">
             <div class="col d-flex align-items-center">
                 <!-- <img src="../assets/images/research-fields/accountancy-marketing.png" class="research-fields-logos"> -->
