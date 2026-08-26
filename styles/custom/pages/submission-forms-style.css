@@ -274,7 +274,7 @@
 /*-------------View panel buttons-------------*/
 
 .view-panel .btn {
-  border-radius: 50px;
+  border-radius: 50px !important;
   font-weight: 600;
   font-family: 'Inter', 'Roboto', sans-serif;
   padding: .55rem 1.4rem;
@@ -301,6 +301,44 @@
   font-size: .86rem;
   font-weight: 500 !important;
   color: var(--ink);
+}
+
+/*-------------Attached file links-------------*/
+
+.view-panel p.my-3 > a,
+.view-panel label > a {
+  color: var(--navy-700);
+  font-weight: 600;
+  font-size: .9rem;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1.5px dashed rgba(39, 73, 141, .35);
+  transition: color .18s var(--ease), border-color .18s var(--ease);
+}
+
+.view-panel p.my-3 > a::before,
+.view-panel label > a::before {
+  content: '\f1c1';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 400;
+  margin-right: .45rem;
+  color: #dc2626;
+}
+
+.view-panel p.my-3 > a:hover,
+.view-panel label > a:hover {
+  color: var(--navy-500);
+  border-bottom-color: var(--navy-500);
+}
+
+/*-------------Neutralize browser autofill tint-------------*/
+
+.view-panel input:-webkit-autofill,
+.view-panel input:-webkit-autofill:hover,
+.view-panel input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 /* Side "Submission Details" column becomes a summary card */

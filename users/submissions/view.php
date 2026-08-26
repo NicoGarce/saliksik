@@ -151,6 +151,8 @@ $profilecssVersion = filemtime('../../styles/custom/pages/profile-style.css');
             $(".view-panel .row > .col-lg-2").addClass("view-side-details").removeClass("d-none d-md-none d-lg-block");
             /* Remove the duplicate mobile-only details block */
             $(".view-panel .row.d-lg-none").hide();
+            /* Stop browser autofill from highlighting name fields */
+            $(".view-panel form").attr("autocomplete", "off");
         });
     </script>
 
