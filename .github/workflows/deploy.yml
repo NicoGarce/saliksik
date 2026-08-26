@@ -21,12 +21,13 @@ jobs:
           sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
           lftp "$FTP_SERVER" -u "$FTP_USERNAME","$FTP_PASSWORD" << 'EOF'
+          debug 5
           set ssl:verify-certificate no
           set ftp:ssl-allow yes
           set ftp:passive-mode yes
           set net:timeout 30
           set net:reconnect-interval-base 5
-          set net:max-retries 3
+          set net:max-retries 2
           mirror --reverse --verbose --delete \
             --exclude '^\.git/' \
             --exclude '^\.github/' \
