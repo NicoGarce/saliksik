@@ -143,7 +143,7 @@
 
                 if (resp === 'success' || resp === 'success_admin') {
                     var msg = resp === 'success'
-                        ? '<strong>Submission successful!</strong> Wait for your submission to be approved by the administration. You can view the submission status under <strong>My Profile &rarr; My Submissions</strong>.'
+                        ? '<strong>Submission successful!</strong> Wait for your submission to be approved by the administration. Go to <strong>My Submissions</strong> to view it.'
                         : '<strong>Upload successful!</strong> You can now view the submission inside the <strong>Repository</strong>.';
                     finish('success', msg, o.onSuccess);
                     return;
