@@ -25,6 +25,7 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
     <title>Bulk Upload</title>
     <?php include_once '../assets/fonts/google-fonts.php' ?>
     <script src="../scripts/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../scripts/custom/submission-helpers.js?id=<?php echo filemtime('../scripts/custom/submission-helpers.js') ?>"></script>
     <link rel="stylesheet" href="../styles/bootstrap/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="<?php echo '../styles/custom/main-style.css?id=' . $maincssVersion ?>" type="text/css">
     <link rel="stylesheet" href="<?php echo '../styles/custom/pages/profile-style.css?id=' . $profilecssVersion ?>" type="text/css">
@@ -132,6 +133,8 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
                             <div class="admin-panel-title">
                                 <i class="fas fa-file-csv me-2" style="color: #16a34a;"></i>Upload CSV File
                             </div>
+
+                            <div id="csv-alert" style="margin-bottom: .75rem;"></div>
 
                             <div style="background: var(--navy-tint); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: .75rem;">
                                 <i class="fas fa-info-circle" style="color: var(--navy-700); flex-shrink: 0;"></i>
@@ -280,6 +283,8 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
                             <div class="admin-panel-title">
                                 <i class="fas fa-cog fa-spin me-2" style="color: var(--navy-700);"></i>Processing Upload
                             </div>
+
+                            <div id="done-alert" style="margin-bottom: 1rem;"></div>
 
                             <div id="processing-active">
                                 <div class="bulk-progress">

@@ -443,61 +443,20 @@ if (!isset($_SESSION['isLoggedIn'])) {
 
 </div>
 <script type="text/javascript">
-    $("form[name='thesis-form']").on("submit", function(event) {
-        event.preventDefault();
-        $("#thesis-progress-container").prop('hidden', false);
-        $("#fileUploadLabelThesis").prop('hidden', false);
-        var formData = new FormData(this);
-        window.scrollTo(0, 0);
-        $.ajax({
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener('progress', function(e) {
-                    if (e.lengthComputable) {
-                        var percent = Math.round((e.loaded / e.total) * 100)
-                        $('#thesis-progress-bar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
-                    }
-                })
-                return xhr;
-            },
-            method: "POST",
-            url: "src/process/thesis-submission.php",
-            data: formData,
-            contentType: false,
-            processData: false,
-            error: function (xhr, textStatus, errorThrown){
-                $("#thesis-progress-container").prop('hidden', true);
-                $("#fileUploadLabelThesis").prop('hidden', true);
-                $('#thesis-progress-bar').attr('aria-valuenow', 0).css('width', 0 + '%').text(0 + '%');
-            }
-        }).done(function(data) {
-            $("#thesis-progress-container").prop('hidden', true);
-            $("#fileUploadLabelThesis").prop('hidden', true);
-            if (data.response === "type_error") {
-                $("#alert-container").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> Check to make sure the file is in <strong>PDF</strong> format, or that the file to be uploaded is attached.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`)
-            }else if (data.response === "input_error") {
-                $("#alert-container").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert">Form Validation Error. Please try again later.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "invalid_email") {
-                $("#alert-container").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>Invalid Email!</strong> Please check all the email fields and enter a valid email.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "generic_error") {
-                $("#alert-container").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> Check to make sure the file is <strong>less than 10 MB</strong> or that the file to be submitted is attached.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "size_error") {
-                $("#alert-container").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> The file size is too large. The maximum allowed size is 10 MB.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "duplicate_error") {
-                $("#alert-container").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> There is already a file with the same name uploaded to the database.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "success") {
-                $("#alert-container").html(`<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>File upload success!</strong> Wait for your submission to be approved by the administration. You can view the submission status by checking <strong>My Submissions</strong> under <strong>My Profile</strong>.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-                document.forms.namedItem("thesis-form").reset();
-                $("#dropdownResearchUnit").trigger("change");
-                $("#dropdownThesisDissertationCoAuthors").trigger('change');
-            } else if (data.response === "success_admin") {
-                $("#alert-container").html(`<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>File upload success!</strong> You can now view the submission inside the <strong>Repository</strong>.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-                document.forms.namedItem("thesis-form").reset();
-                $("#dropdownResearchUnit").trigger("change");
-                $("#dropdownThesisDissertationCoAuthors").trigger('change');
-            }
-        })
-    })
+    salikSubmit({
+        form: "form[name='thesis-form']",
+        url: "src/process/thesis-submission.php",
+        progressBar: "#thesis-progress-bar",
+        progressWrap: "#thesis-progress-container",
+        statusLabel: "#fileUploadLabelThesis",
+        alertContainer: "#alert-container",
+        submitButton: "#submitResearchDissertationButton",
+        onSuccess: function() {
+            document.forms.namedItem("thesis-form").reset();
+            $("#dropdownResearchUnit").trigger("change");
+            $("#dropdownThesisDissertationCoAuthors").trigger('change');
+        }
+    });
 </script>
 
 <script>

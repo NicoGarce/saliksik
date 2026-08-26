@@ -4,6 +4,7 @@ session_start();
 
 include './sendmail-submission.php';
 include '../../includes/connection.php';
+require_once '../../includes/upload-helpers.php';
 
 require_once '../../includes/feature-settings.php';
 if (!feature_enabled('feature_submissions') || !feature_enabled('feature_submission_thesis')) {
@@ -223,8 +224,17 @@ if (isset($_POST['dropdownResourceType'], $_POST['dropdownResearchersCategory'],
 
                         $connection->commit();
 
-                        move_uploaded_file($fileTempLoc, "../".$fileDestination);
-                        move_uploaded_file($fileQuestionnaireTempLoc, "../".$fileQuestionDestination);
+                        ensure_upload_dir('uploads/theses');
+                        ensure_upload_dir('uploads/theses/questionnaires');
+                        $moved1 = move_uploaded_file($fileTempLoc, "../".$fileDestination);
+                        $moved2 = move_uploaded_file($fileQuestionnaireTempLoc, "../".$fileQuestionDestination);
+
+                        if (!$moved1 || !$moved2) {
+                            $arr = array('response' => "error", 'errorText' => 'Record saved but the file could not be stored on the server. Please contact the administrator or try again.');
+                            header('Content-Type: application/json');
+                            echo json_encode($arr);
+                            exit();
+                        }
 
                         if(in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))) {
                             $arr = array('response' => "success_admin");

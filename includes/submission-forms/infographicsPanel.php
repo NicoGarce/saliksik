@@ -245,48 +245,17 @@ if (!isset($_SESSION['isLoggedIn'])) {
     </form>
 </div>
 <script type="text/javascript">
-    $("form[name='infographic-form']").on("submit", function(event) {
-        event.preventDefault();
-        $("#infographic-progress-container").prop('hidden', false);
-        $("#fileUploadLabelInfographic").prop('hidden', false);
-        var formData = new FormData(this);
-        window.scrollTo(0, 0);
-        $.ajax({
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener('progress', function(e) {
-                    if (e.lengthComputable) {
-                        var percent = Math.round((e.loaded / e.total) * 100)
-                        $('#infographic-progress-bar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
-                    }
-                })
-                return xhr;
-            },
-            method: "POST",
-            url: "src/process/infographic-submission.php",
-            data: formData,
-            contentType: false,
-            processData: false,
-        }).done(function(data) {
-            var percent = 0; //reset to default
-            $('#infographic-progress-bar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
-            $("#infographic-progress-container").prop('hidden', true);
-            $("#fileUploadLabelInfographic").prop('hidden', true);
-            if (data.response === "type_error") {
-                $("#alert-container-infographic").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> Check to make sure the file is in <strong>PDF</strong> format, or that the file to be uploaded is attached.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`)
-            } else if (data.response === "input_error") {
-                $("#alert-container").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert">Form Validation Error. Please try again later.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "generic_error") {
-                $("#alert-container-infographic").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> Check to make sure the file is <strong>less than 10 MB</strong> or that the file to be submitted is attached.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "size_error") {
-                $("#alert-container-infographic").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> The file size is too large. The maximum allowed size is 10 MB.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response == "duplicate_error") {
-                $("#alert-container-infographic").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> There is already a file with the same name uploaded to the database.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "success") {
-                $("#alert-container-infographic").html(`<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>File upload success!</strong> Wait for your submission to be approved by the administration. You can view the submission status by checking <strong>My Submissions</strong> under <strong>My Profile</strong>.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-                document.forms.namedItem("infographic-form").reset();
-                $("#dropdownInfographicsCoAuthors").trigger('change');
-            }
-        })
-    })
+    salikSubmit({
+        form: "form[name='infographic-form']",
+        url: "src/process/infographic-submission.php",
+        progressBar: "#infographic-progress-bar",
+        progressWrap: "#infographic-progress-container",
+        statusLabel: "#fileUploadLabelInfographic",
+        alertContainer: "#alert-container-infographic",
+        submitButton: "#submitInfographicsButton",
+        onSuccess: function() {
+            document.forms.namedItem("infographic-form").reset();
+            $("#dropdownInfographicsCoAuthors").trigger('change');
+        }
+    });
 </script>

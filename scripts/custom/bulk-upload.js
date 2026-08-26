@@ -86,9 +86,10 @@ $(function () {
 
     function handleCSVFile(file) {
         if (!file.name.toLowerCase().endsWith('.csv')) {
-            alert('Please select a CSV file.');
+            salikAlert('#csv-alert', 'danger', '<strong>Invalid file type!</strong> Please select a CSV file.');
             return;
         }
+        salikAlert('#csv-alert', null, '');
         state.csvFileName = file.name;
         $('#csv-file-name').text(file.name);
         $('#csv-file-size').text(formatSize(file.size));
@@ -108,7 +109,7 @@ $(function () {
     function parseCSV(text) {
         var lines = text.split(/\r?\n/).filter(function (l) { return l.trim() !== ''; });
         if (lines.length < 2) {
-            alert('CSV must have a header row and at least one data row.');
+            salikAlert('#csv-alert', 'danger', '<strong>Invalid CSV!</strong> The file must have a header row and at least one data row.');
             return;
         }
 
@@ -141,8 +142,12 @@ $(function () {
         var errCount = rows.filter(function (r) { return r.errors.length > 0; }).length;
         if (errCount > 0) {
             $('#csv-error-count').show().find('span').text(errCount);
+            salikAlert('#csv-alert', 'warning',
+                '<strong>CSV loaded with warnings.</strong> ' + rows.length + ' rows found, but <strong>' + errCount +
+                '</strong> row' + (errCount === 1 ? '' : 's') + ' missing required data (filename and/or title). Fix them or those rows will be skipped.');
         } else {
             $('#csv-error-count').hide();
+            salikAlert('#csv-alert', 'success', '<strong>CSV loaded successfully!</strong> ' + rows.length + ' row' + (rows.length === 1 ? '' : 's') + ' ready to process.');
         }
 
         $('#csv-preview-container').show();
@@ -371,6 +376,7 @@ $(function () {
         goToStep(5);
         $('#processing-active').show();
         $('#processing-done').hide();
+        salikAlert('#done-alert', null, '');
         $('#process-results').empty();
         $('#process-progress-bar').css('width', '0%');
         $('#process-progress-text').text('Preparing upload...');
@@ -430,17 +436,35 @@ $(function () {
                 contentType: false,
                 dataType: 'json',
                 success: function (res) {
-                    if (res.response === 'success') {
+                    if (res && res.response === 'success') {
                         successCount++;
-                        addResultRow(processed + 1, 'success', res.title || 'Uploaded successfully');
+                        addResultRow(processed + 1, 'success', (res.title || 'Uploaded successfully') + ' — saved as pending review');
+                    } else if (res && res.response === 'duplicate_error') {
+                        errorCount++;
+                        addResultRow(processed + 1, 'error', 'Duplicate: a file with the same name already exists in the repository');
+                    } else if (res && res.response === 'size_error') {
+                        errorCount++;
+                        addResultRow(processed + 1, 'error', 'File too large (max 10 MB)');
+                    } else if (res && res.response === 'type_error') {
+                        errorCount++;
+                        addResultRow(processed + 1, 'error', 'Invalid file type — only PDF files are allowed');
+                    } else if (res && res.response === 'feature_disabled') {
+                        errorCount++;
+                        addResultRow(processed + 1, 'error', 'Submissions are currently disabled by the administrator');
+                    } else if (res && res.response === 'error') {
+                        errorCount++;
+                        addResultRow(processed + 1, 'error', 'Database error' + (res.errorText ? ': ' + res.errorText : ''));
                     } else {
                         errorCount++;
-                        addResultRow(processed + 1, 'error', res.errorText || res.response || 'Unknown error');
+                        addResultRow(processed + 1, 'error', (res && (res.errorText || res.message)) || 'Upload rejected by server');
                     }
                 },
-                error: function () {
+                error: function (xhr, textStatus, errorThrown) {
                     errorCount++;
-                    addResultRow(processed + 1, 'error', 'Request failed');
+                    var detail = xhr.status === 0
+                        ? 'Connection lost'
+                        : (textStatus === 'timeout' ? 'Request timed out' : 'Server error (' + xhr.status + ')');
+                    addResultRow(processed + 1, 'error', detail + ' — file was not uploaded');
                 },
                 complete: function () {
                     processed++;
@@ -479,11 +503,39 @@ $(function () {
         state.processing = false;
         $('#processing-active').hide();
         $('#processing-done').show();
+        var total = state.csvData.rows.length;
         var parts = [];
         if (success > 0) parts.push('<strong>' + success + '</strong> uploaded');
         if (errors > 0) parts.push('<strong>' + errors + '</strong> failed');
         if (skipped > 0) parts.push('<strong>' + skipped + '</strong> skipped');
-        $('#done-summary-text').html(parts.join(' &middot; ') + ' out of ' + state.csvData.rows.length + ' total rows.');
+        $('#done-summary-text').html(parts.join(' &middot; ') + ' out of ' + total + ' total rows.');
+
+        /* Dynamic completion banner + icon tone based on outcome */
+        var $iconBox = $('#processing-done > div').first();
+        var $icon = $iconBox.find('i');
+        var $title = $('#processing-done h5');
+
+        if (errors === 0 && success > 0) {
+            salikAlert('#done-alert', 'success', '<strong>Bulk upload complete!</strong> All ' + success + ' item' + (success === 1 ? '' : 's') + ' were uploaded and are pending review.');
+            $iconBox.css('background', '#dcfce7');
+            $icon.attr('class', 'fas fa-check').css('color', '#16a34a');
+            $title.text('Upload Complete');
+        } else if (success === 0) {
+            salikAlert('#done-alert', 'danger',
+                '<strong>Upload failed!</strong> No items were uploaded.' +
+                (errors > 0 ? ' ' + errors + ' item' + (errors === 1 ? '' : 's') + ' could not be processed — see the error list above.' : '') +
+                (skipped > 0 ? ' ' + skipped + ' row' + (skipped === 1 ? ' was' : 's were') + ' skipped because no PDF was assigned.' : '') +
+                ' Fix the issues and try again.');
+            $iconBox.css('background', '#fef2f2');
+            $icon.attr('class', 'fas fa-times').css('color', '#dc2626');
+            $title.text('Upload Failed');
+        } else {
+            salikAlert('#done-alert', 'warning',
+                '<strong>Bulk upload finished with errors.</strong> ' + success + ' of ' + total + ' items uploaded. Review the failures above, then start over with a corrected CSV.');
+            $iconBox.css('background', '#fef9c3');
+            $icon.attr('class', 'fas fa-exclamation-triangle').css('color', '#ca8a04');
+            $title.text('Completed with Errors');
+        }
     }
 
     $('#btn-start-over').on('click', function () {

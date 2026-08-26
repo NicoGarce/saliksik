@@ -3,10 +3,12 @@
 session_start();
 
 include '../../includes/connection.php';
+require_once '../../includes/upload-helpers.php';
 
 require_once '../../includes/feature-settings.php';
 if (!feature_enabled('feature_submissions') || !feature_enabled('feature_submission_report')) {
-    header("location: ../../submission-forms.php");
+    header('Content-Type: application/json');
+    echo json_encode(array('response' => 'feature_disabled'));
     exit();
 }
 
@@ -77,11 +79,19 @@ if(isset($_POST['dropdownResourceTypeReports'],$_POST['textFieldReportsTitle'],$
                     $statement->execute();
                     $statement->close();
 
-                    move_uploaded_file($fileCoverTempLoc, "../".$fileCoverDestination);
-                    move_uploaded_file($fileTempLoc, "../".$fileDestination);
+                    ensure_upload_dir('uploads/reports');
+                    $moved1 = move_uploaded_file($fileCoverTempLoc, "../".$fileCoverDestination);
+                    $moved2 = move_uploaded_file($fileTempLoc, "../".$fileDestination);
 
                     $connection->commit();
-    
+
+                    if (!$moved1 || !$moved2) {
+                        $arr = array('response'=>"error", 'errorText'=>'Record saved but the file could not be stored on the server. Please try again or contact the administrator.');
+                        header('Content-Type: application/json');
+                        echo json_encode($arr);
+                        exit();
+                    }
+
                     $arr = array('response'=>"success");
                     header('Content-Type: application/json');
                     echo json_encode($arr);

@@ -151,46 +151,16 @@ if (!isset($_SESSION['isLoggedIn'])) {
     </form>
 </div>
 <script type="text/javascript">
-    $("form[name='journal-form']").on("submit", function(event) {
-        event.preventDefault();
-        $("#journal-progress-container").prop('hidden', false);
-        $("#fileUploadLabelJournal").prop('hidden', false);
-        var formData = new FormData(this);
-        window.scrollTo(0, 0);
-        $.ajax({
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener('progress', function(e) {
-                    if (e.lengthComputable) {
-                        var percent = Math.round((e.loaded / e.total) * 100)
-                        $('#journal-progress-bar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
-                    }
-                })
-                return xhr;
-            },
-            method: "POST",
-            url: "src/process/journal-submission.php",
-            data: formData,
-            contentType: false,
-            processData: false,
-        }).done(function(data) {
-
-            $("#journal-progress-container").prop('hidden', true);
-            $("#fileUploadLabelJournal").prop('hidden', true);
-            if (data.response === "type_error") {
-                $("#alert-container-journal").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> Check to make sure the file is in <strong>PDF</strong> format, or that the file to be uploaded is attached.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`)
-            } else if (data.response === "input_error") {
-                $("#alert-container").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert">Form Validation Error. Please try again later.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "generic_error") {
-                $("#alert-container-journal").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> Check to make sure the file is <strong>less than 10 MB</strong> or that the file to be submitted is attached.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "size_error") {
-                $("#alert-container-journal").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> The file size is too large. The maximum allowed size is 10 MB.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response == "duplicate_error") {
-                $("#alert-container-journal").html(`<div class="alert alert-danger alert-dismissible fade show" role="alert" id = "file-type-alert"><strong>File upload failed!</strong> There is already a file with the same name uploaded to the database.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-            } else if (data.response === "success") {
-                $("#alert-container-journal").html(`<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>File upload success!</strong> Wait for your submission to be approved by the administration. You can view the submission status by checking <strong>My Submissions</strong> under <strong>My Profile</strong>.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`);
-                document.forms.namedItem("journal-form").reset();
-            }
-        })
-    })
+    salikSubmit({
+        form: "form[name='journal-form']",
+        url: "src/process/journal-submission.php",
+        progressBar: "#journal-progress-bar",
+        progressWrap: "#journal-progress-container",
+        statusLabel: "#fileUploadLabelJournal",
+        alertContainer: "#alert-container-journal",
+        submitButton: "#submitJournalButton",
+        onSuccess: function() {
+            document.forms.namedItem("journal-form").reset();
+        }
+    });
 </script>

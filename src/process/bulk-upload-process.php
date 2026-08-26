@@ -3,6 +3,7 @@ session_start();
 
 include '../../includes/connection.php';
 require_once '../../includes/feature-settings.php';
+require_once '../../includes/upload-helpers.php';
 
 header('Content-Type: application/json');
 
@@ -109,7 +110,7 @@ try {
         $stmt->close();
 
         $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_dir, file_uploader, status, coauthor_group_id, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?,?)');
-        $stmt->bind_param('issssssssi', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $coauthorGroupId, $submitted, $publishedOn);
+        $stmt->bind_param('isssssiss', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $coauthorGroupId, $submitted, $publishedOn);
         $stmt->execute();
         $fileId = $stmt->insert_id;
         $stmt->close();
@@ -122,24 +123,37 @@ try {
         $researchFields = $row['research_fields'] ?? '';
         $researchFields = str_replace(';', ',', $researchFields);
 
+        $resourceType = $row['resource_type'] ?? 'Thesis';
+        $researchersCategory = $row['researchers_category'] ?? 'Undergraduate';
+        $researchUnit = $row['research_unit'] ?? '';
+        $researchCourse = $row['research_course'] ?? '';
+        $researchAbstract = $row['research_abstract'] ?? '';
+        $keywords = $row['keywords'] ?? '';
+        $coauthorsCount = $row['coauthors_count'] ?? 0;
+        $authorFirstName = $row['author_first_name'] ?? '';
+        $authorMiddleInitial = $row['author_middle_initial'] ?? '';
+        $authorSurname = $row['author_surname'] ?? '';
+        $authorNameExt = $row['author_name_ext'] ?? '';
+        $authorEmail = $row['author_email'] ?? '';
+
         $stmt = $connection->prepare("INSERT INTO research_information(file_ref_id, resource_type, researchers_category, research_unit, research_course, research_title, research_abstract, research_fields, keywords, publication_date, coauthors_count, author_first_name, author_middle_initial, author_surname, author_name_ext, author_email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param('isssssssssisssss',
             $fileId,
-            $row['resource_type'] ?? 'Thesis',
-            $row['researchers_category'] ?? 'Undergraduate',
-            $row['research_unit'] ?? '',
-            $row['research_course'] ?? '',
+            $resourceType,
+            $researchersCategory,
+            $researchUnit,
+            $researchCourse,
             $title,
-            $row['research_abstract'] ?? '',
+            $researchAbstract,
             $researchFields,
-            $row['keywords'] ?? '',
+            $keywords,
             $pubDate,
-            $row['coauthors_count'] ?? 0,
-            $row['author_first_name'] ?? '',
-            $row['author_middle_initial'] ?? '',
-            $row['author_surname'] ?? '',
-            $row['author_name_ext'] ?? '',
-            $row['author_email'] ?? ''
+            $coauthorsCount,
+            $authorFirstName,
+            $authorMiddleInitial,
+            $authorSurname,
+            $authorNameExt,
+            $authorEmail
         );
         $stmt->execute();
         $stmt->close();
@@ -148,26 +162,38 @@ try {
         $title = $row['journal_title'] ?? '';
 
         $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_dir, file_uploader, status, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?)');
-        $stmt->bind_param('issssssi', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $submitted, $publishedOn);
+        $stmt->bind_param('isssssss', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $submitted, $publishedOn);
         $stmt->execute();
         $fileId = $stmt->insert_id;
         $stmt->close();
+
+        $journalSubtitle = $row['journal_subtitle'] ?? '';
+        $journalDepartment = $row['department'] ?? '';
+        $volumeNumber = $row['volume_number'] ?? '';
+        $serialIssueNumber = $row['serial_issue_number'] ?? '';
+        $issn = $row['ISSN'] ?? '';
+        $journalDescription = $row['journal_description'] ?? '';
+        $chiefFirst = $row['chief_editor_first_name'] ?? '';
+        $chiefMiddle = $row['chief_editor_middle_initial'] ?? '';
+        $chiefLast = $row['chief_editor_last_name'] ?? '';
+        $chiefExt = $row['chief_editor_name_ext'] ?? '';
+        $chiefEmail = $row['chief_editor_email'] ?? '';
 
         $stmt = $connection->prepare("INSERT INTO journal_information(file_ref_id, journal_title, journal_subtitle, department, volume_number, serial_issue_number, ISSN, journal_description, chief_editor_first_name, chief_editor_middle_initial, chief_editor_last_name, chief_editor_name_ext, chief_editor_email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param('isssssssssssss',
             $fileId,
             $title,
-            $row['journal_subtitle'] ?? '',
-            $row['department'] ?? '',
-            $row['volume_number'] ?? '',
-            $row['serial_issue_number'] ?? '',
-            $row['ISSN'] ?? '',
-            $row['journal_description'] ?? '',
-            $row['chief_editor_first_name'] ?? '',
-            $row['chief_editor_middle_initial'] ?? '',
-            $row['chief_editor_last_name'] ?? '',
-            $row['chief_editor_name_ext'] ?? '',
-            $row['chief_editor_email'] ?? ''
+            $journalSubtitle,
+            $journalDepartment,
+            $volumeNumber,
+            $serialIssueNumber,
+            $issn,
+            $journalDescription,
+            $chiefFirst,
+            $chiefMiddle,
+            $chiefLast,
+            $chiefExt,
+            $chiefEmail
         );
         $stmt->execute();
         $stmt->close();
@@ -191,7 +217,7 @@ try {
         $stmt->close();
 
         $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_dir, file_uploader, status, coauthor_group_id, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?,?)');
-        $stmt->bind_param('issssssssi', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $coauthorGroupId, $submitted, $publishedOn);
+        $stmt->bind_param('isssssiss', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $coauthorGroupId, $submitted, $publishedOn);
         $stmt->execute();
         $fileId = $stmt->insert_id;
         $stmt->close();
@@ -201,23 +227,36 @@ try {
             $pubDate = date('Y-m-d');
         }
 
+        $infographicDescription = $row['infographic_description'] ?? '';
+        $authorFirstName = $row['author_first_name'] ?? '';
+        $authorMiddleInitial = $row['author_middle_initial'] ?? '';
+        $authorSurname = $row['author_surname'] ?? '';
+        $authorExt = $row['author_ext'] ?? '';
+        $authorEmail = $row['author_email'] ?? '';
+        $editorFirst = $row['editor_first_name'] ?? '';
+        $editorMiddle = $row['editor_middle_initial'] ?? '';
+        $editorLast = $row['editor_surname'] ?? '';
+        $editorExt = $row['editor_ext'] ?? '';
+        $editorEmail = $row['editor_email'] ?? '';
+        $coauthorsCount = $row['coauthors_count'] ?? 0;
+
         $stmt = $connection->prepare("INSERT INTO infographic_information(file_ref_id, infographic_title, infographic_publication_date, infographic_description, author_first_name, author_middle_initial, author_surname, author_ext, author_email, editor_first_name, editor_middle_initial, editor_surname, editor_ext, editor_email, coauthors_count) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $stmt->bind_param('isssssssssssssi',
             $fileId,
             $title,
             $pubDate,
-            $row['infographic_description'] ?? '',
-            $row['author_first_name'] ?? '',
-            $row['author_middle_initial'] ?? '',
-            $row['author_surname'] ?? '',
-            $row['author_ext'] ?? '',
-            $row['author_email'] ?? '',
-            $row['editor_first_name'] ?? '',
-            $row['editor_middle_initial'] ?? '',
-            $row['editor_surname'] ?? '',
-            $row['editor_ext'] ?? '',
-            $row['editor_email'] ?? '',
-            $row['coauthors_count'] ?? 0
+            $infographicDescription,
+            $authorFirstName,
+            $authorMiddleInitial,
+            $authorSurname,
+            $authorExt,
+            $authorEmail,
+            $editorFirst,
+            $editorMiddle,
+            $editorLast,
+            $editorExt,
+            $editorEmail,
+            $coauthorsCount
         );
         $stmt->execute();
         $stmt->close();
@@ -226,21 +265,23 @@ try {
         $title = $row['report_title'] ?? '';
 
         $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_dir, file_uploader, status, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?)');
-        $stmt->bind_param('issssssi', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $submitted, $publishedOn);
+        $stmt->bind_param('isssssss', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $submitted, $publishedOn);
         $stmt->execute();
         $fileId = $stmt->insert_id;
         $stmt->close();
 
         $reportYear = $row['report_year'] ?? date('Y');
         if (!is_numeric($reportYear)) $reportYear = date('Y');
+        $reportType = $row['report_type'] ?? 'Annual Report';
+        $reportDescription = $row['report_description'] ?? '';
 
         $stmt = $connection->prepare("INSERT INTO reports_information(file_ref_id, report_type, report_title, report_year, report_description) VALUES (?,?,?,?,?)");
         $stmt->bind_param('issss',
             $fileId,
-            $row['report_type'] ?? 'Annual Report',
+            $reportType,
             $title,
             $reportYear,
-            $row['report_description'] ?? ''
+            $reportDescription
         );
         $stmt->execute();
         $stmt->close();
@@ -248,8 +289,12 @@ try {
 
     $connection->commit();
 
-    $moveDest = realpath(__DIR__ . '/../..') . '/' . $fileDestination;
-    move_uploaded_file($pdfTmp, $moveDest);
+    ensure_upload_dir(dirname($fileDestination));
+    $moveDest = realpath(__DIR__ . '/..') . '/' . $fileDestination;
+    if (!move_uploaded_file($pdfTmp, $moveDest)) {
+        echo json_encode(array('response' => 'error', 'errorText' => 'Record saved but the PDF could not be stored on the server'));
+        exit();
+    }
 
     echo json_encode(array('response' => 'success', 'title' => $title));
 
