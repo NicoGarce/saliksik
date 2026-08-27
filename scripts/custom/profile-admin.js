@@ -1,23 +1,35 @@
 import {
   pendingThesisTemplate,
+  pendingJournalTemplate,
+  pendingInfographicTemplate,
+  pendingReportTemplate,
   revisionThesisTemplate,
+  revisionJournalTemplate,
+  revisionInfographicTemplate,
+  revisionReportTemplate,
   revisedThesisTemplate,
+  revisedJournalTemplate,
+  revisedInfographicTemplate,
+  revisedReportTemplate,
   publishedThesisTemplate,
   publishedInfographicTemplate,
   publishedJournalTemplate,
   publishedReportTemplate,
-} from "./templates.js?v=4";
+} from "./templates.js?v=5";
 $(document).ready(function () {
-  submitData();
+  submitData(1);
 });
 $("#submission-status-dropdown").on("change", function () {
-  submitData();
+  submitData(1);
 });
 $("#submission-category-dropdown").on("change", function () {
-  submitData();
+  submitData(1);
 });
 $("#admin-search-button").on("click", function () {
-  submitData();
+  submitData(1);
+});
+$("#search-submissions-admin").on("keypress", function (e) {
+  if (e.which === 13) { submitData(1); }
 });
 // =========================== counters ==============================
 $("#pending-container").on("click", function () {
@@ -37,11 +49,18 @@ $("#submissions-container").on("click", function () {
 });
 // =========================== counters ==============================
 
-function submitData() {
+$(document).on("click", ".submissions-page-btn[data-page]", function () {
+  var page = $(this).data("page");
+  if (page && page !== "current") submitData(page);
+});
+
+function submitData(page) {
   var formData = new FormData();
   formData.append("title_query", $("#search-submissions-admin").val());
   formData.append("status_view", $("#submission-status-dropdown").val());
   formData.append("sort_by", $("#submission-category-dropdown").val());
+  formData.append("page", page);
+  formData.append("per_page", 10);
   $.ajax({
     method: "POST",
     url: "../src/process/get-submissions.php",
@@ -51,6 +70,7 @@ function submitData() {
   }).done(function (data) {
     updateCounters(data["result_count"]);
     loadData(data["result"]);
+    renderPagination(data["pagination"]);
   });
 }
 
@@ -68,14 +88,32 @@ function loadData(data) {
     if (result["status"] == "pending") {
       if (result["file_type"] == "thesis") {
         rows += pendingThesisTemplate(result);
+      } else if (result["file_type"] == "journal") {
+        rows += pendingJournalTemplate(result);
+      } else if (result["file_type"] == "infographic") {
+        rows += pendingInfographicTemplate(result);
+      } else if (result["file_type"] == "report") {
+        rows += pendingReportTemplate(result);
       }
     } else if (result["status"] == "for revision") {
       if (result["file_type"] == "thesis") {
         rows += revisionThesisTemplate(result);
+      } else if (result["file_type"] == "journal") {
+        rows += revisionJournalTemplate(result);
+      } else if (result["file_type"] == "infographic") {
+        rows += revisionInfographicTemplate(result);
+      } else if (result["file_type"] == "report") {
+        rows += revisionReportTemplate(result);
       }
     } else if (result["status"] == "revised") {
       if (result["file_type"] == "thesis") {
         rows += revisedThesisTemplate(result);
+      } else if (result["file_type"] == "journal") {
+        rows += revisedJournalTemplate(result);
+      } else if (result["file_type"] == "infographic") {
+        rows += revisedInfographicTemplate(result);
+      } else if (result["file_type"] == "report") {
+        rows += revisedReportTemplate(result);
       }
     } else if (result["status"] == "published") {
       if (result["file_type"] == "thesis") {
@@ -104,6 +142,39 @@ function loadData(data) {
 
   $("#results-count").text(data.length + (data.length === 1 ? " item" : " items"));
 }
+
+function renderPagination(pag) {
+  var $el = $("#submissions-pagination");
+  if (!pag || pag.total_pages <= 1) { $el.empty(); return; }
+
+  var html = '<div class="submissions-pagination">';
+  html += '<span class="submissions-page-info">Page ' + pag.page + ' of ' + pag.total_pages + ' (' + pag.total_rows + ' total)</span>';
+  html += '<div class="submissions-pagination-nav">';
+  html += '<button class="submissions-page-btn" data-page="' + Math.max(1, pag.page - 1) + '"' + (pag.page <= 1 ? ' disabled' : '') + '>&laquo;</button>';
+
+  var start = Math.max(1, pag.page - 2);
+  var end = Math.min(pag.total_pages, pag.page + 2);
+
+  if (start > 1) html += '<button class="submissions-page-btn" data-page="1">1</button>';
+  if (start > 2) html += '<span class="submissions-page-btn" style="border:none;cursor:default;">...</span>';
+
+  for (var i = start; i <= end; i++) {
+    if (i === pag.page) {
+      html += '<button class="submissions-page-btn active" data-page="current">' + i + '</button>';
+    } else {
+      html += '<button class="submissions-page-btn" data-page="' + i + '">' + i + '</button>';
+    }
+  }
+
+  if (end < pag.total_pages - 1) html += '<span class="submissions-page-btn" style="border:none;cursor:default;">...</span>';
+  if (end < pag.total_pages) html += '<button class="submissions-page-btn" data-page="' + pag.total_pages + '">' + pag.total_pages + '</button>';
+
+  html += '<button class="submissions-page-btn" data-page="' + Math.min(pag.total_pages, pag.page + 1) + '"' + (pag.page >= pag.total_pages ? ' disabled' : '') + '>&raquo;</button>';
+  html += '</div></div>';
+
+  $el.html(html);
+}
+
 function updateCounters(data) {
   var total_submissions = 0;
   data.forEach((element) => {

@@ -215,12 +215,6 @@ function getResults() {
     if (pair[1] === "on" || (pair[0] !== "title_query" && pair[1] !== "")) { hasActiveSearch = true; break; }
   }
 
-  if (hasActiveSearch) {
-    $("#recently-added-header").hide();
-  } else {
-    $("#recently-added-header").show();
-  }
-
   $.ajax({
     method: "POST",
     data: formData,
@@ -228,6 +222,11 @@ function getResults() {
     contentType: false,
     processData: false,
   }).done(function (data) {
+    if (hasActiveSearch) {
+      $("#recently-added-header").hide();
+    } else {
+      $("#recently-added-header").show();
+    }
     $("#repository-results-container").html(data);
   });
 }

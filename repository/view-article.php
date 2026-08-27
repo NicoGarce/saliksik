@@ -120,7 +120,7 @@ $pagecssVersion = filemtime('../styles/custom/pages/repository-style.css');
     else if ($fileInfo['file_type'] == 'report') {
         echo $fileInfo['report_title'];
     }
-    ?></title>
+    ?> | SALIKSIK</title>
     <?php include_once '../assets/fonts/google-fonts.php' ?>
     
     <script src="../scripts/jquery/jquery-3.6.0.min.js"></script>
@@ -162,29 +162,20 @@ $pagecssVersion = filemtime('../styles/custom/pages/repository-style.css');
     <?php include_once '../includes/footer.php' ?>
     <script src="../scripts/bootstrap/bootstrap.js"></script>
     <script type ="text/javascript">
-$(".main-column").on("click", ".add-bookmark", function () {
+$(".view-article-sidebar-bookmark").on("click", function () {
   var id = $(this).data("id");
   var container = $(this);
+  var isSaved = container.find("i").hasClass("fas");
+  var url = isSaved ? "../src/process/delete-bookmark.php?id=" + id : "../src/process/add-bookmark.php?id=" + id;
   $.ajax({
     method: "GET",
-    url: "../src/process/add-bookmark.php?id=" + id,
+    url: url,
   }).done(function (data) {
-    container.html("<i class='fas fa-bookmark me-2'></i> Remove from Bookmarks");
-    container.removeClass("add-bookmark");
-    container.addClass("del-bookmark");
-  });
-});
-
-$(".main-column").on("click", ".del-bookmark", function () {
-  var id = $(this).data("id");
-  var container = $(this);
-  $.ajax({
-    method: "GET",
-    url: "../src/process/delete-bookmark.php?id=" + id,
-  }).done(function (data) {
-    container.html("<i class='far fa-bookmark me-2'></i> Add to Bookmarks");
-    container.removeClass("del-bookmark");
-    container.addClass("add-bookmark");
+    if (isSaved) {
+      container.html("<i class='far fa-bookmark'></i> Bookmark");
+    } else {
+      container.html("<i class='fas fa-bookmark'></i> Saved");
+    }
   });
 });
     </script>

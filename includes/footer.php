@@ -93,6 +93,20 @@ if (fabContainer) {
     fabContainer.addEventListener('mouseenter', function() {
         clearTimeout(fabTimer);
     });
+
+    var footerBanner = document.querySelector('.footer-banner');
+    if (footerBanner) {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    fabContainer.classList.add('fab-on-footer');
+                } else {
+                    fabContainer.classList.remove('fab-on-footer');
+                }
+            });
+        }, { threshold: 0 });
+        observer.observe(footerBanner);
+    }
 }
 </script>
 <?php endif; ?>

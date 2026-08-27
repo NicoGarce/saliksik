@@ -9,7 +9,6 @@ if (!isset($_SESSION['isLoggedIn'])) {
     die();
 }
 
-// function to escape all results in an array
 function filter(&$value)
 {
     $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
@@ -20,7 +19,7 @@ if (isset($_POST['page'])) {
 } else {
     $page = 1;
 }
-$results_per_page = 5;
+$results_per_page = 15;
 $offset = ($page - 1) * $results_per_page;
 
 if (mysqli_connect_errno()) {
@@ -275,154 +274,111 @@ if ($page > $total_pages && $total_pages != 0) {
     echo '<h5 style="color: grey;"><br>No Results on this page. Please go back.</h5>';
 }
 
+function compact_truncate($text, $len) {
+    $text = strip_tags($text);
+    if (strlen($text) <= $len) return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    $cut = substr($text, 0, $len);
+    $end = strrpos($cut, ' ');
+    $cut = $end ? substr($cut, 0, $end) : $cut;
+    return htmlspecialchars($cut, ENT_QUOTES, 'UTF-8') . '...';
+}
+
 foreach ($published as $key => $result) :
     array_walk_recursive($result, "filter");
     if ($result['file_type'] === 'thesis') {
         $date_time = date_create($result['publication_date']);
         $date_time = date_format($date_time, "F Y");
-        if (strlen($result['research_abstract']) > 500) {
-            // truncate string
-            $stringCut = substr($result['research_abstract'], 0, 500);
-            $endPoint = strrpos($result['research_abstract'], ' ');
-
-            //if the string doesn't contain any space then it will cut without word basis.
-            $result['research_abstract'] = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-            $result['research_abstract'] .= "... <a href='". base_url() . "/repository/view-article.php?id={$result['file_id']}' class='read-more'>Read More</a>";
-        }
-        echo "<div class='repositoryItem p-2'>
-        <p class='fw-bold text-start' style='color: #012265;'>{$result['research_type']} </p>
-        <a href='repository/view-article.php?id={$result['file_id']}' class='article-title'>
-            <h4 class='fw-bold mb-3'>{$result['research_title']}</h4>
-        </a>
-        <p class='fw-bold'>{$result['researcher_first_name']} {$result['researcher_middle_initial']} {$result['researcher_surname']}";
+        $abstract = compact_truncate($result['research_abstract'], 200);
+        $viewUrl = base_url() . '/repository/view-article.php?id=' . $result['file_id'];
+        $authors = htmlspecialchars($result['researcher_first_name'] . ' ' . $result['researcher_surname'], ENT_QUOTES, 'UTF-8');
         for ($i = 1; $i <= $result['research_coauthors_count']; $i++) {
-            echo ", {$result["coauthor{$i}_first_name"]} {$result["coauthor{$i}_middle_initial"]} {$result["coauthor{$i}_surname"]}";
+            $authors .= ', ' . htmlspecialchars($result["coauthor{$i}_first_name"] . ' ' . $result["coauthor{$i}_surname"], ENT_QUOTES, 'UTF-8');
         }
-        echo "</p>
-        <p class='fw-bold'>{$date_time}</p>
-        <p>{$result['research_abstract']}</p>";
+        echo "<div class='repo-card'>
+            <div class='repo-card-type'>Thesis</div>
+            <a href='{$viewUrl}' class='article-title'><h6 class='repo-card-title'>{$result['research_title']}</h6></a>
+            <p class='repo-card-meta'>{$authors}</p>
+            <p class='repo-card-meta'>{$date_time}</p>
+            <p class='repo-card-excerpt'>{$abstract}</p>
+            <div class='repo-card-actions'>";
         if (in_array($result['file_id'], array_column($bookmarks, 'ref_id'))) {
-            echo "<p class='del-bookmark' data-id={$result['file_id']}><i class='fas fa-bookmark me-2'></i> Remove from Bookmarks</p>";;
+            echo "<span class='del-bookmark repo-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark'></i></span>";
         } else {
-            echo "<p class='add-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark me-2'></i> Add to Bookmarks</p>";
+            echo "<span class='add-bookmark repo-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark'></i></span>";
         }
-        echo "<hr class='my-4'>
-    </div>";
+        echo "<a href='{$viewUrl}' class='repo-card-link'>View</a>
+            </div>
+        </div>";
     } else if ($result['file_type'] === 'journal') {
-        if (strlen($result['journal_description']) > 500) {
-            // truncate string
-            $stringCut = substr($result['journal_description'], 0, 500);
-            $endPoint = strrpos($result['journal_description'], ' ');
-
-            //if the string doesn't contain any space then it will cut without word basis.
-            $result['journal_description'] = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-            $result['journal_description'] .= "... <a href='". base_url() . "/repository/view-article.php?id={$result['file_id']}' class='read-more'>Read More</a>";
-        }
-
-        echo "<div class='repositoryItem p-2'>
-        <div class='row'>
-            <div class='text-start'>
-                <p class='fw-bold' style='color: #012265;'>Journal </p>
-            </div>
-            <div class='col-sm-12 col-lg-2 d-sm-block d-lg-none text-center mb-3 mt-1'>
-            <img src='src/{$result['file_dir2']}' width='150'>
-            </div>
-            <div class='col-sm-12 col-lg-10'>
-                <div class='col'>
-                    <a href='repository/view-article.php?id={$result['file_id']}' class='article-title'>
-                        <h4 class='fw-bold mb-3'>{$result['journal_title']}</h4>
-                    </a>
-                    <h5 class='mb-3'>{$result['journal_subtitle']}</h5>
-                    <p class='fw-bold'>Volume {$result['volume_number']} Series of {$result['serial_issue_number']}</p>
-                    <p>{$result['journal_description']}</p>";
+        $abstract = compact_truncate($result['journal_description'], 200);
+        $viewUrl = base_url() . '/repository/view-article.php?id=' . $result['file_id'];
+        echo "<div class='repo-card'>
+            <div class='repo-card-row'>
+                <div class='repo-card-body'>
+                    <div class='repo-card-type'>Journal</div>
+                    <a href='{$viewUrl}' class='article-title'><h6 class='repo-card-title'>{$result['journal_title']}</h6></a>
+                    <p class='repo-card-meta'>{$result['journal_subtitle']}</p>
+                    <p class='repo-card-meta'>Vol {$result['volume_number']} &middot; Series {$result['serial_issue_number']}</p>
+                    <p class='repo-card-excerpt'>{$abstract}</p>
+                    <div class='repo-card-actions'>";
         if (in_array($result['file_id'], array_column($bookmarks, 'ref_id'))) {
-            echo "<p class='del-bookmark' data-id={$result['file_id']}><i class='fas fa-bookmark me-2'></i> Remove from Bookmarks</p>";;
+            echo "<span class='del-bookmark repo-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark'></i></span>";
         } else {
-            echo "<p class='add-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark me-2'></i> Add to Bookmarks</p>";
+            echo "<span class='add-bookmark repo-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark'></i></span>";
         }
-        echo "</div>
-            </div>
-            <div class='col-sm-12 col-lg-2 d-none d-sm-none d-lg-block'>
-                <img src='src/{$result['file_dir2']}' width='150'>
-            </div>
-        </div>
-        <hr class='my-4'>
-    </div>";
+        echo "<a href='{$viewUrl}' class='repo-card-link'>View</a>
+                    </div>
+                </div>";
+        if (!empty($result['file_dir2'])) {
+            echo "<div class='repo-card-thumb d-none d-md-block'>
+                    <img src='src/{$result['file_dir2']}' alt='Cover'>
+                </div>";
+        }
+        echo "</div></div>";
     } else if ($result['file_type'] === 'infographic') {
         $date_time = date_create($result['infographic_publication_date']);
         $date_time = date_format($date_time, "F Y");
-
-        if (strlen($result['infographic_description']) > 500) {
-            // truncate string
-            $stringCut = substr($result['infographic_description'], 0, 500);
-            $endPoint = strrpos($result['infographic_description'], ' ');
-
-            //if the string doesn't contain any space then it will cut without word basis.
-            $result['infographic_description'] = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-            $result['infographic_description'] .= "... <a href='". base_url() . "/repository/view-article.php?id={$result['file_id']}' class='read-more'>Read More</a>";
-        }
-        echo "<div class='repositoryItem p-2'>
-        <div class='row'>
-            <div class='text-start'>
-                <p class='fw-bold' style='color: #012265;'>Infographic </p>
-            </div>
-            <div class='col-sm-12 col-lg-2 d-sm-block d-lg-none text-center mb-3 mt-1'>
-            </div>
-            <div class='col-sm-12 col-lg-10'>
-                <div class='col'>
-                    <a href='repository/view-article.php?id={$result['file_id']}' class='article-title'>
-                        <h4 class='fw-bold mb-3'>{$result['infographic_title']}</h4>
-                    </a>
-                    <p class='fw-bold'>{$date_time}</p>
-                    <p>{$result['infographic_description']}</p>";
+        $abstract = compact_truncate($result['infographic_description'], 200);
+        $viewUrl = base_url() . '/repository/view-article.php?id=' . $result['file_id'];
+        echo "<div class='repo-card'>
+            <div class='repo-card-type'>Infographic</div>
+            <a href='{$viewUrl}' class='article-title'><h6 class='repo-card-title'>{$result['infographic_title']}</h6></a>
+            <p class='repo-card-meta'>{$date_time}</p>
+            <p class='repo-card-excerpt'>{$abstract}</p>
+            <div class='repo-card-actions'>";
         if (in_array($result['file_id'], array_column($bookmarks, 'ref_id'))) {
-            echo "<p class='del-bookmark' data-id={$result['file_id']}><i class='fas fa-bookmark me-2'></i> Remove from Bookmarks</p>";;
+            echo "<span class='del-bookmark repo-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark'></i></span>";
         } else {
-            echo "<p class='add-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark me-2'></i> Add to Bookmarks</p>";
+            echo "<span class='add-bookmark repo-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark'></i></span>";
         }
-        echo "</div>
+        echo "<a href='{$viewUrl}' class='repo-card-link'>View</a>
             </div>
-        </div>
-        <hr class='my-4'>
-    </div>";
+        </div>";
     } else if ($result['file_type'] === 'report') {
-        if (strlen($result['report_description']) > 500) {
-            // truncate string
-            $stringCut = substr($result['report_description'], 0, 500);
-            $endPoint = strrpos($result['report_description'], ' ');
-
-            //if the string doesn't contain any space then it will cut without word basis.
-            $result['report_description'] = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-            $result['report_description'] .= "... <a href='". base_url() . "/repository/view-article.php?id={$result['file_id']}' class='read-more'>Read More</a>";
-        }
-        echo "<div class='repositoryItem p-2'>
-        <div class='row'>
-            <div class='text-start'>
-                <p class='fw-bold' style='color: #012265;'>{$result['report_type']}</p>
-            </div>
-            <div class='col-sm-12 col-lg-2 d-sm-block d-lg-none text-center mb-3 mt-1'>
-            <img src='src/{$result['file_dir2']}' width='150'>
-            </div>
-            <div class='col-sm-12 col-lg-10'>
-                <div class='col'>
-                    <a href='repository/view-article.php?id={$result['file_id']}' class='article-title'>
-                        <h4 class='fw-bold mb-3'>{$result['report_title']}</h4>
-                    </a>
-                    <p class='fw-bold'>{$result['report_year']}</p>
-                    <p>{$result['report_description']}</p>";
+        $abstract = compact_truncate($result['report_description'], 200);
+        $viewUrl = base_url() . '/repository/view-article.php?id=' . $result['file_id'];
+        echo "<div class='repo-card'>
+            <div class='repo-card-row'>
+                <div class='repo-card-body'>
+                    <div class='repo-card-type'>{$result['report_type']}</div>
+                    <a href='{$viewUrl}' class='article-title'><h6 class='repo-card-title'>{$result['report_title']}</h6></a>
+                    <p class='repo-card-meta'>{$result['report_year']}</p>
+                    <p class='repo-card-excerpt'>{$abstract}</p>
+                    <div class='repo-card-actions'>";
         if (in_array($result['file_id'], array_column($bookmarks, 'ref_id'))) {
-            echo "<p class='del-bookmark' data-id={$result['file_id']}><i class='fas fa-bookmark me-2'></i> Remove from Bookmarks</p>";;
+            echo "<span class='del-bookmark repo-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark'></i></span>";
         } else {
-            echo "<p class='add-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark me-2'></i> Add to Bookmarks</p>";
+            echo "<span class='add-bookmark repo-bookmark' data-id={$result['file_id']}><i class='far fa-bookmark'></i></span>";
         }
-        echo "</div>
-            </div>
-            <div class='col-sm-12 col-lg-2 d-none d-sm-none d-lg-block'>
-                <img src='src/{$result['file_dir2']}' width='150'>
-            </div>
-        </div>
-        <hr class='my-4'>
-    </div>";
+        echo "<a href='{$viewUrl}' class='repo-card-link'>View</a>
+                    </div>
+                </div>";
+        if (!empty($result['file_dir2'])) {
+            echo "<div class='repo-card-thumb d-none d-md-block'>
+                    <img src='src/{$result['file_dir2']}' alt='Cover'>
+                </div>";
+        }
+        echo "</div></div>";
     }
 
 endforeach;

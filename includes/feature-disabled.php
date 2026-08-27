@@ -9,7 +9,7 @@ $maincssVersion = filemtime(__DIR__ . '/../styles/custom/main-style.css');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feature Unavailable</title>
+    <title>Feature Unavailable | SALIKSIK</title>
     <?php include_once __DIR__ . '/../assets/fonts/google-fonts.php' ?>
     <link rel="stylesheet" href="../styles/bootstrap/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="<?php echo '../styles/custom/main-style.css?id=' . $maincssVersion ?>" type="text/css">

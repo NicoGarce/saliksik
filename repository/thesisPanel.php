@@ -9,164 +9,174 @@ $date_time = date_create($fileInfo['publication_date']);
 $date_time = date_format($date_time, "F Y");
 ?>
 
-<section class='submit-research' style="font-family: 'Roboto';">
-    <div class='container p-5'>
-        <div class="row my-3">
-            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item prev-dir-breadcrumb"><a href="../repository.php" style="color: #012265; text-decoration:none">Repository</a></li>
-                    <li class="breadcrumb-item active active-dir-breadcrumb" aria-current="page">View Article</li>
+<section class="view-article-section">
+    <div class="container py-4">
+        <div class="row mb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="../repository.php" class="text-decoration-none" style="color: var(--navy-700);">Repository</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">View Article</li>
                 </ol>
             </nav>
         </div>
-        <div class='row'>
 
-            <div class='col-lg-2 col-md-12 col-sm-12'>
-                <h5 class='fw-bold'>Article Metrics</h5>
-                <hr>
-                <h3><?php echo $article_visits['hits'] ?></h3>
-                <p>Views</p>
-                <hr class="mb-5">
-                <!-- <h3>24</h3>
-                    <p>Downloads</p>
-                    <hr> -->
-            </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="view-article-card">
+                    <div class="view-article-accent-bar"></div>
 
-            <div class='col-lg-9 col-md-12 col-xs-12 mx-auto main-column'>
-                <h2>
-                    <?php echo htmlspecialchars($fileInfo['research_title']) ?>
-                    <?php if (in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))) {
-                        echo "<a target='_blank' class='edit-submission-icon' href='../admin/submissions/view.php?id=" . $_GET['id'] . "'><i class='fas fa-edit h6'></i></a>";
-                    } ?>
-                </h2>
-                <hr class='my-4'>
-                <p class='fw-bold'>
-                    <?php
-                    echo htmlspecialchars($fileInfo['author_first_name'] . " " . $fileInfo['author_surname']);
-                    for ($i = 1; $i <= $fileInfo['coauthors_count']; $i++) {
-                        echo htmlspecialchars(", {$fileInfo["coauthor{$i}_first_name"]} {$fileInfo["coauthor{$i}_surname"]}");
-                    }
-                    ?>
-                <p><?php echo $date_time ?> </p>
-                <?php if (in_array($fileInfo['file_id'], array_column($bookmarks, 'ref_id'))) {
-                    echo "<p class='del-bookmark' data-id={$fileInfo['file_id']}><i class='fas fa-bookmark me-2'></i> Remove from Bookmarks</p>";;
-                } else {
-                    echo "<p class='add-bookmark' data-id={$fileInfo['file_id']}><i class='far fa-bookmark me-2'></i> Add to Bookmarks</p>";
-                }
-                ?>
-                <h3 class='mt-5'>Abstract</h3>
-                <p><?php echo htmlspecialchars($fileInfo['research_abstract']) ?></p>
-                <p class='fw-bold'>Keywords: </p>
-                <p class='fst-italic'><?php echo htmlspecialchars($fileInfo['keywords']) ?></p>
-
-                <div class='row my-4'>
-
-                    <?php
-
-                    if (in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))) { // files always shown for admin
-                        echo '<p class="fw-bold mb-3">Attached Files</p>';
-                        echo '<div class="col">';
-
-
-                        $fileExt = substr(strrchr($fileInfo['file_dir'], '.'), 1);
-
-                        if ($fileExt == 'pdf') {
-
-                            echo '<a href="../src/' . $fileInfo['file_dir'] . '" target="_blank"><button class=\'btn button-file m-1 rounded-0\'><i class=\'far fa-file-pdf me-2\' style="color: red;"></i>Manuscript</button></a>';
-                        } else if ($fileExt == 'docx') {
-                            echo '<a href="../src/' . $fileInfo['file_dir'] . '" target="_blank"><button class=\'btn button-file m-1 rounded-0\'><i class=\'far fa-file-word me-2\' style="color: blue;"></i>Manuscript</button></a>';
-                        }
-
-                        $fileExt2 = substr(strrchr($fileInfo['file_dir2'], '.'), 1);
-
-                        if ($fileExt2 == 'pdf') {
-                            echo '<a href="../src/' . $fileInfo['file_dir2'] . '" target="_blank"><button class=\'btn button-file m-1 rounded-0\'><i class=\'far fa-file-pdf me-2\' style="color: red;"></i>Survey Questionnaire</button></a>';
-                        } else if ($fileExt2 == 'docx') {
-                            echo '<a href="../src/' . $fileInfo['file_dir2'] . '" target="_blank"><button class=\'btn button-file m-1 rounded-0\'><i class=\'far fa-file-word me-2\' style="color: blue;"></i>Survey Questionnaire</button></a>';
-                        }
-                        echo '</div>';
-                    } else if ($_SESSION['userType'] == 'user') {
-
-                        if ($fileInfo['file1_shown'] || $fileInfo['file2_shown']) :
-                            echo "<p class='fw-bold mb-3'>Attached Files</p>";
-                        endif;
-
-                        if (!$fileInfo['file1_shown'] && !$fileInfo['file2_shown']) :
-                            echo "<div class='border border-1 bg-light'>
-                                        <p class='my-3'><i class='fas fa-lock mx-1' style='color: #012265;'></i> To access the <strong>full manuscript</strong> and/or <strong>survey questionnaire</strong>, you may send a request through <a href='mailto:research@uphsl.edu.ph'>research@uphsl.edu.ph</a></p>
-                                    </div>";
-                        endif;
-
-                        echo '<div class="col">';
-
-                        if ($fileInfo['file1_shown']) :
-
-                            $fileExt = substr(strrchr($fileInfo['file_dir'], '.'), 1);
-
-                            if ($fileExt == 'pdf') {
-                                echo '<a href="../src/' . $fileInfo['file_dir'] . '" target="_blank"><button class=\'btn button-file m-1 rounded-0\'><i class=\'far fa-file-pdf me-2\' style="color: red;"></i>Manuscript</button></a>';
-                            } else if ($fileExt == 'docx') {
-                                echo '<a href="../src/' . $fileInfo['file_dir'] . '" target="_blank"><button class=\'btn button-file m-1 rounded-0\'><i class=\'far fa-file-word me-2\' style="color: blue;"></i>Manuscript</button></a>';
-                            }
-                        endif;
-
-                        if ($fileInfo['file2_shown']) :
-
-                            $fileExt2 = substr(strrchr($fileInfo['file_dir2'], '.'), 1);
-
-                            if ($fileExt2 == 'pdf') {
-                                echo '<a href="../src/' . $fileInfo['file_dir2'] . '" target="_blank"><button class=\'btn button-file m-1 rounded-0\'><i class=\'far fa-file-pdf me-2\' style="color: red;"></i>Survey Questionnaire</button></a>';
-                            } else if ($fileExt2 == 'docx') {
-                                echo '<a href="../src/' . $fileInfo['file_dir2'] . '" target="_blank"><button class=\'btn button-file m-1 rounded-0\'><i class=\'far fa-file-word me-2\' style="color: blue;"></i>Survey Questionnaire</button></a>';
-                            }
-                        endif;
-
-                        echo '</div>';
-                    }
-
-                    ?>
-
-
-                </div>
-
-                <div class='row my-3'>
-                    <div class='col-lg-3 border-top border-2'>
-                        <h6 class='fw-bold my-3'>Resource Type</h6>
-                    </div>
-                    <div class='col-lg-9 border-top border-2'>
-                        <p class='my-3'><?php echo htmlspecialchars($fileInfo['resource_type']) ?></p>
-                    </div>
-                    <div class='col-lg-3 border-top border-2'>
-                        <h6 class='fw-bold my-3'>Researcher's Category</h6>
-                    </div>
-                    <div class='col-lg-9 border-top border-2'>
-                        <p class='my-3'><?php echo htmlspecialchars($fileInfo['researchers_category']) ?></p>
-                    </div>
-                    <div class='col-lg-3 border-top border-2'>
-                        <h6 class='fw-bold my-3'>Research Unit</h6>
-                    </div>
-                    <div class='col-lg-9 border-top border-2'>
-                        <p class='my-3'><?php echo htmlspecialchars($fileInfo['research_unit']) ?></p>
-                    </div>
-                    <?php if (!empty($fileInfo['research_course'])) : ?>
-                        <div class='col-lg-3 border-top border-2'>
-                            <h6 class='fw-bold my-3'>Research Course</h6>
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div>
+                            <span class="view-article-type-badge">Thesis</span>
+                            <span class="view-article-title"><?php echo htmlspecialchars($fileInfo['research_title']); ?></span>
                         </div>
-                        <div class='col-lg-9 border-top border-2'>
-                            <p class='my-3'><?php echo htmlspecialchars($fileInfo['research_course']) ?></p>
-                        </div>
+                        <?php if (in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))) { ?>
+                            <a target="_blank" class="view-article-edit-link" href="../admin/submissions/view.php?id=<?php echo $_GET['id']; ?>" title="Edit submission">Edit</a>
+                        <?php } ?>
+                    </div>
+
+                    <div class="view-article-authors mt-2">
+                        <?php
+                        echo htmlspecialchars($fileInfo['author_first_name'] . " " . $fileInfo['author_surname']);
+                        for ($i = 1; $i <= $fileInfo['coauthors_count']; $i++) {
+                            echo ", " . htmlspecialchars($fileInfo["coauthor{$i}_first_name"] . " " . $fileInfo["coauthor{$i}_surname"]);
+                        }
+                        ?>
+                    </div>
+                    <div class="view-article-date mt-1"><?php echo $date_time; ?></div>
+
+                    <div class="view-article-section-label">Abstract</div>
+                    <p class="view-article-text"><?php echo htmlspecialchars($fileInfo['research_abstract']); ?></p>
+
+                    <?php if (!empty($fileInfo['keywords'])) : ?>
+                        <p class="view-article-keywords">Keywords: <?php echo htmlspecialchars($fileInfo['keywords']); ?></p>
                     <?php endif; ?>
-                    <div class='col-lg-3 border-top border-2'>
-                        <h6 class='fw-bold my-3'>Research Field</h6>
-                    </div>
-                    <div class='col-lg-9 border-top border-2'>
-                        <p class='my-3'><?php echo htmlspecialchars($fileInfo['research_fields']) ?></p>
+
+                    <?php
+                    if (in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))) {
+                        if (!empty($fileInfo['file_dir'])):
+                    ?>
+                        <div class="view-article-section-label">Attached Files</div>
+                        <div class="view-article-files">
+                            <?php
+                            $fileExt = strtolower(pathinfo($fileInfo['file_dir'], PATHINFO_EXTENSION));
+                            $icon = ($fileExt === 'pdf') ? 'fa-file-pdf' : 'fa-file-word';
+                            $iconColor = ($fileExt === 'pdf') ? 'color:#dc3545' : 'color:#0d6efd';
+                            ?>
+                            <a href="../src/<?php echo $fileInfo['file_dir']; ?>" target="_blank" class="view-article-file-btn">
+                                <i class="fas <?php echo $icon; ?>" style="<?php echo $iconColor; ?>"></i>Manuscript
+                            </a>
+                            <?php if (!empty($fileInfo['file_dir2'])):
+                                $fileExt2 = strtolower(pathinfo($fileInfo['file_dir2'], PATHINFO_EXTENSION));
+                                $icon2 = ($fileExt2 === 'pdf') ? 'fa-file-pdf' : 'fa-file-word';
+                                $iconColor2 = ($fileExt2 === 'pdf') ? 'color:#dc3545' : 'color:#0d6efd';
+                            ?>
+                                <a href="../src/<?php echo $fileInfo['file_dir2']; ?>" target="_blank" class="view-article-file-btn">
+                                    <i class="fas <?php echo $icon2; ?>" style="<?php echo $iconColor2; ?>"></i>Survey Questionnaire
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    <?php
+                        endif;
+                    } else {
+                        if ($fileInfo['file1_shown'] || $fileInfo['file2_shown']):
+                    ?>
+                        <div class="view-article-section-label">Attached Files</div>
+                        <div class="view-article-files">
+                            <?php if ($fileInfo['file1_shown'] && !empty($fileInfo['file_dir'])):
+                                $fileExt = strtolower(pathinfo($fileInfo['file_dir'], PATHINFO_EXTENSION));
+                                $icon = ($fileExt === 'pdf') ? 'fa-file-pdf' : 'fa-file-word';
+                                $iconColor = ($fileExt === 'pdf') ? 'color:#dc3545' : 'color:#0d6efd';
+                            ?>
+                                <a href="../src/<?php echo $fileInfo['file_dir']; ?>" target="_blank" class="view-article-file-btn">
+                                    <i class="fas <?php echo $icon; ?>" style="<?php echo $iconColor; ?>"></i>Manuscript
+                                </a>
+                            <?php endif; ?>
+                            <?php if ($fileInfo['file2_shown'] && !empty($fileInfo['file_dir2'])):
+                                $fileExt2 = strtolower(pathinfo($fileInfo['file_dir2'], PATHINFO_EXTENSION));
+                                $icon2 = ($fileExt2 === 'pdf') ? 'fa-file-pdf' : 'fa-file-word';
+                                $iconColor2 = ($fileExt2 === 'pdf') ? 'color:#dc3545' : 'color:#0d6efd';
+                            ?>
+                                <a href="../src/<?php echo $fileInfo['file_dir2']; ?>" target="_blank" class="view-article-file-btn">
+                                    <i class="fas <?php echo $icon2; ?>" style="<?php echo $iconColor2; ?>"></i>Survey Questionnaire
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    <?php
+                        else:
+                    ?>
+                        <div class="view-article-section-label">Attached Files</div>
+                        <p class="view-article-text" style="font-size:.82rem; color: var(--muted);">
+                            To access the full manuscript and/or survey questionnaire, you may send a request through
+                            <a href="mailto:research@uphsl.edu.ph" style="color: var(--navy-700); font-weight:600;">research@uphsl.edu.ph</a>
+                        </p>
+                    <?php
+                        endif;
+                    }
+                    ?>
+
+                    <div class="view-article-metadata">
+                        <div class="view-article-meta-row">
+                            <span class="view-article-meta-label">Resource Type</span>
+                            <span class="view-article-meta-value"><?php echo htmlspecialchars($fileInfo['resource_type']); ?></span>
+                        </div>
+                        <div class="view-article-meta-row">
+                            <span class="view-article-meta-label">Category</span>
+                            <span class="view-article-meta-value"><?php echo htmlspecialchars($fileInfo['researchers_category']); ?></span>
+                        </div>
+                        <div class="view-article-meta-row">
+                            <span class="view-article-meta-label">Research Unit</span>
+                            <span class="view-article-meta-value"><?php echo htmlspecialchars($fileInfo['research_unit']); ?></span>
+                        </div>
+                        <?php if (!empty($fileInfo['research_course'])) : ?>
+                            <div class="view-article-meta-row">
+                                <span class="view-article-meta-label">Course</span>
+                                <span class="view-article-meta-value"><?php echo htmlspecialchars($fileInfo['research_course']); ?></span>
+                            </div>
+                        <?php endif; ?>
+                        <div class="view-article-meta-row">
+                            <span class="view-article-meta-label">Research Field</span>
+                            <span class="view-article-meta-value"><?php echo htmlspecialchars($fileInfo['research_fields']); ?></span>
+                        </div>
                     </div>
                 </div>
-
             </div>
 
-        </div>
+            <div class="col-lg-3">
+                <div class="view-article-sidebar">
+                    <div class="view-article-sidebar-views">
+                        <span class="view-article-sidebar-views-count"><?php echo $article_visits['hits']; ?></span>
+                        <span class="view-article-sidebar-views-label"><?php echo $article_visits['hits'] == 1 ? 'view' : 'views'; ?></span>
+                    </div>
 
+                    <div class="view-article-sidebar-divider"></div>
+
+                    <div class="view-article-sidebar-bookmark" data-id="<?php echo $fileInfo['file_id']; ?>">
+                        <?php if (in_array($fileInfo['file_id'], array_column($bookmarks, 'ref_id'))) { ?>
+                            <i class="fas fa-bookmark"></i> Saved
+                        <?php } else { ?>
+                            <i class="far fa-bookmark"></i> Bookmark
+                        <?php } ?>
+                    </div>
+
+                    <div class="view-article-sidebar-divider"></div>
+
+                    <div class="view-article-sidebar-details">
+                        <div class="view-article-sidebar-detail">
+                            <span class="view-article-sidebar-detail-label">Date</span>
+                            <span class="view-article-sidebar-detail-value"><?php echo $date_time; ?></span>
+                        </div>
+                        <div class="view-article-sidebar-detail">
+                            <span class="view-article-sidebar-detail-label">Category</span>
+                            <span class="view-article-sidebar-detail-value"><?php echo htmlspecialchars($fileInfo['researchers_category']); ?></span>
+                        </div>
+                        <div class="view-article-sidebar-detail">
+                            <span class="view-article-sidebar-detail-label">Field</span>
+                            <span class="view-article-sidebar-detail-value"><?php echo htmlspecialchars($fileInfo['research_fields']); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

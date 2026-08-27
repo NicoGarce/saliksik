@@ -21,7 +21,7 @@ $pagecssVersion = filemtime('../styles/custom/pages/profile-style.css');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Library</title>
+    <title>My Library | SALIKSIK</title>
     <?php include_once '../assets/fonts/google-fonts.php' ?>
     <!-- jquery CDN -->
     <script src="../scripts/jquery/jquery-3.6.0.min.js"></script>

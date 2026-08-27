@@ -41,11 +41,13 @@ if (isset(
         header("location: ../../admin/profile.php");
         exit();
     }
-    // if (!preg_match("~@uphsl\.edu\.ph$~", $_POST['textFieldEmail'])){
-    //     $_SESSION['notSchoolEmail']= true;
-    //     header("location: ../../admin/profile.php");
-    //     exit();
-    // }
+
+    $validFormat = '/^([a-zA-Z]+(\.[a-zA-Z]+)+|c\d{1,2}-\d{3,4}-\d{3,5})@uphsl\.edu\.ph$/';
+    if (!preg_match($validFormat, $_POST['textFieldEmail'])) {
+        $_SESSION['notSchoolEmail'] = true;
+        header("location: ../../admin/profile.php");
+        exit();
+    }
     $statement = $connection->prepare('SELECT user_id FROM users WHERE email = ?');
     $statement->bind_param('s', $_POST['textFieldEmail']);
     $statement->execute();

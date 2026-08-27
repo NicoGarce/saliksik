@@ -107,7 +107,7 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repository</title>
+    <title>Repository | SALIKSIK</title>
 
     <?php include_once 'assets/fonts/google-fonts.php' ?>
     <script>
@@ -248,7 +248,7 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
 
         </div>
     </section>
-<section class="search-section bg-white">
+<section class="search-section">
         <div class="container p-3">
 
             <div class="row">
@@ -611,6 +611,10 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
                                 <input class="form-check-input" type="checkbox" value="Non-teaching Staff" id="checkBoxNonTeachingStaffoffcanvas" name="researcher_category[]">
                                 <label class="form-check-label" for="checkBoxNonTeachingStaffoffcanvas">Non-teaching Staff</label>
                             </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Department Head" id="checkBoxDepartmentHeadoffcanvas" name="researcher_category[]">
+                                <label class="form-check-label" for="checkBoxDepartmentHeadoffcanvas">Department Head</label>
+                            </div>
                             <div class="row my-0">
                                 <hr class="my-3">
                                 <div class="text-center">
@@ -626,8 +630,7 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
                         <h1>Recently Added</h1>
                         <hr class="my-4">
                     </div>
-                    <div id="repository-results-container">
-                    </div>
+                    <div id="repository-results-container"></div>
                 </div>
 
             </div>

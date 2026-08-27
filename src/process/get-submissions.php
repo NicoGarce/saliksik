@@ -22,7 +22,6 @@ if (isset($_SESSION['userType'])) {
         fi.*,fl.*,`research_id`,ri.resource_type AS research_type,`researchers_category`,`research_unit`,`research_title`,`research_abstract`,`research_fields`,`keywords`,`publication_date`,ri.coauthors_count AS `research_coauthors_count`,ri.author_first_name AS researcher_first_name, ri.author_middle_initial AS researcher_middle_initial, ri.author_surname AS researcher_surname, ri.author_name_ext AS researcher_name_ext, ri.author_email AS researcher_email, ii.*, ji.*,rp.*, ci.* FROM file_information AS fi LEFT JOIN research_information as ri ON ri.file_ref_id=fi.file_id LEFT JOIN journal_information AS ji ON ji.file_ref_id=fi.file_id LEFT JOIN infographic_information AS ii ON ii.file_ref_id=fi.file_id LEFT JOIN reports_information AS rp ON rp.file_ref_id=fi.file_id LEFT JOIN coauthors_information AS ci on ci.group_id = fi.coauthor_group_id LEFT JOIN (SELECT ref_id, feedback, returned_on FROM feedback_log WHERE log_id IN (SELECT MAX(log_id) FROM feedback_log GROUP BY ref_id)) AS fl ON fi.file_id = fl.ref_id";
         if(isset($_POST['status_view'])){
             if($_POST['status_view'] =="submissions"){
-                // don't query by status
                 $status = " WHERE 1";
             }
             else{
@@ -49,9 +48,25 @@ if (isset($_SESSION['userType'])) {
             $sort .= " DESC";
             $query .= $sort;
         }
+
+        $page = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
+        $per_page = isset($_POST['per_page']) ? max(1, min(50, intval($_POST['per_page']))) : 10;
+
+        $count_query = preg_replace('/SELECT\s.*?\sFROM\s/i', 'SELECT COUNT(*) AS total FROM ', $query, 1);
+        $count_query = preg_replace('/\sORDER BY\s.*$/i', '', $count_query);
+        $count_statement = $connection->prepare($count_query);
+        $count_statement->execute();
+        $count_result = $count_statement->get_result()->fetch_assoc();
+        $total_rows = intval($count_result['total']);
+        $total_pages = max(1, ceil($total_rows / $per_page));
+        if ($page > $total_pages) $page = $total_pages;
+        $offset = ($page - 1) * $per_page;
+        $count_statement->close();
+
         $connection->begin_transaction();
         try{
-            $statement = $connection->prepare($query);
+            $statement = $connection->prepare($query . " ORDER BY fi.file_id DESC LIMIT ?, ?");
+            $statement->bind_param("ii", $offset, $per_page);
             $statement->execute();
             $result = $statement->get_result();
             $result = $result->fetch_all(MYSQLI_ASSOC);
@@ -63,6 +78,12 @@ if (isset($_SESSION['userType'])) {
             header("Content-Type: application/json");
             $array['result']= $result;
             $array['result_count']= $result_count;
+            $array['pagination'] = array(
+                'page' => $page,
+                'per_page' => $per_page,
+                'total_rows' => $total_rows,
+                'total_pages' => $total_pages
+            );
 
             echo json_encode($array);
 

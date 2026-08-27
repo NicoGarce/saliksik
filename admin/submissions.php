@@ -24,7 +24,7 @@ $profileadminjs = filemtime('../scripts/custom/profile-admin.js');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submissions</title>
+    <title>Submissions | SALIKSIK</title>
     <script src="../scripts/jquery/jquery-3.6.0.min.js"></script>
     <script src="<?php echo '../scripts/custom/profile-admin.js?id=' . $profileadminjs ?>" type="module"></script>
     <?php include_once '../assets/fonts/google-fonts.php' ?>
@@ -135,6 +135,7 @@ $profileadminjs = filemtime('../scripts/custom/profile-admin.js');
                         <div id="results-container">
                             <p class="empty-note mb-1"><i class="fas fa-inbox me-2"></i>Loading submissions...</p>
                         </div>
+                        <div id="submissions-pagination"></div>
                     </div>
                 </div>
             </div>

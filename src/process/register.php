@@ -41,38 +41,39 @@ if (!filter_var($_POST['textFieldEmail'], FILTER_VALIDATE_EMAIL)) {
 }
 
 $email = $_POST['textFieldEmail'];
-if (preg_match("~@uphsl\.edu\.ph$~", $email)) {
-    if ($statement = $connection->prepare('SELECT user_id FROM users WHERE email = ?')) {
-        $statement->bind_param('s', $_POST['textFieldEmail']);
-        $statement->execute();
-        $statement->store_result();
-
-        if ($statement->num_rows > 0) {
-            $arr = array('response' => "email_exists");
-            header('Content-Type: application/json');
-            echo json_encode($arr);
-        } else {
-            $_SESSION['firstname'] = $_POST['textFieldFirstName'];
-            $_SESSION['lastname'] = $_POST['textFieldLastName'];
-            $_SESSION['department'] = $_POST['dropdownDeparment'];
-            $_SESSION['email'] = $_POST['textFieldEmail'];
-            $_SESSION['password'] = $_POST['textFieldPassword'];
-            $_SESSION['toVerifyAccountCreation'] = true;
-
-            $arr = array('response' => "success");
-            header('Content-Type: application/json');
-            echo json_encode($arr);
-            exit();
-        }
-        $statement->close();
-    } else {
-        echo 'Could not prepare statement!';
-    }
-} else {
-    $_SESSION['notSchoolEmail'] = "Not school email.";
+$validFormat = '/^([a-zA-Z]+(\.[a-zA-Z]+)+|c\d{1,2}-\d{3,4}-\d{3,5})@uphsl\.edu\.ph$/';
+if (!preg_match($validFormat, $email)) {
     $arr = array('response' => "not_school_email");
     header('Content-Type: application/json');
     echo json_encode($arr);
+    exit();
+}
+
+if ($statement = $connection->prepare('SELECT user_id FROM users WHERE email = ?')) {
+    $statement->bind_param('s', $_POST['textFieldEmail']);
+    $statement->execute();
+    $statement->store_result();
+
+    if ($statement->num_rows > 0) {
+        $arr = array('response' => "email_exists");
+        header('Content-Type: application/json');
+        echo json_encode($arr);
+    } else {
+        $_SESSION['firstname'] = $_POST['textFieldFirstName'];
+        $_SESSION['lastname'] = $_POST['textFieldLastName'];
+        $_SESSION['department'] = $_POST['dropdownDeparment'];
+        $_SESSION['email'] = $_POST['textFieldEmail'];
+        $_SESSION['password'] = $_POST['textFieldPassword'];
+        $_SESSION['toVerifyAccountCreation'] = true;
+
+        $arr = array('response' => "success");
+        header('Content-Type: application/json');
+        echo json_encode($arr);
+        exit();
+    }
+    $statement->close();
+} else {
+    echo 'Could not prepare statement!';
 }
 
 $connection->close();

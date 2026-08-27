@@ -10,7 +10,6 @@ $type = isset($_GET['type']) ? $_GET['type'] : '';
 
 $templates = array(
     'thesis' => array(
-        'filename',
         'resource_type',
         'researchers_category',
         'research_unit',
@@ -48,7 +47,6 @@ $templates = array(
         'coauthor4_email'
     ),
     'journal' => array(
-        'filename',
         'journal_title',
         'journal_subtitle',
         'department',
@@ -63,7 +61,6 @@ $templates = array(
         'journal_description'
     ),
     'infographic' => array(
-        'filename',
         'infographic_title',
         'infographic_publication_date',
         'author_first_name',
@@ -100,7 +97,6 @@ $templates = array(
         'coauthor4_email'
     ),
     'report' => array(
-        'filename',
         'report_type',
         'report_title',
         'report_year',
@@ -110,7 +106,6 @@ $templates = array(
 
 $samples = array(
     'thesis' => array(
-        'filename' => 'sample-thesis.pdf',
         'resource_type' => 'Thesis',
         'researchers_category' => 'Undergraduate',
         'research_unit' => 'College of Computer Studies',
@@ -148,7 +143,6 @@ $samples = array(
         'coauthor4_email' => ''
     ),
     'journal' => array(
-        'filename' => 'sample-journal.pdf',
         'journal_title' => 'SALIKSIK Research Journal',
         'journal_subtitle' => 'Volume 1 Issue 1',
         'department' => 'College of Computer Studies',
@@ -163,7 +157,6 @@ $samples = array(
         'journal_description' => 'A sample journal description...'
     ),
     'infographic' => array(
-        'filename' => 'sample-infographic.pdf',
         'infographic_title' => 'Sample Infographic Title',
         'infographic_publication_date' => '2024-03-20',
         'author_first_name' => 'Ana',
@@ -200,7 +193,6 @@ $samples = array(
         'coauthor4_email' => ''
     ),
     'report' => array(
-        'filename' => 'sample-report.pdf',
         'report_type' => 'Annual Report',
         'report_title' => 'Annual Research Report 2024',
         'report_year' => '2024',

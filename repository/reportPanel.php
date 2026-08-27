@@ -1,90 +1,109 @@
 <?php
 
 if (!isset($_SESSION['isLoggedIn'])) {
-    header("location: ../index.php?location=".urlencode($_SERVER['REQUEST_URI']));
+    header("location: ../index.php?location=" . urlencode($_SERVER['REQUEST_URI']));
     die();
 }
 
-
 ?>
 
-<section class='submit-research' style="font-family: 'Roboto';">
-        <div class='container p-5'>
-        <div class="row my-3">
-        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item prev-dir-breadcrumb"><a href="../repository.php" style="color: #012265; text-decoration:none">Repository</a></li>
-                <li class="breadcrumb-item active active-dir-breadcrumb" aria-current="page">View Article</li>
-            </ol>
-        </nav>
-    </div>
-            <div class='row'>
+<section class="view-article-section">
+    <div class="container py-4">
+        <div class="row mb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="../repository.php" class="text-decoration-none" style="color: var(--navy-700);">Repository</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">View Article</li>
+                </ol>
+            </nav>
+        </div>
 
-                <div class='col-lg-2 col-md-12 col-sm-12'>
-                    <h5 class='fw-bold'>Article Metrics</h5>
-                    <hr>
-                    <h3><?php echo $article_visits['hits']?></h3>
-                    <p>Views</p>
-                    <hr>
-                    <!-- <h3>24</h3>
-                    <p>Downloads</p>
-                    <hr> -->
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="view-article-card">
+                    <div class="view-article-accent-bar"></div>
+
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div>
+                            <span class="view-article-type-badge"><?php echo htmlspecialchars($fileInfo['report_type']); ?></span>
+                            <span class="view-article-title"><?php echo htmlspecialchars($fileInfo['report_title']); ?></span>
+                        </div>
+                        <?php if (in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))) { ?>
+                            <a target="_blank" class="view-article-edit-link" href="../admin/submissions/view.php?id=<?php echo $_GET['id']; ?>" title="Edit submission">Edit</a>
+                        <?php } ?>
+                    </div>
+
+                    <div class="view-article-date mt-2"><?php echo htmlspecialchars($fileInfo['report_year']); ?></div>
+
+                    <?php if (!empty($fileInfo['file_dir2'])): ?>
+                        <div class="text-center mt-3 d-lg-none">
+                            <img src="../src/<?php echo $fileInfo['file_dir2']; ?>" alt="Report Cover" class="view-article-cover-img">
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="view-article-section-label">Description</div>
+                    <p class="view-article-text"><?php echo htmlspecialchars($fileInfo['report_description']); ?></p>
+
+                    <?php if ($fileInfo['file1_shown'] || $fileInfo['file2_shown']): ?>
+                        <div class="view-article-section-label">Attached Files</div>
+                        <div class="view-article-files">
+                            <?php if ($fileInfo['file1_shown'] && !empty($fileInfo['file_dir'])): ?>
+                                <a href="../src/<?php echo $fileInfo['file_dir']; ?>" target="_blank" class="view-article-file-btn">
+                                    <i class="fas fa-file-pdf" style="color:#dc3545"></i><?php echo htmlspecialchars($fileInfo['report_type']); ?>
+                                </a>
+                            <?php endif; ?>
+                            <?php if ($fileInfo['file2_shown'] && !empty($fileInfo['file_dir2'])): ?>
+                                <a href="../src/<?php echo $fileInfo['file_dir2']; ?>" target="_blank" class="view-article-file-btn">
+                                    <i class="fas fa-image" style="color: var(--navy-700);"></i>Cover Image
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="view-article-metadata">
+                        <div class="view-article-meta-row">
+                            <span class="view-article-meta-label">Report Type</span>
+                            <span class="view-article-meta-value"><?php echo htmlspecialchars($fileInfo['report_type']); ?></span>
+                        </div>
+                        <div class="view-article-meta-row">
+                            <span class="view-article-meta-label">Year</span>
+                            <span class="view-article-meta-value"><?php echo htmlspecialchars($fileInfo['report_year']); ?></span>
+                        </div>
+                    </div>
                 </div>
-
-                <div class='col-lg-9 col-md-12 col-xs-12 mx-auto main-column'>
-
-                    <div class='row'>
-                    <div class='col-sm-12 d-sm-block d-md-none text-center'>
-                    <img src='../src/<?php echo $fileInfo['file_dir2']?>' width='150' class="mt-4 mb-5">
-                        </div>
-                        <div class='col'>
-                        <h2><?php echo htmlspecialchars($fileInfo['report_title'])?><?php if (in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))) {
-                            echo " <a target='_blank' class='edit-submission-icon' href='../admin/submissions/view.php?id=".$_GET['id']."'><i class='fas fa-edit h6'></i></a>";
-                        } ?></h2>
-                        <p class='fw-bold'><?php echo $fileInfo['report_year'] ?></p>
-                        <?php  if(in_array($fileInfo['file_id'],array_column($bookmarks,'ref_id'))){
-                        echo "<p class='del-bookmark' data-id={$fileInfo['file_id']}><i class='fas fa-bookmark me-2'></i> Remove from Bookmarks</p>";;
-                        }
-                        else {
-                            echo "<p class='add-bookmark' data-id={$fileInfo['file_id']}><i class='far fa-bookmark me-2'></i> Add to Bookmarks</p>";
-                        }
-                        ?>
-                        <hr class='my-3'>
-                        </div>
-                        <div class='col-lg-2 d-none d-md-block text-center'>
-                        <img src='../src/<?php echo $fileInfo['file_dir2']?>' width='150'>
-                        </div>
-                    </div>
-
-                    
-
-                    <h3 class='mt-3'>Description</h3>
-                    <p><?php echo htmlspecialchars($fileInfo['report_description']) ?></p>
-
-                    <div class='row my-4'>
-                        <p class='fw-bold mb-3'>Attached Files</p>
-                        <div class='col'>
-                        <?php if($fileInfo['file1_shown']):?>
-                            <a href="../src/<?php echo $fileInfo['file_dir'] ?>" target="_blank"><button class='btn button-file m-1 rounded-0'><i class='far fa-file-pdf me-2' style="color: red;"></i><?php echo htmlspecialchars($fileInfo['report_type']); ?></button></a>
-                            <?php endif?>
-                            <?php if($fileInfo['file2_shown']):?>
-                            <a href="../src/<?php echo $fileInfo['file_dir2'] ?>" target="_blank"><button class='btn button-file m-1 rounded-0'><i class='far fa-file-pdf me-2' style="color: red;"></i>Report Cover</button></a>
-                            <?php endif?>
-                        </div>
-                    </div>
-
-                    <div class='row my-5'>
-                        <div class='col-lg-3 border-top border-2'>
-                            <h6 class='fw-bold my-3'>Report Type</h6>
-                        </div>
-                        <div class='col-lg-9 border-top border-2'>
-                            <p class='my-3'><?php echo htmlspecialchars($fileInfo['report_type']) ?></p>
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
 
+            <div class="col-lg-3">
+                <div class="view-article-sidebar">
+                    <div class="view-article-sidebar-views">
+                        <span class="view-article-sidebar-views-count"><?php echo $article_visits['hits']; ?></span>
+                        <span class="view-article-sidebar-views-label"><?php echo $article_visits['hits'] == 1 ? 'view' : 'views'; ?></span>
+                    </div>
+
+                    <div class="view-article-sidebar-divider"></div>
+
+                    <div class="view-article-sidebar-bookmark" data-id="<?php echo $fileInfo['file_id']; ?>">
+                        <?php if (in_array($fileInfo['file_id'], array_column($bookmarks, 'ref_id'))) { ?>
+                            <i class="fas fa-bookmark"></i> Saved
+                        <?php } else { ?>
+                            <i class="far fa-bookmark"></i> Bookmark
+                        <?php } ?>
+                    </div>
+
+                    <div class="view-article-sidebar-divider"></div>
+
+                    <div class="view-article-sidebar-details">
+                        <div class="view-article-sidebar-detail">
+                            <span class="view-article-sidebar-detail-label">Year</span>
+                            <span class="view-article-sidebar-detail-value"><?php echo htmlspecialchars($fileInfo['report_year']); ?></span>
+                        </div>
+                        <div class="view-article-sidebar-detail">
+                            <span class="view-article-sidebar-detail-label">Type</span>
+                            <span class="view-article-sidebar-detail-value"><?php echo htmlspecialchars($fileInfo['report_type']); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+</section>

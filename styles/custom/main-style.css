@@ -738,6 +738,24 @@ a.footer-list-link:hover { cursor: pointer; }
   50%      { transform: scale(1.18); opacity: 0; }
 }
 
+/* White glow when FAB is over the footer */
+.fab-on-footer .fab-main {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, .35), 0 4px 14px rgba(255, 255, 255, .45);
+}
+.fab-on-footer .fab-main::before {
+  animation: none;
+  opacity: 0;
+}
+.fab-on-footer .fab-main:hover {
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, .45), 0 6px 22px rgba(255, 255, 255, .55);
+}
+.fab-on-footer .fab-item {
+  box-shadow: 0 3px 12px rgba(255, 255, 255, .2);
+}
+.fab-on-footer .fab-item:hover {
+  box-shadow: 0 6px 20px rgba(255, 255, 255, .3);
+}
+
 /* Open state */
 .fab-container.open .fab-main {
   background: var(--navy-900);

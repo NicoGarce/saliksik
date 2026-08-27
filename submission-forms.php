@@ -35,7 +35,7 @@ $pagecssVersion = filemtime('styles/custom/pages/submission-forms-style.css');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submission Form</title>
+    <title>Submission Form | SALIKSIK</title>
     <?php include_once 'assets/fonts/google-fonts.php' ?>
 
     <script src="./scripts/jquery/jquery-3.6.0.min.js"></script>

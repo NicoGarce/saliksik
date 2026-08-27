@@ -48,6 +48,10 @@ $pdfTmp = $pdfFile['tmp_name'];
 $pdfSize = $pdfFile['size'];
 $pdfError = $pdfFile['error'];
 
+/* Custom display names sent from client (auto-generated or user-edited) */
+$customPdfName = isset($_POST['custom_file_name']) && trim($_POST['custom_file_name']) !== '' ? trim($_POST['custom_file_name']) : $pdfName;
+$customSecondaryName = isset($_POST['custom_file_name2']) && trim($_POST['custom_file_name2']) !== '' ? trim($_POST['custom_file_name2']) : null;
+
 if ($pdfError !== 0) {
     echo json_encode(array('response' => 'error', 'errorText' => 'PDF upload error: ' . $pdfName));
     exit();
@@ -66,12 +70,12 @@ if (!in_array($pdfExt, $allowedPdf)) {
 }
 
 $dupCheck = $connection->prepare("SELECT file_id FROM file_information WHERE file_name = ?");
-$dupCheck->bind_param("s", $pdfName);
+$dupCheck->bind_param("s", $customPdfName);
 $dupCheck->execute();
 $dupResult = $dupCheck->get_result();
 $dupCheck->close();
 if ($dupResult->num_rows > 0) {
-    echo json_encode(array('response' => 'error', 'errorText' => 'Duplicate filename: ' . $pdfName));
+    echo json_encode(array('response' => 'error', 'errorText' => 'Duplicate filename: ' . $customPdfName));
     exit();
 }
 
@@ -86,6 +90,46 @@ $uploadDir = 'uploads/' . ($type === 'thesis' ? 'theses' : ($type === 'journal' 
 $filenameUnique = uniqid('', true);
 $newFileName = $filenameUnique . '.' . $pdfExt;
 $fileDestination = $uploadDir . $newFileName;
+
+/* Handle optional secondary file */
+$secondaryFile = null;
+$secondaryName = null;
+$secondaryTmp = null;
+$secondarySize = 0;
+$secondaryExt = null;
+$secondaryDestination = null;
+$secondaryUnique = null;
+$hasSecondary = false;
+
+if (isset($_FILES['secondary_file']) && $_FILES['secondary_file']['error'] === 0) {
+    $secondaryFile = $_FILES['secondary_file'];
+    $secondaryName = $secondaryFile['name'];
+    $secondaryTmp = $secondaryFile['tmp_name'];
+    $secondarySize = $secondaryFile['size'];
+    $secondaryExt = strtolower(pathinfo($secondaryName, PATHINFO_EXTENSION));
+
+    $allowedSecondary = array('pdf', 'png', 'jpg', 'jpeg');
+    if (!in_array($secondaryExt, $allowedSecondary)) {
+        echo json_encode(array('response' => 'error', 'errorText' => 'Invalid secondary file type: ' . $secondaryName));
+        exit();
+    }
+
+    if ($secondarySize > 11000000) {
+        echo json_encode(array('response' => 'error', 'errorText' => 'Secondary file too large: ' . $secondaryName));
+        exit();
+    }
+
+    $secondaryUnique = uniqid('', true);
+    $secondaryNewName = $secondaryUnique . '.' . $secondaryExt;
+
+    if ($type === 'thesis') {
+        $secondaryDestination = $uploadDir . 'questionnaires/' . $secondaryNewName;
+    } else {
+        $secondaryDestination = $uploadDir . $secondaryNewName;
+    }
+
+    $hasSecondary = true;
+}
 
 $title = '';
 try {
@@ -109,8 +153,10 @@ try {
         $coauthorGroupId = $stmt->insert_id;
         $stmt->close();
 
-        $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_dir, file_uploader, status, coauthor_group_id, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?,?)');
-        $stmt->bind_param('isssssiss', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $coauthorGroupId, $submitted, $publishedOn);
+        $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_name2, file_dir, file_dir2, file_uploader, status, coauthor_group_id, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?,?,?,?)');
+        $fn2 = $hasSecondary ? ($customSecondaryName ?: $secondaryName) : null;
+        $fd2 = $hasSecondary ? $secondaryDestination : null;
+        $stmt->bind_param('issssssssss', $userId, $type, $customPdfName, $fn2, $fileDestination, $fd2, $userName, $fileStatus, $coauthorGroupId, $submitted, $publishedOn);
         $stmt->execute();
         $fileId = $stmt->insert_id;
         $stmt->close();
@@ -161,8 +207,10 @@ try {
     } elseif ($type === 'journal') {
         $title = $row['journal_title'] ?? '';
 
-        $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_dir, file_uploader, status, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?)');
-        $stmt->bind_param('isssssss', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $submitted, $publishedOn);
+        $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_name2, file_dir, file_dir2, file_uploader, status, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?,?,?)');
+        $fn2 = $hasSecondary ? ($customSecondaryName ?: $secondaryName) : null;
+        $fd2 = $hasSecondary ? $secondaryDestination : null;
+        $stmt->bind_param('isssssssss', $userId, $type, $customPdfName, $fn2, $fileDestination, $fd2, $userName, $fileStatus, $submitted, $publishedOn);
         $stmt->execute();
         $fileId = $stmt->insert_id;
         $stmt->close();
@@ -217,7 +265,7 @@ try {
         $stmt->close();
 
         $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_dir, file_uploader, status, coauthor_group_id, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?,?)');
-        $stmt->bind_param('isssssiss', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $coauthorGroupId, $submitted, $publishedOn);
+        $stmt->bind_param('isssssiss', $userId, $type, $customPdfName, $fileDestination, $userName, $fileStatus, $coauthorGroupId, $submitted, $publishedOn);
         $stmt->execute();
         $fileId = $stmt->insert_id;
         $stmt->close();
@@ -264,8 +312,10 @@ try {
     } elseif ($type === 'report') {
         $title = $row['report_title'] ?? '';
 
-        $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_dir, file_uploader, status, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?)');
-        $stmt->bind_param('isssssss', $userId, $type, $pdfName, $fileDestination, $userName, $fileStatus, $submitted, $publishedOn);
+        $stmt = $connection->prepare('INSERT INTO file_information(user_id, file_type, file_name, file_name2, file_dir, file_dir2, file_uploader, status, submitted_on, published_on) VALUES(?,?,?,?,?,?,?,?,?,?)');
+        $fn2 = $hasSecondary ? ($customSecondaryName ?: $secondaryName) : null;
+        $fd2 = $hasSecondary ? $secondaryDestination : null;
+        $stmt->bind_param('isssssssss', $userId, $type, $customPdfName, $fn2, $fileDestination, $fd2, $userName, $fileStatus, $submitted, $publishedOn);
         $stmt->execute();
         $fileId = $stmt->insert_id;
         $stmt->close();
@@ -292,11 +342,31 @@ try {
     ensure_upload_dir(dirname($fileDestination));
     $moveDest = realpath(__DIR__ . '/..') . '/' . $fileDestination;
     if (!move_uploaded_file($pdfTmp, $moveDest)) {
-        echo json_encode(array('response' => 'error', 'errorText' => 'Record saved but the PDF could not be stored on the server'));
+        echo json_encode(array('response' => 'error', 'errorText' => 'Record saved but the primary file could not be stored on the server'));
         exit();
     }
 
-    echo json_encode(array('response' => 'success', 'title' => $title));
+    if ($hasSecondary && $secondaryTmp) {
+        ensure_upload_dir(dirname($secondaryDestination));
+        $secMoveDest = realpath(__DIR__ . '/..') . '/' . $secondaryDestination;
+        if (!move_uploaded_file($secondaryTmp, $secMoveDest)) {
+            echo json_encode(array('response' => 'success', 'title' => $title, 'has_secondary' => false, 'secondary_type' => '', 'warning' => 'Secondary file could not be stored'));
+            exit();
+        }
+    }
+
+    $secondaryTypeLabel = '';
+    if ($hasSecondary) {
+        if ($type === 'thesis') $secondaryTypeLabel = 'questionnaire';
+        elseif ($type === 'journal' || $type === 'report') $secondaryTypeLabel = 'cover';
+    }
+
+    echo json_encode(array(
+        'response' => 'success',
+        'title' => $title,
+        'has_secondary' => $hasSecondary,
+        'secondary_type' => $secondaryTypeLabel
+    ));
 
 } catch (mysqli_sql_exception $e) {
     $connection->rollback();

@@ -16,34 +16,82 @@ $mail = new PHPMailer(true);
 try {
     $mail->SMTPDebug = 0;
     $mail->isSMTP();
-    $mail->Host = 'smtp.hostinger.com;';
+    $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'researchrepository@saliksik-uphsl.com';
-    $mail->Password = 'Serking_d28();';
+    $mail->Username = 'saliksik@uphsl.edu.ph';
+    $mail->Password = 'iidx emoo fzsx pewg';
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
-    $mail->setFrom('researchrepository@saliksik-uphsl.com', 'SALIKSIK: UPHSL Research Repository');
+
+    $mail->setFrom('saliksik@uphsl.edu.ph', 'SALIKSIK: UPHSL Research Repository');
     $mail->isHTML(true);
+    $mail->addEmbeddedImage(__DIR__ . '/android-chrome-256x256.png', 'saliksiklogo');
 
     $verificationCode = uniqid();
     $_SESSION['verificationCode'] = strtoupper(substr($verificationCode, 7));
-    $subject = '[SALIKSIK: UPHSL Research Repository] Reset your password';
     $recipient = $_SESSION['email'];
 
     $mail->addAddress($recipient);
-    $mail->Subject = $subject;
+    $mail->Subject = '[SALIKSIK] Reset Your Password';
     $mail->Body = '
-            <body>
-                <p>Hi,</p>
-                <p>A password reset attempt using this email address ' . $recipient . ' was made and requires further verification.</p>
-                <p>To complete the password reset process, enter the verification code given below.</p>
-                <p>Verification code: <strong>' . $_SESSION['verificationCode'] . '</strong></p>
-                <p>If it wasn&apos;t you who attempted to reset the password of the account this email is linked to, kindly disregard this message.</p>
-                <p>The password reset process will be cancelled and the email will not be used.</p>
-                <p>Thanks,</p>
-                <p>The SALIKSIK: UPHSL Research Repository Team</p>
-                <p><em>This is a system generated message. Do not reply.</em></p>
-            </body>';
+    <div style="margin:0;padding:0;background:#f4f6fb;font-family:Arial,Helvetica,sans-serif;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6fb;padding:32px 16px;">
+            <tr><td align="center">
+                <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(1,34,101,.08);">
+                    <tr>
+                        <td style="background:linear-gradient(135deg,#012265,#0e408e);padding:24px 32px;">
+                            <table cellpadding="0" cellspacing="0" style="width:100%;">
+                                <tr>
+                                    <td style="width:44px;vertical-align:middle;">
+                                        <img src="cid:saliksiklogo" alt="" style="width:40px;height:40px;border-radius:8px;display:block;">
+                                    </td>
+                                    <td style="padding-left:12px;vertical-align:middle;">
+                                        <h1 style="margin:0;font-size:20px;font-weight:800;color:#ffffff;letter-spacing:-.02em;line-height:1;">SALIKSIK</h1>
+                                        <p style="margin:2px 0 0;font-size:10px;color:rgba(255,255,255,.65);letter-spacing:.04em;text-transform:uppercase;">UPHSL Research Repository</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:28px 32px 8px;">
+                            <h2 style="margin:0;font-size:16px;font-weight:700;color:#1f2937;">Reset Your Password</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:8px 32px 20px;">
+                            <p style="margin:0;font-size:13px;color:#64748b;line-height:1.6;">Hello,</p>
+                            <p style="margin:12px 0 0;font-size:13px;color:#64748b;line-height:1.6;">A password reset was requested for <strong style="color:#1f2937;">' . htmlspecialchars($recipient) . '</strong>. Enter the code below to proceed.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0 32px 24px;" align="center">
+                            <div style="background:#eef3fc;border:2px dashed #0e408e;border-radius:10px;padding:20px 32px;text-align:center;display:inline-block;">
+                                <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#0e408e;text-transform:uppercase;letter-spacing:.06em;">Your Verification Code</p>
+                                <p style="margin:0;font-size:32px;font-weight:800;color:#012265;letter-spacing:.15em;">' . $_SESSION['verificationCode'] . '</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0 32px 24px;">
+                            <p style="margin:0;font-size:12px;color:#64748b;line-height:1.5;">If you did not request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:0 32px 24px;">
+                            <p style="margin:0;font-size:12px;color:#64748b;line-height:1.5;">Thanks,<br><strong style="color:#0e408e;">The SALIKSIK Team</strong></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background:#f4f6fb;padding:16px 32px;text-align:center;border-top:1px solid #e6eaf2;">
+                            <p style="margin:0;font-size:11px;color:#64748b;">This is a system generated message. Do not reply.<br>SALIKSIK: UPHSL Research Repository</p>
+                        </td>
+                    </tr>
+                </table>
+            </td></tr>
+        </table>
+    </div>';
+    $mail->AltBody = "Reset Your Password\nHello,\nYour verification code: " . $_SESSION['verificationCode'] . "\nIf you did not request a password reset, ignore this message.";
 
     $mail->send();
 } catch (Exception $e) {

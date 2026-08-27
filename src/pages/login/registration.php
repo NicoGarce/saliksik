@@ -25,7 +25,7 @@ $pagecssVersion = filemtime('../../../styles/custom/pages/login-style.css');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create your account</title>
+    <title>Create your account | SALIKSIK</title>
     <?php include_once '../../../assets/fonts/google-fonts.php' ?>
 
     <script src="../../../scripts/jquery/jquery-3.6.0.min.js"></script>
@@ -112,8 +112,11 @@ $pagecssVersion = filemtime('../../../styles/custom/pages/login-style.css');
                                 <label for="dropdownDeparment">College/Department</label>
                             </div>
                             <div class="form-floating my-2">
-                                <input class="form-control" type="text" name="textFieldEmail" id="textFieldEmail" placeholder=" ">
+                                <input class="form-control" type="text" name="textFieldEmail" id="textFieldEmail" placeholder=" " required>
                                 <label for="textFieldEmail">School Email</label>
+                            </div>
+                            <div style="font-size: .72rem; color: var(--muted); margin-top: -.4rem; margin-bottom: .5rem; padding-left: .25rem;">
+                                Format: <strong>lastname.firstname@uphsl.edu.ph</strong> or <strong>cXX-XXXX-XXX@uphsl.edu.ph</strong>
                             </div>
                             <div class="form-floating my-2 position-relative">
                                 <input class="form-control" type="password" name="textFieldPassword" id="textFieldPassword" placeholder=" ">
@@ -181,7 +184,7 @@ $pagecssVersion = filemtime('../../../styles/custom/pages/login-style.css');
                 alertRegister.innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Invalid input!</strong> Password and Confirm Password do not match.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`
             }
             if (data.response === "not_school_email") {
-                alertRegister.innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Invalid email!</strong> Please use your school email.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`
+                alertRegister.innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Invalid email format!</strong> Use <strong>lastname.firstname@uphsl.edu.ph</strong> or <strong>cXX-XXXX-XXX@uphsl.edu.ph</strong>.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`
             }
             if (data.response === "email_exists") {
                 alertRegister.innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>An account with this email already exists.</strong> Try another one.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`

@@ -22,7 +22,7 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulk Upload</title>
+    <title>Bulk Upload | SALIKSIK</title>
     <?php include_once '../assets/fonts/google-fonts.php' ?>
     <script src="../scripts/jquery/jquery-3.6.0.min.js"></script>
     <script src="../scripts/custom/submission-helpers.js?id=<?php echo filemtime('../scripts/custom/submission-helpers.js') ?>"></script>
@@ -69,7 +69,7 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
                         <div class="bulk-step-connector"></div>
                         <div class="bulk-step" data-step="3">
                             <div class="bulk-step-number">3</div>
-                            <span class="bulk-step-label">Upload PDFs</span>
+                            <span class="bulk-step-label">Upload Files</span>
                         </div>
                         <div class="bulk-step-connector"></div>
                         <div class="bulk-step" data-step="4">
@@ -139,7 +139,7 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
                             <div style="background: var(--navy-tint); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: .75rem;">
                                 <i class="fas fa-info-circle" style="color: var(--navy-700); flex-shrink: 0;"></i>
                                 <div style="font-size: .84rem; color: var(--ink);">
-                                    Download the template first, fill in your data, then upload the completed CSV file. Each row represents one submission. The <strong>filename</strong> column should match your PDF file names.
+                                    Download the template first, fill in your data, then upload the completed CSV. Each row represents one submission. Files will be matched to rows <strong>in the order you upload them</strong> — no need to type filenames.
                                 </div>
                             </div>
 
@@ -190,36 +190,21 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
                         </div>
                     </div>
 
-                    <!-- ==================== STEP 3: Upload PDFs ==================== -->
+                    <!-- ==================== STEP 3: Upload Files ==================== -->
                     <div class="bulk-step-content" id="bulk-step-3">
                         <div class="admin-panel">
                             <div class="admin-panel-title">
-                                <i class="fas fa-file-pdf me-2" style="color: #dc2626;"></i>Upload PDF Files
+                                <i class="fas fa-files-o me-2" style="color: var(--navy-700);"></i>Upload Files
                             </div>
 
                             <div style="background: var(--navy-tint); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: .75rem;">
                                 <i class="fas fa-info-circle" style="color: var(--navy-700); flex-shrink: 0;"></i>
-                                <div style="font-size: .84rem; color: var(--ink);">
-                                    Upload the PDF files for your submissions. File names must match the <strong>filename</strong> column in your CSV (including the .pdf extension).
+                                <div style="font-size: .84rem; color: var(--ink);" id="step3-info">
+                                    Upload your files below. They will be automatically matched to CSV rows <strong>in the order they are uploaded</strong>. You can re-order or reassign in the next step.
                                 </div>
                             </div>
 
-                            <div class="bulk-dropzone" id="pdf-dropzone">
-                                <i class="fas fa-file-pdf"></i>
-                                <h6>Drop your PDF files here</h6>
-                                <p>or <span class="browse-link">browse</span> to select files — you can select multiple</p>
-                                <input type="file" id="pdf-file-input" accept=".pdf" multiple>
-                            </div>
-
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; margin-bottom: .5rem;">
-                                <span style="font-weight: 700; font-size: .9rem; color: var(--navy-900);">
-                                    <span id="pdf-count">0</span> files uploaded
-                                </span>
-                                <button type="button" class="btn btn-sm btn-outline-danger" id="btn-clear-pdfs" style="display: none; font-size: .78rem; padding: .3rem .75rem;">
-                                    <i class="fas fa-trash me-1"></i>Clear All
-                                </button>
-                            </div>
-                            <ul class="bulk-file-list" id="pdf-file-list"></ul>
+                            <div id="step3-dropzones"></div>
 
                             <div class="bulk-btn-nav">
                                 <button class="btn btn-secondary" id="btn-step3-back">
@@ -236,23 +221,29 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
                     <div class="bulk-step-content" id="bulk-step-4">
                         <div class="admin-panel">
                             <div class="admin-panel-title">
-                                <i class="fas fa-link me-2" style="color: var(--navy-700);"></i>Assign PDFs & Review
+                                <i class="fas fa-link me-2" style="color: var(--navy-700);"></i>Assign Files & Review
                             </div>
 
                             <div id="review-summary" class="row g-3 mb-3">
-                                <div class="col-sm-4">
+                                <div class="col-sm-3 col-6">
                                     <div class="bulk-summary-card">
                                         <div class="summary-number" id="summary-total">0</div>
                                         <div class="summary-label">Total Rows</div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-3 col-6">
                                     <div class="bulk-summary-card">
                                         <div class="summary-number" id="summary-matched" style="color: #16a34a;">0</div>
-                                        <div class="summary-label">PDF Matched</div>
+                                        <div class="summary-label" id="summary-matched-label">Primary Matched</div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-3 col-6" id="summary-secondary-col" style="display: none;">
+                                    <div class="bulk-summary-card">
+                                        <div class="summary-number" id="summary-secondary" style="color: #2563eb;">0</div>
+                                        <div class="summary-label" id="summary-secondary-label">Secondary Matched</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-6">
                                     <div class="bulk-summary-card">
                                         <div class="summary-number" id="summary-unmatched" style="color: #dc2626;">0</div>
                                         <div class="summary-label">Unmatched</div>
@@ -260,8 +251,8 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
                                 </div>
                             </div>
 
-                            <p style="font-size: .84rem; color: var(--muted); margin-bottom: 1rem;">
-                                Assign a PDF file to each row. Rows without a matched PDF will be skipped during processing.
+                            <p style="font-size: .84rem; color: var(--muted); margin-bottom: 1rem;" id="step4-description">
+                                Files are auto-named from your CSV titles and matched <strong>by upload order</strong>. Drag rows to reorder. Edit filenames if needed.
                             </p>
 
                             <div id="assign-rows-container" style="max-height: 400px; overflow-y: auto;"></div>
@@ -321,5 +312,22 @@ $bulkJsVersion = filemtime('../scripts/custom/bulk-upload.js');
     <?php include_once '../includes/footer.php' ?>
     <script src="../scripts/bootstrap/bootstrap.js"></script>
     <script src="<?php echo '../scripts/custom/bulk-upload.js?id=' . $bulkJsVersion ?>"></script>
+
+    <!-- PDF Preview Modal -->
+    <div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-labelledby="pdfPreviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" style="border-radius: var(--radius-md); overflow: hidden;">
+                <div class="modal-header" style="background: var(--navy-900); color: #fff; padding: .75rem 1.25rem;">
+                    <h6 class="modal-title" id="pdfPreviewModalLabel" style="font-weight: 700; font-size: .9rem;">
+                        <i class="fas fa-file-pdf me-2"></i><span id="pdf-preview-filename">Preview</span>
+                    </h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 0; height: 75vh;">
+                    <iframe id="pdf-preview-frame" style="width: 100%; height: 100%; border: none;" src=""></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

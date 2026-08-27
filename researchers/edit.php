@@ -44,7 +44,7 @@ $pagecssVersion = filemtime('../styles/custom/pages/researchers-style.css');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
+    <title>Edit Profile | SALIKSIK</title>
     <!--To be changed with the researcher's name-->
     <?php include_once '../assets/fonts/google-fonts.php' ?>
     <script src="../scripts/jquery/jquery-3.6.0.min.js"></script>

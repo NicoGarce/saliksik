@@ -16,7 +16,7 @@ $pagecssVersion = filemtime('styles/custom/pages/login-style.css');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify your email</title>
+    <title>Verify your email | SALIKSIK</title>
     <?php include_once 'assets/fonts/google-fonts.php' ?>
 
     <link rel="stylesheet" href="styles/bootstrap/bootstrap.css" type="text/css">
@@ -87,13 +87,31 @@ $pagecssVersion = filemtime('styles/custom/pages/login-style.css');
         function fireSweetAlertResendVerificationCode() {
             Swal.fire({
                 title: 'Request a new verification code?',
+                text: 'A new code will be sent to your registered email address.',
                 showDenyButton: true,
-                confirmButtonText: 'Yes',
+                confirmButtonText: 'Yes, send new code',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#012265',
+                cancelButtonColor: '#64748b',
+                denyButtonColor: '#64748b',
+                customClass: {
+                    popup: 'salik-swal-popup',
+                    title: 'salik-swal-title',
+                    htmlContainer: 'salik-swal-text'
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire('A new verification code is sent to your email!', '', 'success');
-                    location.reload();
-                } else if (result.isDenied) {}
+                    Swal.fire({
+                        title: 'Code Sent!',
+                        text: 'A new verification code has been sent to your email.',
+                        icon: 'success',
+                        confirmButtonColor: '#012265',
+                        customClass: {
+                            popup: 'salik-swal-popup',
+                            title: 'salik-swal-title'
+                        }
+                    }).then(() => { location.reload(); });
+                }
             })
         }
     </script>
@@ -132,6 +150,11 @@ $pagecssVersion = filemtime('styles/custom/pages/login-style.css');
     </script>
 
     <script src="plugins/sweetalert/package/dist/sweetalert2.js"></script>
+    <style>
+        .salik-swal-popup { border-radius: 14px !important; font-family: 'Inter', Arial, sans-serif !important; }
+        .salik-swal-title { color: #012265 !important; font-weight: 700 !important; font-size: 1.1rem !important; }
+        .salik-swal-text { color: #64748b !important; font-size: .88rem !important; }
+    </style>
     <script src="scripts/bootstrap/bootstrap.js"></script>
 </body>
 

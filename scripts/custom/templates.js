@@ -180,3 +180,144 @@ export function publishedReportTemplate(result) {
     dateValue: fmtDate(result.submitted_on, false)
   });
 }
+
+export function pendingJournalTemplate(result) {
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Journal",
+    category: result.department,
+    unit: "",
+    title: result.journal_title,
+    subtitle: result.journal_subtitle || "",
+    status: "pending",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
+  });
+}
+
+export function pendingInfographicTemplate(result) {
+  var year = result.infographic_publication_date
+    ? new Date(String(result.infographic_publication_date).replace(" ", "T")).getFullYear()
+    : "";
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Infographic",
+    category: year ? String(year) : "",
+    unit: "",
+    title: result.infographic_title,
+    status: "pending",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
+  });
+}
+
+export function pendingReportTemplate(result) {
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Report",
+    category: result.report_type,
+    unit: result.report_year,
+    title: result.report_title,
+    status: "pending",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
+  });
+}
+
+export function revisionJournalTemplate(result) {
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Journal",
+    category: result.department,
+    unit: "",
+    title: result.journal_title,
+    subtitle: result.journal_subtitle || "",
+    note: result.feedback,
+    noteLabel: "Feedback: ",
+    status: "for revision",
+    dateLabel: "",
+    dateValue: fmtDate(result.returned_on, false)
+  });
+}
+
+export function revisionInfographicTemplate(result) {
+  var year = result.infographic_publication_date
+    ? new Date(String(result.infographic_publication_date).replace(" ", "T")).getFullYear()
+    : "";
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Infographic",
+    category: year ? String(year) : "",
+    unit: "",
+    title: result.infographic_title,
+    note: result.feedback,
+    noteLabel: "Feedback: ",
+    status: "for revision",
+    dateLabel: "",
+    dateValue: fmtDate(result.returned_on, false)
+  });
+}
+
+export function revisionReportTemplate(result) {
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Report",
+    category: result.report_type,
+    unit: result.report_year,
+    title: result.report_title,
+    note: result.feedback,
+    noteLabel: "Feedback: ",
+    status: "for revision",
+    dateLabel: "",
+    dateValue: fmtDate(result.returned_on, false)
+  });
+}
+
+export function revisedJournalTemplate(result) {
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Journal",
+    category: result.department,
+    unit: "",
+    title: result.journal_title,
+    subtitle: result.journal_subtitle || "",
+    note: result.feedback,
+    noteLabel: "Last feedback: ",
+    status: "revised",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
+  });
+}
+
+export function revisedInfographicTemplate(result) {
+  var year = result.infographic_publication_date
+    ? new Date(String(result.infographic_publication_date).replace(" ", "T")).getFullYear()
+    : "";
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Infographic",
+    category: year ? String(year) : "",
+    unit: "",
+    title: result.infographic_title,
+    note: result.feedback,
+    noteLabel: "Last feedback: ",
+    status: "revised",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
+  });
+}
+
+export function revisedReportTemplate(result) {
+  return resultRow({
+    fileId: result.file_id,
+    typeLabel: "Report",
+    category: result.report_type,
+    unit: result.report_year,
+    title: result.report_title,
+    note: result.feedback,
+    noteLabel: "Last feedback: ",
+    status: "revised",
+    dateLabel: "",
+    dateValue: fmtDate(result.submitted_on, false)
+  });
+}
