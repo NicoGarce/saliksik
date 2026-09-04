@@ -100,6 +100,9 @@ $statement->close();
                 <div class="col-auto">
                     <a href="./research/browse-researches.php" class="search-option-card text-decoration-none"><i class="fas fa-book-open"></i>Browse Researches</a>
                 </div>
+                <div class="col-auto">
+                    <a href="./submit.php" class="search-option-card text-decoration-none"><i class="fas fa-upload"></i>Submit Research</a>
+                </div>
             </div>
 
                                     <!-- Advanced Search Modal -->
@@ -179,55 +182,55 @@ $statement->close();
             <h1 id="research-field-title-text">Research Fields</h1>
             <hr class="hr-home">
             <div class="row g-3">
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Accountancy and Marketing" class="research-field-card">
                         <img src="assets/images/research-fields/accountancy-marketing.png" class="research-fields-logos" alt="Accountancy and Marketing">
                         <span>Accountancy and Marketing</span>
                     </a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Arts and Humanities" class="research-field-card">
                         <img src="assets/images/research-fields/arts-humanities.png" class="research-fields-logos" alt="Arts and Humanities">
                         <span>Arts and Humanities</span>
                     </a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Educational Management" class="research-field-card">
                         <img src="assets/images/research-fields/educational-management.png" class="research-fields-logos" alt="Educational Management">
                         <span>Educational Management</span>
                     </a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Education and Social Sciences" class="research-field-card">
                         <img src="assets/images/research-fields/education-social-sciences.png" class="research-fields-logos" alt="Education and Social Sciences">
                         <span>Education and Social Sciences</span>
                     </a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Business Management" class="research-field-card">
                         <img src="assets/images/research-fields/business-management.png" class="research-fields-logos" alt="Business Management">
                         <span>Business Management</span>
                     </a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Health and Sciences" class="research-field-card">
                         <img src="assets/images/research-fields/health-sciences.png" class="research-fields-logos" alt="Health and Sciences">
                         <span>Health and Sciences</span>
                     </a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Information Technology" class="research-field-card">
                         <img src="assets/images/research-fields/it.png" class="research-fields-logos" alt="Information Technology">
                         <span>Information Technology</span>
                     </a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Law and Justice System" class="research-field-card">
                         <img src="assets/images/research-fields/law-justice-system.png" class="research-fields-logos" alt="Law and Justice System">
                         <span>Law and Justice System</span>
                     </a>
                 </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-4 col-md-4 col-lg-3">
                     <a href="research/research-field.php?q=Tourism and Hospitality" class="research-field-card">
                         <img src="assets/images/research-fields/tourism-hospitality.png" class="research-fields-logos" alt="Tourism and Hospitality">
                         <span>Tourism and Hospitality</span>
@@ -237,32 +240,6 @@ $statement->close();
             <div class="row mt-4">
                 <div class="col d-flex justify-content-center">
                     <a class="view-more-link" href="./research/browse-research-fields.php">View More <i class="fas fa-arrow-right ms-1"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!--Repository Metrics-->
-
-    <section class="repository-metrics-wrapper py-5">
-        <div class="container">
-            <div class="repository-metrics-card">
-                <h2 class="repository-metrics-title text-center mb-4">Repository Metrics</h2>
-                <div class="row g-3 justify-content-center">
-                    <?php foreach ($thesis_count as $key => $row) : ?>
-                        <div class="col-lg-3 col-sm-6 repository-metrics-column-item text-center">
-                            <div class="repository-metrics-icon-ring">
-                                <img src="assets/images/repository-metrics/research-file.png" class="repository-metrics-logos">
-                            </div>
-                            <p class="repository-metrics-counter"><?php echo number_format($row['count']) ?></p>
-                            <p class="repository-metrics-p-text"><?php echo $row['resource_type']; ?></p>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <div class="row mt-4">
-                    <div class="col d-flex justify-content-center">
-                        <a class="view-more-statistics-link" href="./statistics.php">View Full Statistics <i class="fas fa-arrow-right ms-1"></i></a>
-                    </div>
                 </div>
             </div>
         </div>

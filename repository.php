@@ -157,7 +157,7 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
     <?php include_once 'includes/header.php' ?>
 
         <!-- Search Section -->
-    <section class="search-section p-5">
+    <section class="search-section search-hero p-5">
         <div class="container">
             <div class="row justify-content-center mb-3">
                 <div class="col-lg-8">
@@ -248,7 +248,7 @@ $repositoryjs = filemtime('scripts/custom/repository.js');
 
         </div>
     </section>
-<section class="search-section">
+<section class="search-section search-results">
         <div class="container p-3">
 
             <div class="row">

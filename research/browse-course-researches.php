@@ -29,7 +29,7 @@ if(!in_array($_GET['q'],$course_list_values)){
     die();
 };
 $field = "%".$_GET['q']."%";
-$query = "SELECT fi.*,`research_id`,ri.resource_type AS research_type,`researchers_category`,`research_unit`,`research_title`,`research_abstract`,`research_fields`,`keywords`,`publication_date`,ri.coauthors_count AS `research_coauthors_count`,ri.author_first_name AS researcher_first_name, ri.author_middle_initial AS researcher_middle_initial, ri.author_surname AS researcher_surname, ri.author_name_ext AS researcher_name_ext, ri.author_email AS researcher_email, ci.* FROM file_information AS fi LEFT JOIN research_information as ri ON ri.file_ref_id=fi.file_id LEFT JOIN coauthors_information AS ci on ci.group_id = fi.coauthor_group_id WHERE fi.file_type = 'thesis' && fi.status = 'published' && research_course LIKE ? OR researchers_category LIKE ?";
+$query = "SELECT fi.*,`research_id`,ri.resource_type AS research_type,`researchers_category`,`research_unit`,`research_title`,`research_abstract`,`research_fields`,`keywords`,`publication_date`,ri.coauthors_count AS `research_coauthors_count`,ri.author_first_name AS researcher_first_name, ri.author_middle_initial AS researcher_middle_initial, ri.author_surname AS researcher_surname, ri.author_name_ext AS researcher_name_ext, ri.author_email AS researcher_email, ci.* FROM file_information AS fi LEFT JOIN research_information as ri ON ri.file_ref_id=fi.file_id LEFT JOIN coauthors_information AS ci on ci.group_id = fi.coauthor_group_id WHERE fi.file_type = 'thesis' AND fi.status = 'published' AND (research_course LIKE ? OR researchers_category LIKE ?)";
 $statement = $connection->prepare($query);
 $statement->bind_param("ss",$field,$field);
 $statement->execute();
@@ -45,6 +45,8 @@ function filter(&$value)
     $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }
 array_walk_recursive($published, "filter");
+function browse_is_image($p) { return !empty($p) && preg_match('/\.(jpe?g|png|webp|gif)$/i', $p); }
+function browse_year($d) { $x = date_create($d); return $x ? date_format($x, "Y") : ''; }
 
 ?>
 
@@ -109,18 +111,25 @@ array_walk_recursive($published, "filter");
                         </button>
                     </h2>
                     <div id='field-{$key}-researches' class='accordion-collapse collapse'>
-                        <div class='accordion-body'>";
+                        <div class='accordion-body'><div class='browse-book-grid'>";
                             foreach ($published as $key => $item) {
                                 $date_time = date_create($item['publication_date']);
                                 $thisYear  = date_format($date_time,"Y");
                                 if ($item['file_type'] == 'thesis' && $thisYear == $result) {
-                                    echo "
-                                <a href='../repository/view-article.php?id={$item['file_id']}' class='department-title-content'>
-                                    <p>{$item['research_title']}</p>
-                                </a>";
+                                    $bTitle = $item['research_title'];
+                                    $bYear = $thisYear;
+                                    $bUrl = "../repository/view-article.php?id={$item['file_id']}";
+                                    $bCover = $item['file_dir2'] ?? '';
+                                    $bTitleEsc = htmlspecialchars($bTitle, ENT_QUOTES, 'UTF-8');
+                                    $bYearEsc = htmlspecialchars($bYear, ENT_QUOTES, 'UTF-8');
+                                    if (browse_is_image($bCover)) {
+                                        echo "<a href='{$bUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--image'><img src='../src/{$bCover}' alt='Cover'><span class='browse-book-type'>Thesis</span></div><div class='browse-book-title'>{$bTitleEsc}</div><div class='browse-book-year'>{$bYearEsc}</div></a>";
+                                    } else {
+                                        echo "<a href='{$bUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--thesis'><span class='browse-book-type'>Thesis</span><h6 class='browse-book-cover-title'>{$bTitleEsc}</h6><span class='browse-book-cover-year'>{$bYearEsc}</span></div><div class='browse-book-title'>{$bTitleEsc}</div><div class='browse-book-year'>{$bYearEsc}</div></a>";
+                                    }
                                 }
                             }
-                            echo "</div>
+                            echo "</div></div>
                     </div>
                 </div>";
                         }

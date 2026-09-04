@@ -18,52 +18,53 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <div class="navbar navbar-expand-md">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 p-1 d-none d-lg-flex">
                     <li class="nav-item">
-                        <a class="nav-link <?= $currentPage === 'home.php' ? 'active' : '' ?>" href="<?= $base_url ?>/home.php"><i class="fas fa-home nav-ico"></i>HOME</a>
+                        <a class="nav-link <?= $currentPage === 'home.php' ? 'active' : '' ?>" href="<?= $base_url ?>/home.php">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $currentPage === 'repository.php' ? 'active' : '' ?>" href="<?= $base_url ?>/repository.php"><i class="fas fa-book-open nav-ico"></i>REPOSITORY</a>
+                        <a class="nav-link <?= $currentPage === 'repository.php' ? 'active' : '' ?>" href="<?= $base_url ?>/repository.php">REPOSITORY</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $currentPage === 'statistics.php' ? 'active' : '' ?>" href="<?= $base_url ?>/statistics.php"><i class="fas fa-chart-bar nav-ico"></i>STATISTICS</a>
+                        <a class="nav-link <?= $currentPage === 'statistics.php' ? 'active' : '' ?>" href="<?= $base_url ?>/statistics.php">STATISTICS</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link <?= $currentPage === 'submit.php' ? 'active' : '' ?>" href="<?= $base_url ?>/submit.php"><i class="fas fa-paper-plane nav-ico"></i>SUBMIT</a>
+                        <a class="nav-link <?= $currentPage === 'submit.php' ? 'active' : '' ?>" href="<?= $base_url ?>/submit.php">SUBMIT</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $currentPage === 'researchers.php' ? 'active' : '' ?>" href="<?= $base_url ?>/researchers.php"><i class="fas fa-users nav-ico"></i>RESEARCHERS</a>
+                        <a class="nav-link <?= $currentPage === 'researchers.php' ? 'active' : '' ?>" href="<?= $base_url ?>/researchers.php">RESEARCHERS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $currentPage === 'contact.php' ? 'active' : '' ?>" href="<?= $base_url ?>/contact.php"><i class="fas fa-envelope nav-ico"></i>CONTACT</a>
+                        <a class="nav-link <?= $currentPage === 'contact.php' ? 'active' : '' ?>" href="<?= $base_url ?>/contact.php">CONTACT</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $currentPage === 'about.php' ? 'active' : '' ?>" href="<?= $base_url ?>/about.php"><i class="fas fa-info-circle nav-ico"></i>ABOUT</a>
+                        <a class="nav-link <?= $currentPage === 'about.php' ? 'active' : '' ?>" href="<?= $base_url ?>/about.php">ABOUT</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?= $currentPage === 'faqs.php' ? 'active' : '' ?>" href="<?= $base_url ?>/faqs.php"><i class="fas fa-question-circle nav-ico"></i>FAQs</a>
+                        <a class="nav-link <?= $currentPage === 'faqs.php' ? 'active' : '' ?>" href="<?= $base_url ?>/faqs.php">FAQs</a>
                     </li>
                 </ul>
                 <div class="user-dropdown d-none d-lg-block">
                     <button class="btn dropdown-toggle text-white user-dropdown-btn" type="button" id="dropdownMenuButton1" aria-expanded="false"><i class="fas fa-user-circle me-1 nav-profile-icon"></i></button>
                     <?php if (isset($_SESSION['userType']) && in_array($_SESSION['userType'] ?? '', array('admin', 'super_admin'))) { ?>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/profile.php"><i class="far fa-user me-2"></i>Account</a></li>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/submissions.php"><i class="far fa-file-pdf me-2"></i>Submissions</a></li>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/bulk-upload.php"><i class="fas fa-cloud-upload-alt me-2"></i>Bulk Upload</a></li>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/library.php"><i class="far fa-file-alt me-2"></i>Library</a></li>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/backup.php"><i class="far fa-file-alt me-2"></i>Backup & Restore</a></li>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/system-logs.php"><i class="far fa-clipboard me-2"></i>System Logs</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/profile.php">Account</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/submissions.php">Submissions</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/submission-forms.php">Submit Forms</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/bulk-upload.php">Bulk Upload</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/library.php">Library</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/backup.php">Backup & Restore</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/system-logs.php">System Logs</a></li>
                             <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'super_admin') { ?>
-                                <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/settings.php"><i class="fas fa-cog me-2"></i>Developer Settings</a></li>
+                                <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/admin/settings.php">Developer Settings</a></li>
                             <?php } ?>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center text-danger" href="<?= $base_url ?>/src/process/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center text-danger" href="<?= $base_url ?>/src/process/logout.php">Sign out</a></li>
                         </ul>
                     <?php } else { ?>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/profile.php"><i class="far fa-user me-2"></i>My Profile</a></li>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/library.php"><i class="far fa-bookmark me-2"></i>My Library</a></li>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/my-submissions.php"><i class="far fa-file-alt me-2"></i>My Submissions</a></li>
-                            <li><a class="dropdown-item my-1 d-flex align-items-center text-danger" href="<?= $base_url ?>/src/process/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/profile.php">My Profile</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/library.php">My Library</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center" href="<?= $base_url ?>/users/my-submissions.php">My Submissions</a></li>
+                            <li><a class="dropdown-item my-1 d-flex align-items-center text-danger" href="<?= $base_url ?>/src/process/logout.php">Sign out</a></li>
                         </ul>
                     <?php } ?>
 
@@ -73,8 +74,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </div>
             <?php else: ?>
             <div class="d-flex align-items-center ms-auto">
-                <a href="<?= $base_url ?>/faqs.php" class="btn btn-outline-light btn-sm me-2"><i class="fas fa-question-circle me-1"></i>FAQs</a>
-                <a href="<?= $base_url ?>/index.php" class="btn btn-sm" style="background: #FFDE00; color: #012265; font-weight: 600;"><i class="fas fa-sign-in-alt me-1"></i>Sign In</a>
+                <a href="<?= $base_url ?>/faqs.php" class="btn btn-outline-light btn-sm me-2">FAQs</a>
+                <a href="<?= $base_url ?>/index.php" class="btn btn-sm" style="background: #FFDE00; color: #012265; font-weight: 600;">Sign In</a>
             </div>
             <?php endif; ?>
         </div>
@@ -88,7 +89,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     }
     if ($showMaintenanceNotice) { ?>
     <div class="alert alert-warning text-center mb-0 rounded-0 fw-bold">
-        <i class="fas fa-exclamation-triangle me-2"></i>The system is currently under maintenance. Some features may be unavailable.
+        The system is currently under maintenance. Some features may be unavailable.
     </div>
     <?php } ?>
     <div style="background-color: rgba(255, 222, 0, 1); height:15px"></div>
@@ -143,59 +144,62 @@ document.addEventListener('DOMContentLoaded', function() {
             echo '<li class="nav-item"><h4> ' . $_SESSION["fullName"] . '</strong></h4> </li>';
             echo '
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/profile.php"><i class="far fa-user me-2"></i>Account</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/profile.php">Account</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/submissions.php"><i class="far fa-file-pdf me-2"></i>Submissions</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/submissions.php">Submissions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/bulk-upload.php"><i class="fas fa-cloud-upload-alt me-2"></i>Bulk Upload</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/submission-forms.php">Submit Forms</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/users/library.php"><i class="far fa-file-alt me-2"></i>Library</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/bulk-upload.php">Bulk Upload</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/backup.php"><i class="far fa-file-alt me-2"></i>Backup & Restore</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/users/library.php">Library</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/system-logs.php"><i class="far fa-clipboard me-2"></i>System Logs</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/backup.php">Backup & Restore</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/system-logs.php">System Logs</a>
             </li>
             ';
             if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'super_admin') {
                 echo '
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/settings.php"><i class="fas fa-cog me-2"></i>Developer Settings</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/admin/settings.php">Developer Settings</a>
             </li>
             ';
             }
             echo '
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-signout-link-color" href="' . $base_url . '/src/process/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a>
+                <a class="nav-link d-flex align-items-center offcanvas-signout-link-color" href="' . $base_url . '/src/process/logout.php">Sign out</a>
             </li>
             <hr>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/home.php"><i class="fas fa-home me-2"></i>HOME</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/home.php">HOME</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/repository.php"><i class="fas fa-book-open me-2"></i>REPOSITORY</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/repository.php">REPOSITORY</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/statistics.php"><i class="fas fa-chart-bar me-2"></i>STATISTICS</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/statistics.php">STATISTICS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/submit.php"><i class="fas fa-paper-plane me-2"></i>SUBMIT</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/submit.php">SUBMIT</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/researchers.php"><i class="fas fa-users me-2"></i>RESEARCHERS</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/researchers.php">RESEARCHERS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/contact.php"><i class="fas fa-envelope me-2"></i>CONTACT</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/contact.php">CONTACT</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/about.php"><i class="fas fa-info-circle me-2"></i>ABOUT</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/about.php">ABOUT</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/faqs.php"><i class="fas fa-question-circle me-2"></i>FAQs</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/faqs.php">FAQs</a>
             </li>
 
         </ul>';
@@ -203,41 +207,41 @@ document.addEventListener('DOMContentLoaded', function() {
             echo '<ul class="navbar-nav me-auto mb-2 mb-lg-0 p-1">';
             echo '<li class="nav-item"><h4> ' . $_SESSION["fullName"] . '</strong></h4> </li>';
             echo '<li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/users/profile.php"><i class="far fa-user me-2"></i>My Profile</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/users/profile.php">My Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/users/library.php"><i class="far fa-bookmark me-2"></i>My Library</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/users/library.php">My Library</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/users/my-submissions.php"><i class="far fa-file-alt me-2"></i>My Submissions</a>
+                <a class="nav-link d-flex align-items-center offcanvas-link-color" href="' . $base_url . '/users/my-submissions.php">My Submissions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center offcanvas-signout-link-color" href="' . $base_url . '/src/process/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a>
+                <a class="nav-link d-flex align-items-center offcanvas-signout-link-color" href="' . $base_url . '/src/process/logout.php">Sign out</a>
             </li>
             <hr>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/home.php"><i class="fas fa-home me-2"></i>HOME</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/home.php">HOME</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/repository.php"><i class="fas fa-book-open me-2"></i>REPOSITORY</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/repository.php">REPOSITORY</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/statistics.php"><i class="fas fa-chart-bar me-2"></i>STATISTICS</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/statistics.php">STATISTICS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/submit.php"><i class="fas fa-paper-plane me-2"></i>SUBMIT</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/submit.php">SUBMIT</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/researchers.php"><i class="fas fa-users me-2"></i>RESEARCHERS</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/researchers.php">RESEARCHERS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/contact.php"><i class="fas fa-envelope me-2"></i>CONTACT</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/contact.php">CONTACT</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/about.php"><i class="fas fa-info-circle me-2"></i>ABOUT</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/about.php">ABOUT</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/faqs.php"><i class="fas fa-question-circle me-2"></i>FAQs</a>
+                <a class="nav-link offcanvas-link-color" href="' . $base_url . '/faqs.php">FAQs</a>
             </li>
 
         </ul>';

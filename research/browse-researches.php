@@ -28,6 +28,9 @@ function filter(&$value)
 }
 array_walk_recursive($published, "filter");
 
+function browse_is_image($p) { return !empty($p) && preg_match('/\.(jpe?g|png|webp|gif)$/i', $p); }
+function browse_year($d) { $x = date_create($d); return $x ? date_format($x, "Y") : ''; }
+
 $panels = [
     'researches'         => 'Browse Researches',
     'journals'           => 'Browse Journals',
@@ -72,6 +75,12 @@ $panels = [
     <!--Masthead-->
     <section class="masthead p-5">
         <div class="container">
+            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-2">
+                    <li class="breadcrumb-item prev-dir-breadcrumb"><a href="../repository.php" style="color: var(--navy-700); text-decoration: none;">Repository</a></li>
+                    <li class="breadcrumb-item active active-dir-breadcrumb" aria-current="page">Browse Researches</li>
+                </ol>
+            </nav>
             <h1 id="masthead-title-text">Browse</h1>
             <p id="masthead-content-text">Explore researches, journals, infographics, and reports by category.</p>
         </div>
@@ -110,7 +119,7 @@ $panels = [
                         <?php
                         $unit_array = array();
                         foreach ($published as $key => $result) {
-                            if ($result['file_type'] == 'thesis' && (!empty($result['research_course'] || $result['researchers_category']=='Faculty' || $result['researchers_category']=='Department Head'))) {
+                            if ($result['file_type'] == 'thesis' && (!empty($result['research_course']) || $result['researchers_category']=='Faculty' || $result['researchers_category']=='Department Head')) {
                                 array_push($unit_array, $result['research_unit']);
                             }
                         }
@@ -173,23 +182,23 @@ $panels = [
                                     </h2>
                                     <div id='journal-field-{$key}' class='accordion-collapse collapse'>
                                         <div class='accordion-body'>";
+                            echo "<div class='browse-book-grid'>";
                             foreach ($published as $key => $item) {
                                 if ($item['file_type'] == 'journal' && $item['department'] == $result) {
-                                    if(strlen($item['journal_description'])>500){
-                                        $stringCut = substr($item['journal_description'], 0, 500);
-                                        $endPoint = strrpos($item['journal_description'], ' ');
-                                        $item['journal_description']= $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                        $item['journal_description'] .= "... <a href='../repository/view-article.php?id={$item['file_id']}' class='read-more'>Read More</a>";
+                                    $jTitle = $item['journal_title'];
+                                    $jYear = browse_year($item['published_on'] ?? '') ?: $item['serial_issue_number'];
+                                    $jUrl = "../repository/view-article.php?id={$item['file_id']}";
+                                    $jCover = $item['file_dir2'] ?? '';
+                                    $jTitleEsc = htmlspecialchars($jTitle, ENT_QUOTES, 'UTF-8');
+                                    $jYearEsc = htmlspecialchars($jYear, ENT_QUOTES, 'UTF-8');
+                                    if (browse_is_image($jCover)) {
+                                        echo "<a href='{$jUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--image'><img src='../src/{$jCover}' alt='Cover'><span class='browse-book-type'>Journal</span></div><div class='browse-book-title'>{$jTitleEsc}</div><div class='browse-book-year'>{$jYearEsc}</div></a>";
+                                    } else {
+                                        echo "<a href='{$jUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--journal'><span class='browse-book-type'>Journal</span><h6 class='browse-book-cover-title'>{$jTitleEsc}</h6><span class='browse-book-cover-year'>{$jYearEsc}</span></div><div class='browse-book-title'>{$jTitleEsc}</div><div class='browse-book-year'>{$jYearEsc}</div></a>";
                                     }
-                                    echo "<div class='browse-article-item'>
-                                        <a href='../repository/view-article.php?id={$item['file_id']}' class='article-title'>
-                                            <h5>{$item['journal_title']}</h5>
-                                        </a>
-                                        <p class='browse-article-meta'>{$item['serial_issue_number']}</p>
-                                        <p class='browse-article-desc'>{$item['journal_description']}</p>
-                                    </div>";
                                 }
                             }
+                            echo "</div>";
                             echo "</div></div></div>";
                         }
                         ?>
@@ -202,25 +211,18 @@ $panels = [
                     <hr class="my-3">
                     <div>
                         <?php
+                        echo "<div class='browse-book-grid'>";
                         foreach ($published as $key => $item) {
                             if ($item['file_type'] == 'infographic') {
-                                $date_time = date_create($item['infographic_publication_date']);
-                                $date_time = date_format($date_time,"F Y");
-                                if(strlen($item['infographic_description'])>500){
-                                    $stringCut = substr($item['infographic_description'], 0, 500);
-                                    $endPoint = strrpos($item['infographic_description'], ' ');
-                                    $item['infographic_description']= $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                    $item['infographic_description'] .= "... <a href='../repository/view-article.php?id={$item['file_id']}' class='read-more'>Read More</a>";
-                                }
-                                echo "<div class='browse-article-item'>
-                                    <a href='../repository/view-article.php?id={$item['file_id']}' class='article-title'>
-                                        <h5>{$item['infographic_title']}</h5>
-                                    </a>
-                                    <p class='browse-article-meta'>{$date_time}</p>
-                                    <p class='browse-article-desc'>{$item['infographic_description']}</p>
-                                </div>";
+                                $igTitle = $item['infographic_title'];
+                                $igYear = browse_year($item['infographic_publication_date'] ?? '');
+                                $igUrl = "../repository/view-article.php?id={$item['file_id']}";
+                                $igTitleEsc = htmlspecialchars($igTitle, ENT_QUOTES, 'UTF-8');
+                                $igYearEsc = htmlspecialchars($igYear, ENT_QUOTES, 'UTF-8');
+                                echo "<a href='{$igUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--infographic'><span class='browse-book-type'>Infographic</span><h6 class='browse-book-cover-title'>{$igTitleEsc}</h6><span class='browse-book-cover-year'>{$igYearEsc}</span></div><div class='browse-book-title'>{$igTitleEsc}</div><div class='browse-book-year'>{$igYearEsc}</div></a>";
                             }
                         }
+                        echo "</div>";
                         ?>
                     </div>
                 </div>
@@ -231,23 +233,23 @@ $panels = [
                     <hr class="my-3">
                     <div>
                         <?php
+                        echo "<div class='browse-book-grid'>";
                         foreach ($published as $key => $item) {
                             if ($item['report_type'] == 'Research Catalog') {
-                                if(strlen($item['report_description'])>500){
-                                    $stringCut = substr($item['report_description'], 0, 500);
-                                    $endPoint = strrpos($item['report_description'], ' ');
-                                    $item['report_description']= $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                    $item['report_description'] .= "... <a href='../repository/view-article.php?id={$item['file_id']}' class='read-more'>Read More</a>";
+                                $rcTitle = $item['report_title'];
+                                $rcYear = $item['report_year'];
+                                $rcUrl = "../repository/view-article.php?id={$item['file_id']}";
+                                $rcCover = $item['file_dir2'] ?? '';
+                                $rcTitleEsc = htmlspecialchars($rcTitle, ENT_QUOTES, 'UTF-8');
+                                $rcYearEsc = htmlspecialchars($rcYear, ENT_QUOTES, 'UTF-8');
+                                if (browse_is_image($rcCover)) {
+                                    echo "<a href='{$rcUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--image'><img src='../src/{$rcCover}' alt='Cover'><span class='browse-book-type'>Catalog</span></div><div class='browse-book-title'>{$rcTitleEsc}</div><div class='browse-book-year'>{$rcYearEsc}</div></a>";
+                                } else {
+                                    echo "<a href='{$rcUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--report'><span class='browse-book-type'>Catalog</span><h6 class='browse-book-cover-title'>{$rcTitleEsc}</h6><span class='browse-book-cover-year'>{$rcYearEsc}</span></div><div class='browse-book-title'>{$rcTitleEsc}</div><div class='browse-book-year'>{$rcYearEsc}</div></a>";
                                 }
-                                echo "<div class='browse-article-item'>
-                                    <a href='../repository/view-article.php?id={$item['file_id']}' class='article-title'>
-                                        <h5>{$item['report_title']}</h5>
-                                    </a>
-                                    <p class='browse-article-meta'>{$item['report_year']}</p>
-                                    <p class='browse-article-desc'>{$item['report_description']}</p>
-                                </div>";
                             }
                         }
+                        echo "</div>";
                         ?>
                     </div>
                 </div>
@@ -258,23 +260,23 @@ $panels = [
                     <hr class="my-3">
                     <div>
                         <?php
+                        echo "<div class='browse-book-grid'>";
                         foreach ($published as $key => $item) {
                             if ($item['report_type'] == 'Annual Report') {
-                                if(strlen($item['report_description'])>500){
-                                    $stringCut = substr($item['report_description'], 0, 500);
-                                    $endPoint = strrpos($item['report_description'], ' ');
-                                    $item['report_description']= $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                    $item['report_description'] .= "... <a href='../repository/view-article.php?id={$item['file_id']}' class='read-more'>Read More</a>";
+                                $arTitle = $item['report_title'];
+                                $arYear = $item['report_year'];
+                                $arUrl = "../repository/view-article.php?id={$item['file_id']}";
+                                $arCover = $item['file_dir2'] ?? '';
+                                $arTitleEsc = htmlspecialchars($arTitle, ENT_QUOTES, 'UTF-8');
+                                $arYearEsc = htmlspecialchars($arYear, ENT_QUOTES, 'UTF-8');
+                                if (browse_is_image($arCover)) {
+                                    echo "<a href='{$arUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--image'><img src='../src/{$arCover}' alt='Cover'><span class='browse-book-type'>Annual Report</span></div><div class='browse-book-title'>{$arTitleEsc}</div><div class='browse-book-year'>{$arYearEsc}</div></a>";
+                                } else {
+                                    echo "<a href='{$arUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--report'><span class='browse-book-type'>Annual Report</span><h6 class='browse-book-cover-title'>{$arTitleEsc}</h6><span class='browse-book-cover-year'>{$arYearEsc}</span></div><div class='browse-book-title'>{$arTitleEsc}</div><div class='browse-book-year'>{$arYearEsc}</div></a>";
                                 }
-                                echo "<div class='browse-article-item'>
-                                    <a href='../repository/view-article.php?id={$item['file_id']}' class='article-title'>
-                                        <h5>{$item['report_title']}</h5>
-                                    </a>
-                                    <p class='browse-article-meta'>{$item['report_year']}</p>
-                                    <p class='browse-article-desc'>{$item['report_description']}</p>
-                                </div>";
                             }
                         }
+                        echo "</div>";
                         ?>
                     </div>
                 </div>
@@ -285,23 +287,23 @@ $panels = [
                     <hr class="my-3">
                     <div>
                         <?php
+                        echo "<div class='browse-book-grid'>";
                         foreach ($published as $key => $item) {
                             if ($item['report_type'] == 'Research Agenda') {
-                                if(strlen($item['report_description'])>500){
-                                    $stringCut = substr($item['report_description'], 0, 500);
-                                    $endPoint = strrpos($item['report_description'], ' ');
-                                    $item['report_description']= $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                    $item['report_description'] .= "... <a href='../repository/view-article.php?id={$item['file_id']}' class='read-more'>Read More</a>";
+                                $raTitle = $item['report_title'];
+                                $raYear = $item['report_year'];
+                                $raUrl = "../repository/view-article.php?id={$item['file_id']}";
+                                $raCover = $item['file_dir2'] ?? '';
+                                $raTitleEsc = htmlspecialchars($raTitle, ENT_QUOTES, 'UTF-8');
+                                $raYearEsc = htmlspecialchars($raYear, ENT_QUOTES, 'UTF-8');
+                                if (browse_is_image($raCover)) {
+                                    echo "<a href='{$raUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--image'><img src='../src/{$raCover}' alt='Cover'><span class='browse-book-type'>Agenda</span></div><div class='browse-book-title'>{$raTitleEsc}</div><div class='browse-book-year'>{$raYearEsc}</div></a>";
+                                } else {
+                                    echo "<a href='{$raUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--report'><span class='browse-book-type'>Research Agenda</span><h6 class='browse-book-cover-title'>{$raTitleEsc}</h6><span class='browse-book-cover-year'>{$raYearEsc}</span></div><div class='browse-book-title'>{$raTitleEsc}</div><div class='browse-book-year'>{$raYearEsc}</div></a>";
                                 }
-                                echo "<div class='browse-article-item'>
-                                    <a href='../repository/view-article.php?id={$item['file_id']}' class='article-title'>
-                                        <h5>{$item['report_title']}</h5>
-                                    </a>
-                                    <p class='browse-article-meta'>{$item['report_year']}</p>
-                                    <p class='browse-article-desc'>{$item['report_description']}</p>
-                                </div>";
                             }
                         }
+                        echo "</div>";
                         ?>
                     </div>
                 </div>
@@ -312,23 +314,23 @@ $panels = [
                     <hr class="my-3">
                     <div>
                         <?php
+                        echo "<div class='browse-book-grid'>";
                         foreach ($published as $key => $item) {
                             if ($item['report_type'] == 'Research Competency Development Program') {
-                                if(strlen($item['report_description'])>500){
-                                    $stringCut = substr($item['report_description'], 0, 500);
-                                    $endPoint = strrpos($item['report_description'], ' ');
-                                    $item['report_description']= $endPoint? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                    $item['report_description'] .= "... <a href='../repository/view-article.php?id={$item['file_id']}' class='read-more'>Read More</a>";
+                                $rpTitle = $item['report_title'];
+                                $rpYear = $item['report_year'];
+                                $rpUrl = "../repository/view-article.php?id={$item['file_id']}";
+                                $rpCover = $item['file_dir2'] ?? '';
+                                $rpTitleEsc = htmlspecialchars($rpTitle, ENT_QUOTES, 'UTF-8');
+                                $rpYearEsc = htmlspecialchars($rpYear, ENT_QUOTES, 'UTF-8');
+                                if (browse_is_image($rpCover)) {
+                                    echo "<a href='{$rpUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--image'><img src='../src/{$rpCover}' alt='Cover'><span class='browse-book-type'>RCDP</span></div><div class='browse-book-title'>{$rpTitleEsc}</div><div class='browse-book-year'>{$rpYearEsc}</div></a>";
+                                } else {
+                                    echo "<a href='{$rpUrl}' class='browse-book-card'><div class='browse-book-cover browse-book-cover--report'><span class='browse-book-type'>RCDP</span><h6 class='browse-book-cover-title'>{$rpTitleEsc}</h6><span class='browse-book-cover-year'>{$rpYearEsc}</span></div><div class='browse-book-title'>{$rpTitleEsc}</div><div class='browse-book-year'>{$rpYearEsc}</div></a>";
                                 }
-                                echo "<div class='browse-article-item'>
-                                    <a href='../repository/view-article.php?id={$item['file_id']}' class='article-title'>
-                                        <h5>{$item['report_title']}</h5>
-                                    </a>
-                                    <p class='browse-article-meta'>{$item['report_year']}</p>
-                                    <p class='browse-article-desc'>{$item['report_description']}</p>
-                                </div>";
                             }
                         }
+                        echo "</div>";
                         ?>
                     </div>
                 </div>
@@ -351,7 +353,7 @@ $panels = [
             // Empty state
             allPanels.forEach(function(id) {
                 var $panel = $("#panel-" + id);
-                if ($panel.find(".accordion-item, .browse-article-item").length === 0) {
+                if ($panel.find(".accordion-item, .browse-article-item, .browse-book-card").length === 0) {
                     $panel.find("> div, > .browse-accordion").first().append("<p class='browse-empty-state'>No results found.</p>");
                 }
             });

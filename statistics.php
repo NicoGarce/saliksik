@@ -120,18 +120,20 @@ $pagecssVersion = filemtime('styles/custom/pages/statistics-style.css');
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-xs-12" id="statisticsPanel">
 
-                    <!-- Chart Section -->
-                    <div class="stats-card-section mb-4">
-                        <h5 class="stats-section-title">Research Outputs Over Time</h5>
-                        <div class="chart-container">
-                            <canvas id="myChart" height="90"></canvas>
-                        </div>
-                    </div>
-
                     <div class="row g-4 mb-4">
-                        <!-- Activity Overview -->
+                        <!-- Chart Section -->
+                        <div class="col-lg-8">
+                            <div class="stats-card-section h-100 mb-0">
+                                <h5 class="stats-section-title">Research Outputs Over Time</h5>
+                                <div class="chart-container">
+                                    <canvas id="myChart" height="90"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Overview — moved to right of graph -->
                         <div class="col-lg-4">
-                            <div class="stats-card-section h-100">
+                            <div class="stats-card-section h-100 mb-0">
                                 <h5 class="stats-section-title">Activity Overview</h5>
                                 <div class="row g-3">
                                     <div class="col-12">
@@ -168,40 +170,38 @@ $pagecssVersion = filemtime('styles/custom/pages/statistics-style.css');
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Most Viewed Items -->
-                        <div class="col-lg-8">
-                            <div class="stats-card-section h-100">
-                                <h5 class="stats-section-title">Most Viewed Items</h5>
-                                <?php foreach ($page_hits as $key => $page) :
-                                    $page_percent = $page['hits'] / $article['total_hits'] * 100;
-                                    $rank = $key + 1;
-                                    $rankClass = ($rank <= 3) ? 'rank-' . $rank : '';
-                                ?>
-                                    <?php if ($page['file_type'] == 'thesis') : $title = $page['research_title']; ?>
-                                    <?php elseif ($page['file_type'] == 'journal') : $title = $page['journal_title']; ?>
-                                    <?php elseif ($page['file_type'] == 'infographic') : $title = $page['infographic_title']; ?>
-                                    <?php elseif ($page['file_type'] == 'report') : $title = $page['report_title']; ?>
-                                    <?php else : $title = 'Untitled'; ?>
-                                    <?php endif; ?>
-                                    <div class="viewed-item-row <?php echo $rankClass ?>">
-                                        <div class="viewed-item-rank"><?php echo $rank ?></div>
-                                        <div class="viewed-item-body">
-                                            <a href="repository/view-article.php?id=<?php echo $page['file_id']; ?>" class="viewed-item-title">
-                                                <?php echo htmlspecialchars($title) ?>
-                                            </a>
-                                            <div class="viewed-item-meta"><?php echo ucfirst($page['file_type']) ?></div>
-                                        </div>
-                                        <div class="viewed-item-bar">
-                                            <span class="viewed-item-hits"><?php echo number_format($page['hits']) ?></span>
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: <?php echo $page_percent ?>%;" aria-valuenow="<?php echo $page_percent ?>" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
+                    <!-- Most Viewed Items — now full width below -->
+                    <div class="stats-card-section">
+                        <h5 class="stats-section-title">Most Viewed Items</h5>
+                        <?php foreach ($page_hits as $key => $page) :
+                            $page_percent = $page['hits'] / $article['total_hits'] * 100;
+                            $rank = $key + 1;
+                            $rankClass = ($rank <= 3) ? 'rank-' . $rank : '';
+                        ?>
+                            <?php if ($page['file_type'] == 'thesis') : $title = $page['research_title']; ?>
+                            <?php elseif ($page['file_type'] == 'journal') : $title = $page['journal_title']; ?>
+                            <?php elseif ($page['file_type'] == 'infographic') : $title = $page['infographic_title']; ?>
+                            <?php elseif ($page['file_type'] == 'report') : $title = $page['report_title']; ?>
+                            <?php else : $title = 'Untitled'; ?>
+                            <?php endif; ?>
+                            <div class="viewed-item-row <?php echo $rankClass ?>">
+                                <div class="viewed-item-rank"><?php echo $rank ?></div>
+                                <div class="viewed-item-body">
+                                    <a href="repository/view-article.php?id=<?php echo $page['file_id']; ?>" class="viewed-item-title">
+                                        <?php echo htmlspecialchars($title) ?>
+                                    </a>
+                                    <div class="viewed-item-meta"><?php echo ucfirst($page['file_type']) ?></div>
+                                </div>
+                                <div class="viewed-item-bar">
+                                    <span class="viewed-item-hits"><?php echo number_format($page['hits']) ?></span>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: <?php echo $page_percent ?>%;" aria-valuenow="<?php echo $page_percent ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                <?php endforeach; ?>
+                                </div>
                             </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
 
                 </div>

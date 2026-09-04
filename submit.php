@@ -84,10 +84,10 @@ $pagecssVersion = filemtime('styles/custom/pages/submit-style.css');
                     <div class="submit-sidebar">
                         <div class="submit-sidebar-title">On This Page</div>
                         <a class="submit-nav-item active" id="submitText">
-                            <i class="fas fa-file-upload"></i>Submit
+                            Submit
                         </a>
                         <a class="submit-nav-item" id="submissionGuidelinesText">
-                            <i class="fas fa-clipboard-list"></i>Submission Form and Guidelines
+                            Submission Form and Guidelines
                         </a>
                     </div>
                 </div>
@@ -112,7 +112,7 @@ $pagecssVersion = filemtime('styles/custom/pages/submit-style.css');
                         <p>To submit a copy of your work you are required to complete the Submission Form. Please read the submission guidelines first by clicking the button below.</p>
                         <div class="text-center mt-4">
                             <button type="button" class="submit-cta" id="buttonToSubmission">
-                                <i class="fas fa-arrow-right"></i>Submit Research
+                                Submit Research
                             </button>
                         </div>
                     </div>
@@ -139,7 +139,7 @@ $pagecssVersion = filemtime('styles/custom/pages/submit-style.css');
                             <p>To submit a copy of your research, click the button below.</p>
                             <div class="text-center">
                                 <a href="submission-forms.php" class="submit-cta text-decoration-none my-3">
-                                    <i class="fas fa-file-alt"></i>Submission Form
+                                    Submission Form
                                 </a>
                             </div>
                             <p class="contact-note my-2">Please contact <a href="mailto:research@uphsl.edu.ph" target="_blank">research@uphsl.edu.ph</a> if you have any further queries regarding thesis submission.</p>

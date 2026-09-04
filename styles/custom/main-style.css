@@ -90,30 +90,47 @@ hr { border-color: var(--card-border); opacity: 1; }
 
 @media (max-width: 1399.98px) {
   #header-logo { max-width: 170px; }
-  .header .nav-link { font-size: .78rem; padding: 8px 9px !important; }
+  .header .navbar-nav { gap: 3px; }
+  .header .nav-link { font-size: .78rem; padding: 7px 11px !important; }
 }
 
 @media (max-width: 1199.98px) {
   #header-logo { max-width: 148px; }
-  .header .nav-link { font-size: .72rem; padding: 7px 7px !important; letter-spacing: .02em; }
+  .header .navbar-nav { gap: 2px; }
+  .header .nav-link { font-size: .72rem; padding: 6px 9px !important; letter-spacing: .02em; }
+}
+
+.header .navbar-nav {
+  gap: 4px;
+  align-items: center;
 }
 
 .nav-link {
   position: relative;
   color: #ffffff !important;
   font-weight: 600;
-  font-size: .86rem;
-  letter-spacing: .04em;
-  padding: 10px 14px !important;
-  border-radius: var(--radius-sm);
-  transition: background-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
+  font-size: .84rem;
+  letter-spacing: .03em;
+  padding: 8px 15px !important;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease), box-shadow .2s var(--ease);
 }
 
-.header .nav-link:hover,
+.header .nav-link:hover {
+  color: var(--accent-yellow) !important;
+  background: rgba(255, 255, 255, .11);
+  border-color: rgba(255, 255, 255, .14);
+  transform: translateY(-1px);
+}
+
 .header .nav-link.active {
   color: var(--accent-yellow) !important;
-  background: rgba(255, 255, 255, .09);
-  transform: translateY(-1px);
+  background: rgba(255, 222, 0, .18) !important;
+  border-color: rgba(255, 222, 0, .32);
+  font-weight: 700;
+  box-shadow: none;
+  transform: none;
 }
 
 .header .nav-link .nav-ico {
@@ -125,17 +142,23 @@ hr { border-color: var(--card-border); opacity: 1; }
 .header .nav-link::after {
   content: "";
   position: absolute;
-  left: 14px; right: 14px; bottom: 5px;
-  height: 3px;
+  left: 15px; right: 15px; bottom: 6px;
+  height: 2px;
   border-radius: 999px;
   background: var(--accent-yellow);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform .22s var(--ease);
+  opacity: 0;
+  transform: scaleX(.45);
+  transform-origin: center;
+  transition: transform .22s var(--ease), opacity .2s var(--ease);
 }
 
-.header .nav-link:hover::after,
-.header .nav-link.active::after { transform: scaleX(1); }
+.header .nav-link:hover::after { opacity: 1; transform: scaleX(1); }
+.header .nav-link.active::after { display: none; }
+
+.header .nav-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,222,0,.6), 0 0 0 4px rgba(255,255,255,.5);
+}
 
 /* Profile icon */
 .nav-profile-icon {
@@ -665,6 +688,45 @@ a.footer-list-link:hover { cursor: pointer; }
 }
 
 .search-option-card:hover i { color: var(--navy-900); }
+
+/* ---- Responsive: search bar + option cards (shared) ---- */
+@media (max-width: 767.98px) {
+  .search-bar-input { padding: .95rem .85rem; font-size: .95rem; }
+  .search-bar-button { padding: .95rem 1.45rem; font-size: .88rem; }
+  .search-bar-icon { padding-left: 1rem; font-size: 1rem; }
+  .search-option-card { padding: .7rem 1.15rem; font-size: .85rem; }
+}
+
+@media (max-width: 575.98px) {
+  .search-bar-group {
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 16px rgba(1, 34, 101, .12), 0 1px 4px rgba(15, 23, 42, .06);
+  }
+  .search-bar-icon { padding-left: .85rem; font-size: .95rem; }
+  .search-bar-input { padding: .82rem .65rem; font-size: .88rem; }
+  .search-bar-input::placeholder { font-size: .85rem; }
+  .search-bar-button { padding: .82rem 1rem; font-size: .8rem; letter-spacing: 0; }
+  .search-bar-button:hover { padding-right: 1rem; }
+  .search-option-card {
+    width: 100%;
+    justify-content: center;
+    padding: .62rem 1rem;
+    font-size: .82rem;
+    gap: .5rem;
+    border-radius: var(--radius-sm);
+  }
+  .search-option-card i { font-size: .9rem; }
+  /* stack the two option cards on very narrow viewport */
+  .search-section .row.g-3 { --bs-gutter-y: .6rem; }
+  .search-section .row.g-3 > .col-auto { width: 100%; display: flex; }
+}
+
+@media (max-width: 374.98px) {
+  .search-bar-input { padding: .72rem .55rem; font-size: .84rem; }
+  .search-bar-button { padding: .72rem .85rem; font-size: .76rem; }
+  .search-bar-icon { padding-left: .65rem; font-size: .88rem; }
+  .search-option-card { font-size: .78rem; padding: .55rem .85rem; }
+}
 
 /*-------------Advanced Search modal-------------*/
 

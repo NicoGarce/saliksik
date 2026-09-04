@@ -35,7 +35,7 @@ if (isset($_POST['exists'])) {
             $words_exists = " AND (";
             $words_exists_array = explode(" ", $_POST['word_search']);
             foreach ($words_exists_array as $key => $word) {
-                $words_exists .= "ri.research_title LIKE '%$word%' OR ri.research_abstract LIKE '%$word%' OR ji.journal_title LIKE '%$word%' OR ji.journal_subtitle LIKE '%$word%' OR ji.journal_description LIKE '%$word%' OR ii.infographic_title LIKE '%$word%' OR ii.infographic_description LIKE '%$word%'";
+                $words_exists .= "ri.research_title LIKE '%$word%' OR ri.research_abstract LIKE '%$word%' OR ji.journal_title LIKE '%$word%' OR ji.journal_subtitle LIKE '%$word%' OR ji.journal_description LIKE '%$word%' OR ii.infographic_title LIKE '%$word%' OR ii.infographic_description LIKE '%$word%' OR rp.report_title LIKE '%$word%' OR rp.report_description LIKE '%$word%'";
                 if ($key < count($words_exists_array) - 1) {
                     $words_exists .= " AND ";
                 }
@@ -44,14 +44,14 @@ if (isset($_POST['exists'])) {
             $query .= $words_exists;
         }
         if (isset($_POST['phrase_search']) && $_POST['phrase_search'] != '') {
-            $phrase_exists = " AND (ri.research_title LIKE '%{$_POST["phrase_search"]}%' OR ri.research_abstract LIKE '%{$_POST["phrase_search"]}%' OR ji.journal_title LIKE '%{$_POST["phrase_search"]}%' OR ji.journal_subtitle LIKE '%{$_POST["phrase_search"]}%' OR ji.journal_description LIKE '%{$_POST["phrase_search"]}%' OR ii.infographic_title LIKE '%{$_POST["phrase_search"]}%' OR ii.infographic_description LIKE '%{$_POST["phrase_search"]}%')";
+            $phrase_exists = " AND (ri.research_title LIKE '%{$_POST["phrase_search"]}%' OR ri.research_abstract LIKE '%{$_POST["phrase_search"]}%' OR ji.journal_title LIKE '%{$_POST["phrase_search"]}%' OR ji.journal_subtitle LIKE '%{$_POST["phrase_search"]}%' OR ji.journal_description LIKE '%{$_POST["phrase_search"]}%' OR ii.infographic_title LIKE '%{$_POST["phrase_search"]}%' OR ii.infographic_description LIKE '%{$_POST["phrase_search"]}%' OR rp.report_title LIKE '%{$_POST["phrase_search"]}%' OR rp.report_description LIKE '%{$_POST["phrase_search"]}%')";
             $query .= $phrase_exists;
         }
         if (isset($_POST['word_exists']) && $_POST['word_exists'] != '') {
             $word_list_exists = " AND (";
             $word_list_exists_array = explode(" ", $_POST['word_exists']);
             foreach ($word_list_exists_array as $key => $word) {
-                $word_list_exists .= "ri.research_title LIKE '%$word%' OR ri.research_abstract LIKE '%$word%' OR ji.journal_title LIKE '%$word%' OR ji.journal_subtitle LIKE '%$word%' OR ji.journal_description LIKE '%$word%' OR ii.infographic_title LIKE '%$word%' OR ii.infographic_description LIKE '%$word%'";
+                $word_list_exists .= "ri.research_title LIKE '%$word%' OR ri.research_abstract LIKE '%$word%' OR ji.journal_title LIKE '%$word%' OR ji.journal_subtitle LIKE '%$word%' OR ji.journal_description LIKE '%$word%' OR ii.infographic_title LIKE '%$word%' OR ii.infographic_description LIKE '%$word%' OR rp.report_title LIKE '%$word%' OR rp.report_description LIKE '%$word%'";
                 if ($key < count($word_list_exists_array) - 1) {
                     $word_list_exists .= " OR ";
                 }
@@ -63,7 +63,7 @@ if (isset($_POST['exists'])) {
             $word_list_not_exists = " AND (";
             $word_list_not_exists_array = explode(" ", $_POST['word_not_exists']);
             foreach ($word_list_not_exists_array as $key => $word) {
-                $word_list_not_exists .= "(ri.research_title NOT LIKE '%$word%' AND ri.research_abstract NOT LIKE '%$word%') OR (ji.journal_title NOT LIKE '%$word%' AND ji.journal_subtitle NOT LIKE '%$word%' AND ji.journal_description NOT LIKE '%$word%') OR (ii.infographic_title NOT LIKE '%$word%' AND ii.infographic_description NOT LIKE '%$word%')";
+                $word_list_not_exists .= "(ri.research_title NOT LIKE '%$word%' AND ri.research_abstract NOT LIKE '%$word%') OR (ji.journal_title NOT LIKE '%$word%' AND ji.journal_subtitle NOT LIKE '%$word%' AND ji.journal_description NOT LIKE '%$word%') OR (ii.infographic_title NOT LIKE '%$word%' AND ii.infographic_description NOT LIKE '%$word%') OR (rp.report_title NOT LIKE '%$word%' AND rp.report_description NOT LIKE '%$word%')";
                 if ($key < count($word_list_not_exists_array) - 1) {
                     $word_list_not_exists .= " OR ";
                 }
@@ -76,7 +76,7 @@ if (isset($_POST['exists'])) {
             $words_exists = " AND (";
             $words_exists_array = explode(" ", $_POST['word_search']);
             foreach ($words_exists_array as $key => $word) {
-                $words_exists .= "ri.research_title LIKE '%$word%' OR ji.journal_title LIKE '%$word%' OR ii.infographic_title LIKE '%$word%'";
+                $words_exists .= "ri.research_title LIKE '%$word%' OR ji.journal_title LIKE '%$word%' OR ii.infographic_title LIKE '%$word%' OR rp.report_title LIKE '%$word%'";
                 if ($key < count($words_exists_array) - 1) {
                     $words_exists .= " AND ";
                 }
@@ -85,14 +85,14 @@ if (isset($_POST['exists'])) {
             $query .= $words_exists;
         }
         if (isset($_POST['phrase_search']) && $_POST['phrase_search'] != '') {
-            $phrase_exists = " AND (ri.research_title LIKE '%{$_POST["phrase_search"]}%' OR ji.journal_title LIKE '%{$_POST["phrase_search"]}%' OR ii.infographic_title LIKE '%{$_POST["phrase_search"]}%')";
+            $phrase_exists = " AND (ri.research_title LIKE '%{$_POST["phrase_search"]}%' OR ji.journal_title LIKE '%{$_POST["phrase_search"]}%' OR ii.infographic_title LIKE '%{$_POST["phrase_search"]}%' OR rp.report_title LIKE '%{$_POST["phrase_search"]}%')";
             $query .= $phrase_exists;
         }
         if (isset($_POST['word_exists']) && $_POST['word_exists'] != '') {
             $word_list_exists = " AND (";
             $word_list_exists_array = explode(" ", $_POST['word_exists']);
             foreach ($word_list_exists_array as $key => $word) {
-                $word_list_exists .= "ri.research_title LIKE '%$word%' OR ji.journal_title LIKE '%$word%' OR ii.infographic_title LIKE '%$word%'";
+                $word_list_exists .= "ri.research_title LIKE '%$word%' OR ji.journal_title LIKE '%$word%' OR ii.infographic_title LIKE '%$word%' OR rp.report_title LIKE '%$word%'";
                 if ($key < count($word_list_exists_array) - 1) {
                     $word_list_exists .= " OR ";
                 }
@@ -104,7 +104,7 @@ if (isset($_POST['exists'])) {
             $word_list_not_exists = " AND (";
             $word_list_not_exists_array = explode(" ", $_POST['word_not_exists']);
             foreach ($word_list_not_exists_array as $key => $word) {
-                $word_list_not_exists .= "ri.research_title NOT LIKE '%$word%' OR ji.journal_title NOT LIKE '%$word%' OR ii.infographic_title NOT LIKE '%$word%'";
+                $word_list_not_exists .= "ri.research_title NOT LIKE '%$word%' OR ji.journal_title NOT LIKE '%$word%' OR ii.infographic_title NOT LIKE '%$word%' OR rp.report_title NOT LIKE '%$word%'";
                 if ($key < count($word_list_not_exists_array) - 1) {
                     $word_list_not_exists .= " OR ";
                 }
@@ -294,7 +294,7 @@ foreach ($published as $key => $result) :
         for ($i = 1; $i <= $result['research_coauthors_count']; $i++) {
             $authors .= ', ' . htmlspecialchars($result["coauthor{$i}_first_name"] . ' ' . $result["coauthor{$i}_surname"], ENT_QUOTES, 'UTF-8');
         }
-        echo "<div class='repo-card'>
+        echo "<div class='repo-card' data-href='{$viewUrl}' role='link' tabindex='0'>
             <div class='repo-card-type'>Thesis</div>
             <a href='{$viewUrl}' class='article-title'><h6 class='repo-card-title'>{$result['research_title']}</h6></a>
             <p class='repo-card-meta'>{$authors}</p>
@@ -312,7 +312,7 @@ foreach ($published as $key => $result) :
     } else if ($result['file_type'] === 'journal') {
         $abstract = compact_truncate($result['journal_description'], 200);
         $viewUrl = base_url() . '/repository/view-article.php?id=' . $result['file_id'];
-        echo "<div class='repo-card'>
+        echo "<div class='repo-card' data-href='{$viewUrl}' role='link' tabindex='0'>
             <div class='repo-card-row'>
                 <div class='repo-card-body'>
                     <div class='repo-card-type'>Journal</div>
@@ -340,7 +340,7 @@ foreach ($published as $key => $result) :
         $date_time = date_format($date_time, "F Y");
         $abstract = compact_truncate($result['infographic_description'], 200);
         $viewUrl = base_url() . '/repository/view-article.php?id=' . $result['file_id'];
-        echo "<div class='repo-card'>
+        echo "<div class='repo-card' data-href='{$viewUrl}' role='link' tabindex='0'>
             <div class='repo-card-type'>Infographic</div>
             <a href='{$viewUrl}' class='article-title'><h6 class='repo-card-title'>{$result['infographic_title']}</h6></a>
             <p class='repo-card-meta'>{$date_time}</p>
@@ -357,7 +357,7 @@ foreach ($published as $key => $result) :
     } else if ($result['file_type'] === 'report') {
         $abstract = compact_truncate($result['report_description'], 200);
         $viewUrl = base_url() . '/repository/view-article.php?id=' . $result['file_id'];
-        echo "<div class='repo-card'>
+        echo "<div class='repo-card' data-href='{$viewUrl}' role='link' tabindex='0'>
             <div class='repo-card-row'>
                 <div class='repo-card-body'>
                     <div class='repo-card-type'>{$result['report_type']}</div>
